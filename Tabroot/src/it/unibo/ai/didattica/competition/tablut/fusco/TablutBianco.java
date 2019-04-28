@@ -11,25 +11,25 @@ import it.unibo.ai.didattica.competition.tablut.domain.State.Turn;
  * @author A. Piretti, Andrea Galassi
  *
  */
-public class TablutBiancoPROVA extends TablutClientFUSCO {
+public class TablutBianco extends TablutClient {
 
 	private int game;
 	
 	
-	public TablutBiancoPROVA(String player, String name, int gameChosen) throws UnknownHostException, IOException {
+	public TablutBianco(String player, String name, int gameChosen) throws UnknownHostException, IOException {
 		super(player, name);
 		game = gameChosen;
 	}
 
-	public TablutBiancoPROVA(String player) throws UnknownHostException, IOException {
+	public TablutBianco(String player) throws UnknownHostException, IOException {
 		this(player, "random", 4);
 	}
 
-	public TablutBiancoPROVA(String player, String name) throws UnknownHostException, IOException {
+	public TablutBianco(String player, String name) throws UnknownHostException, IOException {
 		this(player, name, 4);
 	}
 
-	public TablutBiancoPROVA(String player, int gameChosen) throws UnknownHostException, IOException {
+	public TablutBianco(String player, int gameChosen) throws UnknownHostException, IOException {
 		this(player, "random", gameChosen);
 	}
 	
@@ -57,7 +57,7 @@ public class TablutBiancoPROVA extends TablutClientFUSCO {
 		}
 		System.out.println("Selected client: " + args[0]);
 
-		TablutBiancoPROVA client = new TablutBiancoPROVA(role, name, gametype);
+		TablutBianco client = new TablutBianco(role, name, gametype);
 		client.run();
 	}
 

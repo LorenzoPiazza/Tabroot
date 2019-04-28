@@ -23,7 +23,7 @@ import it.unibo.ai.didattica.competition.tablut.domain.StateTablut;
  * @author Andrea Piretti
  *
  */
-public abstract class TablutClientFUSCO implements Runnable {
+public abstract class TablutClient implements Runnable {
 
 	private State.Turn player;
 	private String name;
@@ -32,6 +32,7 @@ public abstract class TablutClientFUSCO implements Runnable {
 	private DataOutputStream out;
 	private Gson gson;
 	private State currentState;
+	//private Action action;
 
 	public State.Turn getPlayer() {
 		return player;
@@ -57,7 +58,7 @@ public abstract class TablutClientFUSCO implements Runnable {
 	 * @throws UnknownHostException
 	 * @throws IOException
 	 */
-	public TablutClientFUSCO(String player, String name) throws UnknownHostException, IOException {
+	public TablutClient(String player, String name) throws UnknownHostException, IOException {
 		int port = 0;
 		this.gson = new Gson();
 		if (player.toLowerCase().equals("white")) {
@@ -150,7 +151,7 @@ public abstract class TablutClientFUSCO implements Runnable {
 	}
 
 	private double getHeuristicValueWhite(State state) {
-		return (double) (Math.random() * -100);
+		return (double) (Math.random() * 100);
 	}
 	
 	private boolean isTerminalState(State state) {
@@ -167,7 +168,7 @@ public abstract class TablutClientFUSCO implements Runnable {
         double resultValue = Double.NEGATIVE_INFINITY;
      
         for (Action Action : getActions(state)) {
-            double value = maxValue(movePawn(state,Action),
+            double value = minValue(movePawn(state,Action),
                     Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY);
             if (value > resultValue) {
                 result = Action;
@@ -194,8 +195,10 @@ public abstract class TablutClientFUSCO implements Runnable {
 							|| state.getPawn(i, j).equalsPawn(State.Pawn.KING.toString())) {
 							buf = new int[2];
 							buf[0] = i;
+							//System.out.println( "riga: " + buf[0] + " ");
 							buf[1] = j;
-							white.add(buf);
+							//System.out.println( "colonna: " + buf[1] + " \n");
+							white.add(buf);							
 						} else if (state.getPawn(i, j).equalsPawn(State.Pawn.BLACK.toString())) {
 							buf = new int[2];
 							buf[0] = i;
@@ -204,7 +207,9 @@ public abstract class TablutClientFUSCO implements Runnable {
 						}
 					}
 				}
+		
 			
+	
 			
 		Iterator<int[]> it;	
 		if(state.getTurn().equalsTurn("W"))	
@@ -215,24 +220,30 @@ public abstract class TablutClientFUSCO implements Runnable {
 		List<Action> actions = new ArrayList<Action>();
 		int colonna=0;
 		int riga=0;
+		
 		Action action = null;
 		
 		
 	
 		String fromString=null;
-		int[] toInt;
-		toInt=new int[2];
 		String toString=null;
+		int ctrl;
 		
 		while(it.hasNext()){
 			buf=it.next();
-			fromString=buf+"";
-		    colonna=buf[1];
+			
+		    colonna=buf[1];  
 		    riga=buf[0];
-		    int ctrl=0;
+		  
+		    System.out.println( "riga: " + buf[0] + " ");
+		    System.out.println( "colonna: " + buf[1] + " \n");
 		    
-		    for (int j = 0; j < state.getBoard().length; j++){
+		    //tengo ferma la riga e muovo la colonna
+		    
+		    for (int j = 0; j < state.getBoard().length; j++){	    
 		    	
+		    	
+		    	ctrl=0;
 		    	
 		    	int columnFrom = colonna;
 				int columnTo = j;
@@ -330,23 +341,44 @@ public abstract class TablutClientFUSCO implements Runnable {
 				
 				//se sono arrivato qui con ctrl=0 ho una mossa valida 
 				if(ctrl==0){
-					toInt[0]=riga;
-					toInt[1]=j;
-					toString=toInt +"";
-					action.setFrom(fromString);
-					action.setTo(toString);
-					action.setTurn(state.getTurn());
+								
+					char colNew=(char)j;
+					char colNewConverted=(char) Character.toLowerCase(colNew + 97);		
+					
+					char colOld=(char)colonna;
+					char colonOldConverted=(char) Character.toLowerCase(colOld + 97);	
+					
+					toString= new StringBuilder().append(colNewConverted).append(riga).toString();	
+					fromString= new StringBuilder().append(colonOldConverted).append(riga).toString();
+				
+					System.out.println("action da: " + fromString + " a " + toString + " \n");
+					
+				
+					
+					try {
+						action = new Action(fromString, toString, state.getTurn());
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					
+					
+					
 					actions.add(action);
+								
 					
 				}
 					
 		    	
 		    }
 		    
-		    ctrl=0;
+		   
+		    
+		  //tengo ferma la colonna e muovo la riga
 		    
 		    for (int i = 0; i < state.getBoard().length; i++){
 		    	
+		    	ctrl=0;
 		    	
 		    	int columnFrom = colonna;
 				int columnTo = colonna;
@@ -444,28 +476,44 @@ public abstract class TablutClientFUSCO implements Runnable {
 				
 				//se sono arrivato qui con ctrl=0 ho una mossa valida 
 				if(ctrl==0){
-					toInt[0]=i;
-					toInt[1]=colonna;
-					toString=toInt +"";
-					action.setFrom(fromString);
-					action.setTo(toString);
-					action.setTurn(state.getTurn());
+					
+					char col=(char)colonna;
+					char colConverted=(char) Character.toLowerCase(col + 97);
+					
+					toString= new StringBuilder().append(colConverted).append(i).toString();	
+					fromString= new StringBuilder().append(colConverted).append(riga).toString();
+					
+					System.out.println("action da: " + fromString + " a " + toString + " \n");
+					
+					try {
+						 action = new Action(fromString, toString, state.getTurn());
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					
 					actions.add(action);
 					
 				}
 					
 		    	
 		    }
+		    
+		    System.out.println("----------------------------------------------------");
 		    	
 			
 		}	
+		
+		System.out.println("FINE GIRO");
 			
 		return actions;
 	}
 	
 	
 	private State movePawn(State state, Action a) {
+		 
 		State.Pawn pawn = state.getPawn(a.getRowFrom(), a.getColumnFrom());
+			
 		State.Pawn[][] newBoard = state.getBoard();
 		
 		//libero il trono o una casella qualunque
