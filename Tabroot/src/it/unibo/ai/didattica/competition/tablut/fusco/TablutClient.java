@@ -137,6 +137,7 @@ public abstract class TablutClient implements Runnable {
 	        double v = Double.POSITIVE_INFINITY;
 	        
 	        for (Action Action : getActions(state)) {
+	        
 	        	v = Math.min(v, maxValue(movePawn(state,Action), alpha, beta));
 	            if (v <= alpha)
 	                return v;
@@ -147,10 +148,12 @@ public abstract class TablutClient implements Runnable {
 
 	
 	private double getHeuristicValueBlack(State state) {
+		System.out.println("VALUTATO");
 		return   (double) (Math.random() * 100);
 	}
 
 	private double getHeuristicValueWhite(State state) {
+		System.out.println("VALUTATO");
 		return (double) (Math.random() * 100);
 	}
 	
@@ -168,7 +171,8 @@ public abstract class TablutClient implements Runnable {
         double resultValue = Double.NEGATIVE_INFINITY;
      
         for (Action Action : getActions(state)) {
-            double value = minValue(movePawn(state,Action),
+        
+            double value = minValue(movePawn(state, Action),
                     Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY);
             if (value > resultValue) {
                 result = Action;
@@ -222,6 +226,12 @@ public abstract class TablutClient implements Runnable {
 		int riga=0;
 		
 		Action action = null;
+		try {
+			action = new Action("z0", "z0", state.getTurn());
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		
 		
 	
@@ -235,8 +245,8 @@ public abstract class TablutClient implements Runnable {
 		    colonna=buf[1];  
 		    riga=buf[0];
 		  
-		    System.out.println( "riga: " + buf[0] + " ");
-		    System.out.println( "colonna: " + buf[1] + " \n");
+		   // System.out.println( "riga: " + buf[0] + " ");
+		    //System.out.println( "colonna: " + buf[1] + " \n");
 		    
 		    //tengo ferma la riga e muovo la colonna
 		    
@@ -348,10 +358,12 @@ public abstract class TablutClient implements Runnable {
 					char colOld=(char)colonna;
 					char colonOldConverted=(char) Character.toLowerCase(colOld + 97);	
 					
-					toString= new StringBuilder().append(colNewConverted).append(riga).toString();	
-					fromString= new StringBuilder().append(colonOldConverted).append(riga).toString();
 				
-					System.out.println("action da: " + fromString + " a " + toString + " \n");
+					
+					toString= new StringBuilder().append(colNewConverted).append(riga + 1).toString();	
+					fromString= new StringBuilder().append(colonOldConverted).append(riga + 1).toString();
+				
+					//System.out.println("action da: " + fromString + " a " + toString + " \n");
 					
 				
 					
@@ -363,8 +375,9 @@ public abstract class TablutClient implements Runnable {
 					}
 					
 					
-					
+					//System.out.println(action.toString() + "\n");
 					actions.add(action);
+					
 								
 					
 				}
@@ -480,10 +493,13 @@ public abstract class TablutClient implements Runnable {
 					char col=(char)colonna;
 					char colConverted=(char) Character.toLowerCase(col + 97);
 					
-					toString= new StringBuilder().append(colConverted).append(i).toString();	
-					fromString= new StringBuilder().append(colConverted).append(riga).toString();
 					
-					System.out.println("action da: " + fromString + " a " + toString + " \n");
+	
+					
+					toString= new StringBuilder().append(colConverted).append(i+1).toString();	
+					fromString= new StringBuilder().append(colConverted).append(riga+1).toString();
+					
+					//System.out.println("action da: " + fromString + " a " + toString + " \n");
 					
 					try {
 						 action = new Action(fromString, toString, state.getTurn());
@@ -492,6 +508,7 @@ public abstract class TablutClient implements Runnable {
 						e.printStackTrace();
 					}
 					
+					//System.out.println(action.toString() + "\n");
 					actions.add(action);
 					
 				}
@@ -499,12 +516,11 @@ public abstract class TablutClient implements Runnable {
 		    	
 		    }
 		    
-		    System.out.println("----------------------------------------------------");
 		    	
 			
 		}	
 		
-		System.out.println("FINE GIRO");
+		//System.out.println("tutte le possibili mosse: " + actions.toString());
 			
 		return actions;
 	}
@@ -513,6 +529,8 @@ public abstract class TablutClient implements Runnable {
 	private State movePawn(State state, Action a) {
 		 
 		State.Pawn pawn = state.getPawn(a.getRowFrom(), a.getColumnFrom());
+		
+	
 			
 		State.Pawn[][] newBoard = state.getBoard();
 		
@@ -540,6 +558,9 @@ public abstract class TablutClient implements Runnable {
 			}
 		}
 		
+		
+	
+		
 		//metto nel nuovo tabellone la pedina mossa
 		newBoard[a.getRowTo()][a.getColumnTo()]=pawn;
 		//aggiorno il tabellone
@@ -554,7 +575,7 @@ public abstract class TablutClient implements Runnable {
 			state.setTurn(State.Turn.WHITE);
 		}
 		
-		
+		//System.out.println(state.toString());
 		return state;
 	}
 	 
