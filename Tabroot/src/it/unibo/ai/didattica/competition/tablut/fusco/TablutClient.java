@@ -7,6 +7,7 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 import java.security.InvalidParameterException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
@@ -16,6 +17,15 @@ import com.google.gson.Gson;
 import it.unibo.ai.didattica.competition.tablut.domain.Action;
 import it.unibo.ai.didattica.competition.tablut.domain.State;
 import it.unibo.ai.didattica.competition.tablut.domain.StateTablut;
+import it.unibo.ai.didattica.competition.tablut.exceptions.BoardException;
+import it.unibo.ai.didattica.competition.tablut.exceptions.CitadelException;
+import it.unibo.ai.didattica.competition.tablut.exceptions.ClimbingCitadelException;
+import it.unibo.ai.didattica.competition.tablut.exceptions.ClimbingException;
+import it.unibo.ai.didattica.competition.tablut.exceptions.DiagonalException;
+import it.unibo.ai.didattica.competition.tablut.exceptions.OccupitedException;
+import it.unibo.ai.didattica.competition.tablut.exceptions.PawnException;
+import it.unibo.ai.didattica.competition.tablut.exceptions.StopException;
+import it.unibo.ai.didattica.competition.tablut.exceptions.ThroneException;
 
 /**
  * Classe astratta di un client per il gioco Tablut
@@ -111,17 +121,21 @@ public abstract class TablutClient implements Runnable {
 	//Alpha-Beta Search
 
 
-	public double maxValue(State state, double alpha, double beta) {
+	public double maxValue(State state, double alpha, double beta, int depth) {
 	       
-	        if (isTerminalState(state))
+		
+		
+	        if (isTerminalState(state)||depth==0)
 	            return getHeuristicValueWhite(state);
 	        
 	        double v = Double.NEGATIVE_INFINITY;
 	        
-	        for (Action Action : getActions(state)) {
-	        	v = Math.max(v, minValue(movePawn(state,Action), alpha, beta));
+	        for (Action Action : getActions(state,state.getTurn().toString())) {
+	        	v = Math.max(v, minValue(movePawn(state,Action), alpha, beta, depth-1));
+	        	
 	            if (v >= beta)
 	                return v;
+	            
 	            alpha = Math.max(alpha, v);
 	        }
 	        return v;
@@ -129,32 +143,40 @@ public abstract class TablutClient implements Runnable {
 	 }
 	 
 
-	public double minValue(State state, double alpha, double beta) {
-	       
-	        if (isTerminalState(state))
+	public double minValue(State state, double alpha, double beta, int depth) {
+		
+			
+		
+	        if (isTerminalState(state)||depth==0)
 	            return getHeuristicValueBlack(state);
+	        
 	        
 	        double v = Double.POSITIVE_INFINITY;
 	        
-	        for (Action Action : getActions(state)) {
-	        
-	        	v = Math.min(v, maxValue(movePawn(state,Action), alpha, beta));
-	            if (v <= alpha)
+	        for (Action Action : getActions(state,state.getTurn().toString())) {
+	        	v = Math.min(v, maxValue(movePawn(state,Action), alpha, beta, depth-1));
+	            
+	        	if (v <= alpha)
 	                return v;
+	          
 	            beta = Math.min(beta, v);
+	            
 	        }
+	        
 	        return v;
 	}
 
 	
 	private double getHeuristicValueBlack(State state) {
-		System.out.println("VALUTATO");
-		return   (double) (Math.random() * 100);
+		double v=(double) (Math.random() * 100);
+		//System.out.println("valutazione= " +v);
+		return v;
 	}
 
 	private double getHeuristicValueWhite(State state) {
-		System.out.println("VALUTATO");
-		return (double) (Math.random() * 100);
+		double v=(double) (Math.random() * 100);
+		//System.out.println("valutazione= " +v);
+		return v;
 	}
 	
 	private boolean isTerminalState(State state) {
@@ -169,23 +191,32 @@ public abstract class TablutClient implements Runnable {
 	public Action makeDecision(State state) { 
         Action result = null;
         double resultValue = Double.NEGATIVE_INFINITY;
+        int maxDepth=15;
      
-        for (Action Action : getActions(state)) {
-        
+       for(int depth = 1; depth <= maxDepth; depth++){
+        for (Action Action : getActions(state,"W")) {
+           	
             double value = minValue(movePawn(state, Action),
-                    Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY);
+                    Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY,depth);
+            
+          
             if (value > resultValue) {
                 result = Action;
                 resultValue = value;
             }
-        }
+            
+           
+         }
+       }
+        
+        
         return result;
     }
 
 	
 	// deve ritornare tutte le possibili Actions per uno Stato  
 	// riutilizzare la checkMove(state,action)
-	private List<Action> getActions(State state) {
+	private List<Action> getActions(State state, String player) {
 		// TODO Auto-generated method stub
 		
 		List<int[]> white = new ArrayList<int[]>(); //tengo traccia della posizione nello stato dei bianchi
@@ -199,9 +230,9 @@ public abstract class TablutClient implements Runnable {
 							|| state.getPawn(i, j).equalsPawn(State.Pawn.KING.toString())) {
 							buf = new int[2];
 							buf[0] = i;
-							//System.out.println( "riga: " + buf[0] + " ");
+							System.out.println( "riga: " + buf[0] + " ");
 							buf[1] = j;
-							//System.out.println( "colonna: " + buf[1] + " \n");
+							System.out.println( "colonna: " + buf[1] + " \n");
 							white.add(buf);							
 						} else if (state.getPawn(i, j).equalsPawn(State.Pawn.BLACK.toString())) {
 							buf = new int[2];
@@ -213,10 +244,29 @@ public abstract class TablutClient implements Runnable {
 				}
 		
 			
+			List<String> citadels = new ArrayList<String>();
+			// this.strangeCitadels = new ArrayList<String>();
+			citadels.add("a4");
+			citadels.add("a5");
+			citadels.add("a6");
+			citadels.add("b5");
+			citadels.add("d1");
+			citadels.add("e1");
+			citadels.add("f1");
+			citadels.add("e2");
+			citadels.add("i4");
+			citadels.add("i5");
+			citadels.add("i6");
+			citadels.add("h5");
+			citadels.add("d9");
+			citadels.add("e9");
+			citadels.add("f9");
+			citadels.add("e8");
+			
 	
 			
 		Iterator<int[]> it;	
-		if(state.getTurn().equalsTurn("W"))	
+		if(player.equals("W"))	
 			it = white.iterator(); 
 		else
 			it = black.iterator(); 
@@ -245,6 +295,7 @@ public abstract class TablutClient implements Runnable {
 		    colonna=buf[1];  
 		    riga=buf[0];
 		  
+		   
 		   // System.out.println( "riga: " + buf[0] + " ");
 		    //System.out.println( "colonna: " + buf[1] + " \n");
 		    
@@ -260,95 +311,121 @@ public abstract class TablutClient implements Runnable {
 				int rowFrom = riga;
 				int rowTo =riga;
 				
-				//controllo se sono fuori dal tabellone
-				if(columnFrom>state.getBoard().length-1 || rowFrom>state.getBoard().length-1 || rowTo>state.getBoard().length-1 || columnTo>state.getBoard().length-1 || columnFrom<0 || rowFrom<0 || rowTo<0 || columnTo<0)
-				{
-					ctrl=1;			
-				}
+				if (columnFrom > state.getBoard().length - 1 || rowFrom > state.getBoard().length - 1
+						|| rowTo > state.getBoard().length - 1 || columnTo > state.getBoard().length - 1 || columnFrom < 0
+						|| rowFrom < 0 || rowTo < 0 || columnTo < 0) 
+					ctrl=1;
 				
-				//controllo che non vada sul trono
-				if(state.getPawn(rowTo, columnTo).equalsPawn(State.Pawn.THRONE.toString()))
-				{
+
+				// controllo che non vada sul trono
+				if (state.getPawn(rowTo, columnTo).equalsPawn(State.Pawn.THRONE.toString())) {
+					ctrl=1;
+				}
+
+				// controllo la casella di arrivo
+				if (!state.getPawn(rowTo, columnTo).equalsPawn(State.Pawn.EMPTY.toString())) {
+					ctrl=1;
+				}
+				if (citadels.contains(state.getBox(rowTo, columnTo))
+						&& !citadels.contains(state.getBox(rowFrom, columnFrom))) {
+					ctrl=1;
+				}
+				if (citadels.contains(state.getBox(rowTo, columnTo))
+						&& citadels.contains(state.getBox(rowFrom, columnFrom))) {
+					if (rowFrom == rowTo) {
+						if (columnFrom - columnTo > 5 || columnFrom - columnTo < -5) {
+							ctrl=1;
+						}
+					} else {
+						if (rowFrom - rowTo > 5 || rowFrom - rowTo < -5) {
+							ctrl=1;
+						}
+					}
+
+				}
+
+				// controllo se cerco di stare fermo
+				if (rowFrom == rowTo && columnFrom == columnTo) {
 					ctrl=1;
 				}
 				
-				//controllo la casella di arrivo
-				if(!state.getPawn(rowTo, columnTo).equalsPawn(State.Pawn.EMPTY.toString()))
-				{
-					ctrl=1;
-				}
-				
-				//controllo se cerco di stare fermo
-				if(rowFrom==rowTo && columnFrom==columnTo)
-				{
-					ctrl=1;
-				}
-				
-				//controllo se sto muovendo una pedina giusta
-				if(state.getTurn().equalsTurn(State.Turn.WHITE.toString()))
-				{
-					if(!state.getPawn(rowFrom, columnFrom).equalsPawn("W") && !state.getPawn(rowFrom, columnFrom).equalsPawn("K"))
-					{
+				// controllo se sto muovendo una pedina giusta
+				if (state.getTurn().equalsTurn(State.Turn.WHITE.toString())) {
+					if (!state.getPawn(rowFrom, columnFrom).equalsPawn("W")
+							&& !state.getPawn(rowFrom, columnFrom).equalsPawn("K")) {
 						ctrl=1;
 					}
 				}
-				if(state.getTurn().equalsTurn(State.Turn.BLACK.toString()))
-				{
-					if(!state.getPawn(rowFrom, columnFrom).equalsPawn("B"))
-					{
+				if (state.getTurn().equalsTurn(State.Turn.BLACK.toString())) {
+					if (!state.getPawn(rowFrom, columnFrom).equalsPawn("B")) {
 						ctrl=1;
 					}
 				}
-				
-				
-				//controllo di non scavalcare pedine
-				if(rowFrom==rowTo)
-				{
-					if(columnFrom>columnTo)
-					{
-						for(int i=columnTo; i<columnFrom; i++)
-						{
-							if(!state.getPawn(rowFrom, i).equalsPawn(State.Pawn.EMPTY.toString()))
-							{
+
+
+				// controllo di non scavalcare pedine
+				if (rowFrom == rowTo) {
+					if (columnFrom > columnTo) {
+						for (int i = columnTo; i < columnFrom; i++) {
+							if (!state.getPawn(rowFrom, i).equalsPawn(State.Pawn.EMPTY.toString())) {
+								if (state.getPawn(rowFrom, i).equalsPawn(State.Pawn.THRONE.toString())) {
+									ctrl=1;
+								} else {
+									ctrl=1;
+								}
+							}
+							if (citadels.contains(state.getBox(rowFrom, i))
+									&& !citadels.contains(state.getBox(rowFrom, columnFrom))) {
+								ctrl=1;
+							}
+						}
+					} else {
+						for (int i = columnFrom + 1; i <= columnTo; i++) {
+							if (!state.getPawn(rowFrom, i).equalsPawn(State.Pawn.EMPTY.toString())) {
+								if (state.getPawn(rowFrom, i).equalsPawn(State.Pawn.THRONE.toString())) {
+									ctrl=1;
+								} else {
+									ctrl=1;
+								}
+							}
+							if (citadels.contains(state.getBox(rowFrom, i))
+									&& !citadels.contains(state.getBox(rowFrom, columnFrom))) {
 								ctrl=1;
 							}
 						}
 					}
-					else
-					{
-						for(int i=columnFrom+1; i<=columnTo; i++)
-						{
-							if(!state.getPawn(rowFrom, i).equalsPawn(State.Pawn.EMPTY.toString()))
-							{
+				} else {
+					if (rowFrom > rowTo) {
+						for (int i = rowTo; i < rowFrom; i++) {
+							if (!state.getPawn(i, columnFrom).equalsPawn(State.Pawn.EMPTY.toString())) {
+								if (state.getPawn(i, columnFrom).equalsPawn(State.Pawn.THRONE.toString())) {
+									ctrl=1;
+								} else {
+									ctrl=1;
+								}
+							}
+							if (citadels.contains(state.getBox(i, columnFrom))
+									&& !citadels.contains(state.getBox(rowFrom, columnFrom))) {
+								ctrl=1;
+							}
+						}
+					} else {
+						for (int i = rowFrom + 1; i <= rowTo; i++) {
+							if (!state.getPawn(i, columnFrom).equalsPawn(State.Pawn.EMPTY.toString())) {
+								if (state.getPawn(i, columnFrom).equalsPawn(State.Pawn.THRONE.toString())) {
+									ctrl=1;
+								} else {
+									ctrl=1;
+								}
+							}
+							if (citadels.contains(state.getBox(i, columnFrom))
+									&& !citadels.contains(state.getBox(rowFrom, columnFrom))) {
 								ctrl=1;
 							}
 						}
 					}
 				}
-				else
-				{
-					if(rowFrom>rowTo)
-					{
-						for(int i=rowTo; i<rowFrom; i++)
-						{
-							if(!state.getPawn(i, columnFrom).equalsPawn(State.Pawn.EMPTY.toString()) && !state.getPawn(i, columnFrom).equalsPawn(State.Pawn.THRONE.toString()))
-							{
-								ctrl=1;
-							}
-						}
-					}
-					else
-					{
-						for(int i=rowFrom+1; i<=rowTo; i++)
-						{
-							if(!state.getPawn(i, columnFrom).equalsPawn(State.Pawn.EMPTY.toString()) && !state.getPawn(i, columnFrom).equalsPawn(State.Pawn.THRONE.toString()))
-							{
-								ctrl=1;
-							}
-						}
-					}
-				}
-				
+
 				//se sono arrivato qui con ctrl=0 ho una mossa valida 
 				if(ctrl==0){
 								
@@ -393,94 +470,122 @@ public abstract class TablutClient implements Runnable {
 		    	
 		    	ctrl=0;
 		    	
-		    	int columnFrom = colonna;
-				int columnTo = colonna;
-				int rowFrom = riga;
-				int rowTo =i;
+		    	int columnFrom1 = colonna;
+				int columnTo1 = colonna;
+				int rowFrom1 = riga;
+				int rowTo1 =i;
 				
-				//controllo se sono fuori dal tabellone
-				if(columnFrom>state.getBoard().length-1 || rowFrom>state.getBoard().length-1 || rowTo>state.getBoard().length-1 || columnTo>state.getBoard().length-1 || columnFrom<0 || rowFrom<0 || rowTo<0 || columnTo<0)
-				{
-					ctrl=1;			
-				}
+				// controllo se sono fuori dal tabellone
+				if (columnFrom1 > state.getBoard().length - 1 || rowFrom1 > state.getBoard().length - 1
+						|| rowTo1 > state.getBoard().length - 1 || columnTo1 > state.getBoard().length - 1 || columnFrom1 < 0
+						|| rowFrom1 < 0 || rowTo1 < 0 || columnTo1 < 0) 
+					ctrl=1;
 				
-				//controllo che non vada sul trono
-				if(state.getPawn(rowTo, columnTo).equalsPawn(State.Pawn.THRONE.toString()))
-				{
+
+				// controllo che non vada sul trono
+				if (state.getPawn(rowTo1, columnTo1).equalsPawn(State.Pawn.THRONE.toString())) {
 					ctrl=1;
 				}
-				
-				//controllo la casella di arrivo
-				if(!state.getPawn(rowTo, columnTo).equalsPawn(State.Pawn.EMPTY.toString()))
-				{
+
+				// controllo la casella di arrivo
+				if (!state.getPawn(rowTo1, columnTo1).equalsPawn(State.Pawn.EMPTY.toString())) {
 					ctrl=1;
 				}
-				
-				//controllo se cerco di stare fermo
-				if(rowFrom==rowTo && columnFrom==columnTo)
-				{
+				if (citadels.contains(state.getBox(rowTo1, columnTo1))
+						&& !citadels.contains(state.getBox(rowFrom1, columnFrom1))) {
 					ctrl=1;
 				}
+				if (citadels.contains(state.getBox(rowTo1, columnTo1))
+						&& citadels.contains(state.getBox(rowFrom1, columnFrom1))) {
+					if (rowFrom1 == rowTo1) {
+						if (columnFrom1 - columnTo1 > 5 || columnFrom1 - columnTo1 < -5) {
+							ctrl=1;
+						}
+					} else {
+						if (rowFrom1 - rowTo1 > 5 || rowFrom1 - rowTo1 < -5) {
+							ctrl=1;
+						}
+					}
+
+				}
+
+				// controllo se cerco di stare fermo
+				if (rowFrom1 == rowTo1 && columnFrom1 == columnTo1) {
+					ctrl=1;
+				}
+
 				
-				//controllo se sto muovendo una pedina giusta
-				if(state.getTurn().equalsTurn(State.Turn.WHITE.toString()))
-				{
-					if(!state.getPawn(rowFrom, columnFrom).equalsPawn("W") && !state.getPawn(rowFrom, columnFrom).equalsPawn("K"))
-					{
+				// controllo se sto muovendo una pedina giusta
+				if (state.getTurn().equalsTurn(State.Turn.WHITE.toString())) {
+					if (!state.getPawn(rowFrom1, columnFrom1).equalsPawn("W")
+							&& !state.getPawn(rowFrom1, columnFrom1).equalsPawn("K")) {
 						ctrl=1;
 					}
 				}
-				if(state.getTurn().equalsTurn(State.Turn.BLACK.toString()))
-				{
-					if(!state.getPawn(rowFrom, columnFrom).equalsPawn("B"))
-					{
+				if (state.getTurn().equalsTurn(State.Turn.BLACK.toString())) {
+					if (!state.getPawn(rowFrom1, columnFrom1).equalsPawn("B")) {
 						ctrl=1;
 					}
 				}
-				
-				
-				//controllo di non scavalcare pedine
-				if(rowFrom==rowTo)
-				{
-					if(columnFrom>columnTo)
-					{
-						for(int i1=columnTo; i1<columnFrom; i1++)
-						{
-							if(!state.getPawn(rowFrom, i1).equalsPawn(State.Pawn.EMPTY.toString()))
-							{
+
+
+				// controllo di non scavalcare pedine
+				if (rowFrom1 == rowTo1) {
+					if (columnFrom1 > columnTo1) {
+						for (int i1 = columnTo1; i1 < columnFrom1; i1++) {
+							if (!state.getPawn(rowFrom1, i1).equalsPawn(State.Pawn.EMPTY.toString())) {
+								if (state.getPawn(rowFrom1, i1).equalsPawn(State.Pawn.THRONE.toString())) {
+									ctrl=1;
+								} else {
+									ctrl=1;
+								}
+							}
+							if (citadels.contains(state.getBox(rowFrom1, i1))
+									&& !citadels.contains(state.getBox(rowFrom1, columnFrom1))) {
+								ctrl=1;
+							}
+						}
+					} else {
+						for (int i1 = columnFrom1 + 1; i1 <= columnTo1; i1++) {
+							if (!state.getPawn(rowFrom1, i1).equalsPawn(State.Pawn.EMPTY.toString())) {
+								if (state.getPawn(rowFrom1, i1).equalsPawn(State.Pawn.THRONE.toString())) {
+									ctrl=1;
+								} else {
+									ctrl=1;
+								}
+							}
+							if (citadels.contains(state.getBox(rowFrom1, i1))
+									&& !citadels.contains(state.getBox(rowFrom1, columnFrom1))) {
 								ctrl=1;
 							}
 						}
 					}
-					else
-					{
-						for(int i1=columnFrom+1; i1<=columnTo; i1++)
-						{
-							if(!state.getPawn(rowFrom, i1).equalsPawn(State.Pawn.EMPTY.toString()))
-							{
+				} else {
+					if (rowFrom1 > rowTo1) {
+						for (int i1 = rowTo1; i1 < rowFrom1; i1++) {
+							if (!state.getPawn(i1, columnFrom1).equalsPawn(State.Pawn.EMPTY.toString())) {
+								if (state.getPawn(i1, columnFrom1).equalsPawn(State.Pawn.THRONE.toString())) {
+									ctrl=1;
+								} else {
+									ctrl=1;
+								}
+							}
+							if (citadels.contains(state.getBox(i1, columnFrom1))
+									&& !citadels.contains(state.getBox(rowFrom1, columnFrom1))) {
 								ctrl=1;
 							}
 						}
-					}
-				}
-				else
-				{
-					if(rowFrom>rowTo)
-					{
-						for(int i1=rowTo; i1<rowFrom; i1++)
-						{
-							if(!state.getPawn(i1, columnFrom).equalsPawn(State.Pawn.EMPTY.toString()) && !state.getPawn(i1, columnFrom).equalsPawn(State.Pawn.THRONE.toString()))
-							{
-								ctrl=1;
+					} else {
+						for (int i1 = rowFrom1 + 1; i1 <= rowTo1; i1++) {
+							if (!state.getPawn(i1, columnFrom1).equalsPawn(State.Pawn.EMPTY.toString())) {
+								if (state.getPawn(i1, columnFrom1).equalsPawn(State.Pawn.THRONE.toString())) {
+									ctrl=1;
+								} else {
+									ctrl=1;
+								}
 							}
-						}
-					}
-					else
-					{
-						for(int i1=rowFrom+1; i1<=rowTo; i1++)
-						{
-							if(!state.getPawn(i1, columnFrom).equalsPawn(State.Pawn.EMPTY.toString()) && !state.getPawn(i1, columnFrom).equalsPawn(State.Pawn.THRONE.toString()))
-							{
+							if (citadels.contains(state.getBox(i1, columnFrom1))
+									&& !citadels.contains(state.getBox(rowFrom1, columnFrom1))) {
 								ctrl=1;
 							}
 						}
@@ -518,7 +623,8 @@ public abstract class TablutClient implements Runnable {
 		    
 		    	
 			
-		}	
+		 }
+		
 		
 		//System.out.println("tutte le possibili mosse: " + actions.toString());
 			

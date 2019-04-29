@@ -3,6 +3,8 @@ package it.unibo.ai.didattica.competition.tablut.fusco;
 import java.io.IOException;
 import java.net.UnknownHostException;
 
+
+
 import it.unibo.ai.didattica.competition.tablut.domain.*;
 import it.unibo.ai.didattica.competition.tablut.domain.State.Turn;
 
@@ -11,25 +13,25 @@ import it.unibo.ai.didattica.competition.tablut.domain.State.Turn;
  * @author A. Piretti, Andrea Galassi
  *
  */
-public class TablutBianco extends TablutClient {
+public class TablutBiancoPROVA extends TablutClient {
 
 	private int game;
 	
 	
-	public TablutBianco(String player, String name, int gameChosen) throws UnknownHostException, IOException {
+	public TablutBiancoPROVA(String player, String name, int gameChosen) throws UnknownHostException, IOException {
 		super(player, name);
 		game = gameChosen;
 	}
 
-	public TablutBianco(String player) throws UnknownHostException, IOException {
+	public TablutBiancoPROVA(String player) throws UnknownHostException, IOException {
 		this(player, "random", 4);
 	}
 
-	public TablutBianco(String player, String name) throws UnknownHostException, IOException {
+	public TablutBiancoPROVA(String player, String name) throws UnknownHostException, IOException {
 		this(player, name, 4);
 	}
 
-	public TablutBianco(String player, int gameChosen) throws UnknownHostException, IOException {
+	public TablutBiancoPROVA(String player, int gameChosen) throws UnknownHostException, IOException {
 		this(player, "random", gameChosen);
 	}
 	
@@ -57,13 +59,13 @@ public class TablutBianco extends TablutClient {
 		}
 		System.out.println("Selected client: " + args[0]);
 
-		TablutBianco client = new TablutBianco(role, name, gametype);
+		TablutBiancoPROVA client = new TablutBiancoPROVA(role, name, gametype);
 		client.run();
 	}
 
 	@Override
 	public void run() {
-
+		
 		try {
 			this.declareName();
 		} catch (Exception e) {
@@ -72,26 +74,13 @@ public class TablutBianco extends TablutClient {
 
 		State state;
 
-		switch (this.game) {
-		case 1:
-			state = new StateTablut();
-			break;
-		case 2:
-			state = new StateTablut();
-			break;
-		case 3:
-			state = new StateBrandub();
-			break;
-		case 4:
+			Game rules = null;
+		
 			state = new StateTablut();
 			state.setTurn(State.Turn.WHITE);
-			System.out.println("Ashton Tablut game");
-			break;
-		default:
-			System.out.println("Error in game selection");
-			System.exit(4);
-		}
-
+			rules = new GameTablut();
+			System.out.println("Tablut game");
+			
 	
 
 		Action a;
@@ -115,7 +104,9 @@ public class TablutBianco extends TablutClient {
 			} catch (InterruptedException e) {
 			}
 
-			if (this.getPlayer().equals(Turn.WHITE)) {
+			
+				
+				if (this.getCurrentState().getTurn().equals(StateTablut.Turn.WHITE)) {
 						
 				// è il mio turno
 				
@@ -123,7 +114,7 @@ public class TablutBianco extends TablutClient {
 				
 				a=makeDecision(state);
 				
-			
+				
 				
 				System.out.println("Mossa scelta: " + a.toString());
 				
