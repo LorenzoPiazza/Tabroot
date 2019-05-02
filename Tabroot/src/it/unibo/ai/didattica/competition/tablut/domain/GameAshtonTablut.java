@@ -41,6 +41,12 @@ public class GameAshtonTablut implements Game {
 	private FileHandler fh;
 	private Logger loggGame;
 	private List<String> citadels;
+	
+	//Aggiunto il metodo getCitadels per renderle accessibili dall'esterno
+	public List<String> getCitadels() {
+		return citadels;
+	}
+
 	// private List<String> strangeCitadels;
 	private List<State> drawConditions;
 

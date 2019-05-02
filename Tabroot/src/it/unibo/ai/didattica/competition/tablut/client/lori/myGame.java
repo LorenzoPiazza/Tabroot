@@ -20,7 +20,7 @@ import it.unibo.ai.didattica.competition.tablut.domain.State.Turn;
  */
 public class myGame extends GameAshtonTablut implements Game<State, Action, Turn> {
 
-	private List<String> citadels;
+	//private List<String> citadels;
 	
 	//Costruttori che semplicemente richiamano i costruttori della classe GameAshtonTablut e inizializzano le citadels (servono alla myCheckMove() )
 	public myGame(int repeated_moves_allowed, int cache_size, String logs_folder, String whiteName, String blackName) {
@@ -32,7 +32,7 @@ public class myGame extends GameAshtonTablut implements Game<State, Action, Turn
 		super(state, repeated_moves_allowed, cache_size, logs_folder, whiteName, blackName);
 		
 		//E' giusto inizializzarle qui? Erano private in GameAshtonTablut
-		citadels = new ArrayList<String>();
+		/*citadels = new ArrayList<String>();
 		citadels.add("a4");
 		citadels.add("a5");
 		citadels.add("a6");
@@ -48,7 +48,7 @@ public class myGame extends GameAshtonTablut implements Game<State, Action, Turn
 		citadels.add("d9");
 		citadels.add("e9");
 		citadels.add("f9");
-		citadels.add("e8");
+		citadels.add("e8");*/
 	}
 	
 	
@@ -75,12 +75,12 @@ public class myGame extends GameAshtonTablut implements Game<State, Action, Turn
 		if (!state.getPawn(rowTo, columnTo).equalsPawn(State.Pawn.EMPTY.toString())) {
 			ctrl=1;
 		}
-		if (citadels.contains(state.getBox(rowTo, columnTo))
-				&& !citadels.contains(state.getBox(rowFrom, columnFrom))) {
+		if (this.getCitadels().contains(state.getBox(rowTo, columnTo))
+				&& !this.getCitadels().contains(state.getBox(rowFrom, columnFrom))) {
 			ctrl=1;
 		}
-		if (citadels.contains(state.getBox(rowTo, columnTo))
-				&& citadels.contains(state.getBox(rowFrom, columnFrom))) {
+		if (this.getCitadels().contains(state.getBox(rowTo, columnTo))
+				&& this.getCitadels().contains(state.getBox(rowFrom, columnFrom))) {
 			if (rowFrom == rowTo) {
 				if (columnFrom - columnTo > 5 || columnFrom - columnTo < -5) {
 					ctrl=1;
@@ -123,8 +123,8 @@ public class myGame extends GameAshtonTablut implements Game<State, Action, Turn
 							ctrl=1;
 						}
 					}
-					if (citadels.contains(state.getBox(rowFrom, i))
-							&& !citadels.contains(state.getBox(rowFrom, columnFrom))) {
+					if (this.getCitadels().contains(state.getBox(rowFrom, i))
+							&& !this.getCitadels().contains(state.getBox(rowFrom, columnFrom))) {
 						ctrl=1;
 					}
 				}
@@ -137,8 +137,8 @@ public class myGame extends GameAshtonTablut implements Game<State, Action, Turn
 							ctrl=1;
 						}
 					}
-					if (citadels.contains(state.getBox(rowFrom, i))
-							&& !citadels.contains(state.getBox(rowFrom, columnFrom))) {
+					if (this.getCitadels().contains(state.getBox(rowFrom, i))
+							&& !this.getCitadels().contains(state.getBox(rowFrom, columnFrom))) {
 						ctrl=1;
 					}
 				}
@@ -153,8 +153,8 @@ public class myGame extends GameAshtonTablut implements Game<State, Action, Turn
 							ctrl=1;
 						}
 					}
-					if (citadels.contains(state.getBox(i, columnFrom))
-							&& !citadels.contains(state.getBox(rowFrom, columnFrom))) {
+					if (this.getCitadels().contains(state.getBox(i, columnFrom))
+							&& !this.getCitadels().contains(state.getBox(rowFrom, columnFrom))) {
 						ctrl=1;
 					}
 				}
@@ -167,8 +167,8 @@ public class myGame extends GameAshtonTablut implements Game<State, Action, Turn
 							ctrl=1;
 						}
 					}
-					if (citadels.contains(state.getBox(i, columnFrom))
-							&& !citadels.contains(state.getBox(rowFrom, columnFrom))) {
+					if (this.getCitadels().contains(state.getBox(i, columnFrom))
+							&& !this.getCitadels().contains(state.getBox(rowFrom, columnFrom))) {
 						ctrl=1;
 					}
 				}
