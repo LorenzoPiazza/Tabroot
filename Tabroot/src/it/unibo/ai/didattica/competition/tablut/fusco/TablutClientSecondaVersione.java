@@ -14,7 +14,6 @@ import java.util.List;
 
 import com.google.gson.Gson;
 
-import aima.core.search.adversarial.IterativeDeepeningAlphaBetaSearch;
 import it.unibo.ai.didattica.competition.tablut.domain.Action;
 import it.unibo.ai.didattica.competition.tablut.domain.State;
 import it.unibo.ai.didattica.competition.tablut.domain.StateTablut;
@@ -34,7 +33,7 @@ import it.unibo.ai.didattica.competition.tablut.exceptions.ThroneException;
  * @author Andrea Piretti
  *
  */
-public abstract class TablutClient implements Runnable {
+public abstract class TablutClientSecondaVersione implements Runnable {
 
 	private State.Turn player;
 	private String name;
@@ -70,7 +69,7 @@ public abstract class TablutClient implements Runnable {
 	 * @throws UnknownHostException
 	 * @throws IOException
 	 */
-	public TablutClient(String player, String name) throws UnknownHostException, IOException {
+	public TablutClientSecondaVersione(String player, String name) throws UnknownHostException, IOException {
 		int port = 0;
 		this.gson = new Gson();
 		if (player.toLowerCase().equals("white")) {
@@ -136,67 +135,58 @@ public abstract class TablutClient implements Runnable {
 	}
 	
 
-	
-	
 	//Alpha-Beta Search
+	
+	public double minimax(State state,double depth, double alpha, double beta, boolean maximixingPlayer){
+
+		if (depth==0 || isTerminalState(state))
+			return getHeuristicValue(state);
+
+		if  (maximixingPlayer){
+			double maxEval= Double.NEGATIVE_INFINITY;
+
+			for (Action Action : getActions(state,state.getTurn().toString())) {
+				double eval = minimax(movePawn(state,Action), depth-1, alpha,beta,false);
+				maxEval=Math.max(maxEval, eval);
+				alpha=Math.max(alpha, eval);
+				if (beta<=alpha)
+					break;
+			}
+
+			return maxEval;		
 
 
-	public double maxValue(State state, double alpha, double beta, int depth) {
+		}else{
 
+			double minEval=Double.POSITIVE_INFINITY;
 
-		if (isTerminalState(state)||depth==0)
-			return getHeuristicValueWhite(state);
+			for (Action Action : getActions(state,state.getTurn().toString())) {
+				double eval = minimax(movePawn(state,Action), depth-1, alpha,beta,true);
+				minEval=Math.min(minEval, eval);
+				beta=Math.min(beta,eval);
+				if (beta<=alpha)
+					break;
+			}
 
-		double v = Double.NEGATIVE_INFINITY;
+			return minEval;
 
-		for (Action Action : getActions(state,state.getTurn().toString())) {
-			v = Math.max(v, minValue(movePawn(state,Action), alpha, beta, depth-1));
-
-			if (v >= beta)
-				return v;
-
-			alpha = Math.max(alpha, v);
-		}
-		return v;
-
-	}
-
-
-	public double minValue(State state, double alpha, double beta, int depth) {
-
-
-
-		if (isTerminalState(state)||depth==0)
-			return getHeuristicValueBlack(state);
-
-
-		double v = Double.POSITIVE_INFINITY;
-
-		for (Action Action : getActions(state,state.getTurn().toString())) {
-			v = Math.min(v, maxValue(movePawn(state,Action), alpha, beta, depth-1));
-
-			if (v <= alpha)
-				return v;
-
-			beta = Math.min(beta, v);
 
 		}
 
-		return v;
+
 	}
+	
 
-
-	private double getHeuristicValueBlack(State state) {
+	//funzione euristica random
+	
+	private double getHeuristicValue(State state) {
 		double v=(double) (Math.random() * 100);
 		//System.out.println("valutazione= " +v);
 		return v;
 	}
-
-	private double getHeuristicValueWhite(State state) {
-		double v=(double) (Math.random() * 100);
-		//System.out.println("valutazione= " +v);
-		return v;
-	}
+	
+	
+	//controllo che sia lo stato terminale
 
 	private boolean isTerminalState(State state) {
 		if(state.getTurn().equalsTurn("WW")|| state.getTurn().equalsTurn("BW") || state.getTurn().equalsTurn("D"))
@@ -205,33 +195,30 @@ public abstract class TablutClient implements Runnable {
 
 	}
 
-
+	
 	//scelgo la prossima mossa
+
 	public Action makeDecision(State state) { 
 		Action result = null;
 		double resultValue = Double.NEGATIVE_INFINITY;
-		int maxDepth=1;
 
-			for (Action Action : getActions(state,"W")) {
-				System.out.println("azione del bianco valida: " + Action.toString());
-				double value = minValue(movePawn(state, Action),
-						Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY,maxDepth);
+		for (Action Action : getActions(state,"W")) {
+			System.out.println("azione del bianco valida: " + Action.toString());
+			double value = minimax(movePawn(state,Action),2,Double.NEGATIVE_INFINITY,Double.POSITIVE_INFINITY, true);
 
-
-				if (value > resultValue) {
-					result = Action;
-					resultValue = value;
-				}
-
-
+			if (value > resultValue) {
+				result = Action;
+				resultValue = value;
 			}
-		
+
+		}
+
 		return result;
 	}
 
 	
-	// deve ritornare tutte le possibili Actions per uno Stato  
-	// riutilizzare la checkMove(state,action)
+	// ritorna tutte le possibili Actions per uno Stato  
+
 	private List<Action> getActions(State state, String player) {
 		// TODO Auto-generated method stub
 
@@ -387,9 +374,14 @@ public abstract class TablutClient implements Runnable {
 
 		//System.out.println("tutte le possibili mosse: " + actions.toString());
 
+		white.clear();
+		black.clear();
 		return actions;
 	}
-
+	
+	
+	
+	//funzione di aggiornamento di uno stato data una azione
 	
 	private State movePawn(State state, Action a) {
 
@@ -443,9 +435,10 @@ public abstract class TablutClient implements Runnable {
 		//System.out.println(state.toString());
 		return state;
 	}
+
 	
 	
-	
+	//controllo che la mossa sia corretta
 	
 	public int checkMove(int columnFrom, int columnTo, int rowFrom, int rowTo, int ctrl, State state){
 
