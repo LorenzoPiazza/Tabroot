@@ -1009,7 +1009,8 @@ public class GameAshtonTablut implements Game {
 		return state;
 	}
 
-	private State movePawn(State state, Action a) {
+	//L.Piazza: Metodo movePawn() reso protected per renderlo utilizzabile dalle sottoclassi
+	protected State movePawn(State state, Action a) {
 		State.Pawn pawn = state.getPawn(a.getRowFrom(), a.getColumnFrom());
 		State.Pawn[][] newBoard = state.getBoard();
 		// State newState = new State();

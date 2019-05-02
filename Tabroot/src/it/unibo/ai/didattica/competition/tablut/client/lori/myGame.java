@@ -19,10 +19,8 @@ import it.unibo.ai.didattica.competition.tablut.domain.State.Turn;
  *
  */
 public class myGame extends GameAshtonTablut implements Game<State, Action, Turn> {
-
-	//private List<String> citadels;
 	
-	//Costruttori che semplicemente richiamano i costruttori della classe GameAshtonTablut e inizializzano le citadels (servono alla myCheckMove() )
+	//Costruttori che semplicemente richiamano i costruttori della classe GameAshtonTablut
 	public myGame(int repeated_moves_allowed, int cache_size, String logs_folder, String whiteName, String blackName) {
 		super(repeated_moves_allowed, cache_size, logs_folder, whiteName, blackName);
 	}
@@ -30,25 +28,6 @@ public class myGame extends GameAshtonTablut implements Game<State, Action, Turn
 	public myGame(State state, int repeated_moves_allowed, int cache_size, String logs_folder,
 			String whiteName, String blackName) {
 		super(state, repeated_moves_allowed, cache_size, logs_folder, whiteName, blackName);
-		
-		//E' giusto inizializzarle qui? Erano private in GameAshtonTablut
-		/*citadels = new ArrayList<String>();
-		citadels.add("a4");
-		citadels.add("a5");
-		citadels.add("a6");
-		citadels.add("b5");
-		citadels.add("d1");
-		citadels.add("e1");
-		citadels.add("f1");
-		citadels.add("e2");
-		citadels.add("i4");
-		citadels.add("i5");
-		citadels.add("i6");
-		citadels.add("h5");
-		citadels.add("d9");
-		citadels.add("e9");
-		citadels.add("f9");
-		citadels.add("e8");*/
 	}
 	
 	
@@ -182,10 +161,11 @@ public class myGame extends GameAshtonTablut implements Game<State, Action, Turn
 	
 	/*	
 	 * getActions(State state):
-	 * Restituisce tutte le mosse possibili del giocatore a cui tocca muovere.
+	 * Restituisce una lista di tutte le azioni possibili del giocatore a cui tocca muovere.
 	 * Capisce a chi tocca muovere controllando il turno insito nello stato che gli viene passato).
+	 * Se il turno dello stato passato è WHITEWIN, BALCKWIN o DRAW restituisce la lista di azioni vuota.
 	 * 
-	 * Codice by A.Fuschino
+	 * Codice by A.Fuschino (alcune modifiche by L.Piazza)
 	 */
 	
 	@Override
@@ -215,17 +195,22 @@ public class myGame extends GameAshtonTablut implements Game<State, Action, Turn
 			}
 		}
 		
-		Iterator<int[]> it;	
-		
-		if (state.getTurn().equals(Turn.WHITE)) {	//Cerco tutte le mosse possibili per il bianco
-			it = white.iterator();
-		} else {
-			if(state.getTurn().equals(Turn.BLACK)) { //Cerco tutte le mosse possibili per il nero
-				it = black.iterator(); 
-			}
-		}	
-
 		List<Action> actions = new ArrayList<Action>();
+		Iterator<int[]> it=null;
+		
+		switch(state.getTurn()) {
+			case WHITE:
+				it = white.iterator();	//mi preparo per cercare tutte le mosse possibili per il bianco
+				break;
+			case BLACK:
+				it = black.iterator();	//mi preparo per cercare tutte le mosse possibili per il nero
+				break;
+			default:		
+				return actions;			//Nel caso in cui il turno sia BLACKWIN, WHITEWIN o DRAW restituisco la lista di azioni vuote (la partita non può proseguire dallo stato corrente)
+		}
+
+			
+		//Arrivati qui it è impossibile che l'Iterator it sia ancora null
 		int colonna=0;
 		int riga=0;
 
@@ -316,7 +301,6 @@ public class myGame extends GameAshtonTablut implements Game<State, Action, Turn
 
 		}
 		//System.out.println("tutte le possibili mosse: " + actions.toString());
-
 		return actions;
 	}
 
@@ -340,22 +324,21 @@ public class myGame extends GameAshtonTablut implements Game<State, Action, Turn
 
 	@Override
 	public State getResult(State state, Action a) {
-		// TODO Auto-generated method stub
 		return super.movePawn(state, a);
 	}
 
-	// TODO
+	//Codice by A.Fuschino
 	@Override
-	public boolean isTerminal(State arg0) {
-		
+	public boolean isTerminal(State state) {
+		if(state.getTurn().equalsTurn("WW")|| state.getTurn().equalsTurn("BW") || state.getTurn().equalsTurn("D"))
+			return true;
 		return false;
 	}
 
-	// TODO 
+	// TODO: è la funzione euristica
 	@Override
 	public double getUtility(State arg0, Turn arg1) {
-		
-		return 0;
+		return Math.random();
 	}
 
 }
