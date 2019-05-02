@@ -6,8 +6,6 @@ import java.net.UnknownHostException;
 
 
 import it.unibo.ai.didattica.competition.tablut.domain.*;
-import it.unibo.ai.didattica.competition.tablut.domain.State.Turn;
-
 /**
  * 
  * @author A. Piretti, Andrea Galassi

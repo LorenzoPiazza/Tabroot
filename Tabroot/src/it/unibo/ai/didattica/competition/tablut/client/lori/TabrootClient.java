@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import aima.core.search.adversarial.IterativeDeepeningAlphaBetaSearch;
+import aima.core.search.adversarial.MinimaxSearch;
 import it.unibo.ai.didattica.competition.tablut.domain.*;
 import it.unibo.ai.didattica.competition.tablut.domain.State.Turn;
 
@@ -63,6 +65,7 @@ public class TabrootClient extends TablutClient {
 	@Override
 	public void run() {
 
+
 		try {
 			this.declareName();
 		} catch (Exception e) {
@@ -72,6 +75,8 @@ public class TabrootClient extends TablutClient {
 		State state;
 
 		Game rules = null;
+		MyGame myGame = null; 
+		
 		switch (this.game) {
 		case 1:
 			state = new StateTablut();
@@ -89,13 +94,21 @@ public class TabrootClient extends TablutClient {
 			state = new StateTablut();
 			state.setTurn(State.Turn.WHITE);
 			rules = new GameAshtonTablut(99, 0, "garbage", "fake", "fake");
+			//Creo l'oggetto MyGame che servirà alla classe di ricerca
+			myGame = new MyGame(state, (GameAshtonTablut) rules, "fake", "fake");
 			System.out.println("Ashton Tablut game");
 			break;
 		default:
 			System.out.println("Error in game selection");
 			System.exit(4);
 		}
-
+		
+		//Creo l'oggetto IterativeDeepeningAlphaBetaSearch che realizzerà la ricerca della mossa nello spazio degli stati
+		IterativeDeepeningAlphaBetaSearch<State, Action, Turn> itDeepAlgorithm = IterativeDeepeningAlphaBetaSearch.createFor(myGame, Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, 10);
+		
+		//Eventuale altro algoritmo
+		//MinimaxSearch<State, Action, Turn> miniMaxAlgorithm = MinimaxSearch.createFor(myGame);
+		
 		List<int[]> pawns = new ArrayList<int[]>();
 		List<int[]> empty = new ArrayList<int[]>();
 
@@ -116,10 +129,11 @@ public class TabrootClient extends TablutClient {
 				Thread.sleep(1000);
 			} catch (InterruptedException e) {
 			}
-
+			
 			if (this.getPlayer().equals(Turn.WHITE)) {
-				// è il mio turno
+				//sono il giocatore bianco
 				if (this.getCurrentState().getTurn().equals(StateTablut.Turn.WHITE)) {
+					// ed è il turno del bianco (tocca a me giocare)
 					int[] buf;
 					for (int i = 0; i < state.getBoard().length; i++) {
 						for (int j = 0; j < state.getBoard().length; j++) {
@@ -208,9 +222,9 @@ public class TabrootClient extends TablutClient {
 				}
 
 			} else {
-
-				// è il mio turno
-				if (this.getCurrentState().getTurn().equals(StateTablut.Turn.BLACK)) {
+				// sono il giocatore nero
+				if (this.getCurrentState().getTurn().equals(StateTablut.Turn.BLACK)) { 
+					// ed è il turno del nero (tocca a me giocare)
 					int[] buf;
 					for (int i = 0; i < state.getBoard().length; i++) {
 						for (int j = 0; j < state.getBoard().length; j++) {
@@ -238,7 +252,9 @@ public class TabrootClient extends TablutClient {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					}
-					;
+					
+					//Selezione azione RANDOM
+					/*
 					while (!found) {
 						selected = pawns.get(new Random().nextInt(pawns.size() - 1));
 						String from = this.getCurrentState().getBox(selected[0], selected[1]);
@@ -261,7 +277,10 @@ public class TabrootClient extends TablutClient {
 
 						}
 
-					}
+					}*/
+					
+					//Selezione azione con ALGORITMO
+					a = itDeepAlgorithm.makeDecision(state);
 
 					System.out.println("Mossa scelta: " + a.toString());
 					try {

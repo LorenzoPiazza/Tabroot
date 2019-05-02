@@ -18,18 +18,22 @@ import it.unibo.ai.didattica.competition.tablut.domain.State.Turn;
  * @author L.Piazza
  *
  */
-public class myGame extends GameAshtonTablut implements Game<State, Action, Turn> {
+public class MyGame extends GameAshtonTablut implements Game<State, Action, Turn> {
 	
 	//Costruttori che semplicemente richiamano i costruttori della classe GameAshtonTablut
-	public myGame(int repeated_moves_allowed, int cache_size, String logs_folder, String whiteName, String blackName) {
+	public MyGame(int repeated_moves_allowed, int cache_size, String logs_folder, String whiteName, String blackName) {
 		super(repeated_moves_allowed, cache_size, logs_folder, whiteName, blackName);
 	}
 	
-	public myGame(State state, int repeated_moves_allowed, int cache_size, String logs_folder,
+	public MyGame(State state, int repeated_moves_allowed, int cache_size, String logs_folder,
 			String whiteName, String blackName) {
 		super(state, repeated_moves_allowed, cache_size, logs_folder, whiteName, blackName);
 	}
 	
+	//Costruttore in cui passo uno stato, un GameAshton Tablut, il whiteName e il blackName
+	public MyGame(State state, GameAshtonTablut game, String whiteName, String blackName) {
+		super(state, game.getRepeated_moves_allowed(), game.getCache_size(), game.getGameLog().getName(), whiteName, blackName);
+	}
 	
 	/* 
 	 * Questa funzione a differenza della checkMove già fornita salta alcuni controlli inutili per come vengono fornite le mosse da valutare (es: impossibile muovere in diagonale quindi non controllo).
