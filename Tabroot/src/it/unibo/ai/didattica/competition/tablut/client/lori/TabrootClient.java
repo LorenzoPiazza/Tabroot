@@ -336,7 +336,10 @@ public class TabrootClient extends TablutClient {
 	}
 	
 	private void printStatistics (AdversarialSearch<State, Action> algorithm) {
-		Metrics m = algorithm.getMetrics();
-		System.out.println(	"[nodesExpanded]:"+m.get("nodesExpanded")+"\n"+"[maxDepth]:"+m.get("maxDepth"));
+		Metrics metrics = algorithm.getMetrics();
+		for (String key : metrics.keySet()) {
+			String value = metrics.get(key);
+			System.out.println("["+key+"]:"+value);
+		}
 	}
 }
