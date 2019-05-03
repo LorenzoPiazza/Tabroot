@@ -1,0 +1,14 @@
+Black Heuristic
+
+***
+1)Possibilità di mangiare o di essere mangiato.
+Possibile implementazione: Conteggio delle pedine mie e di quelle dell'avversario.
+
+***
+
+White Heuristic
+
+***
+1)Possibilità di mangiare o di essere mangiato.
+Possibile implementazione: Conteggio delle pedine mie e di quelle dell'avversario.
+***
