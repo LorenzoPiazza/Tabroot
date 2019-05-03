@@ -36,7 +36,7 @@ public class MyGame extends GameAshtonTablut implements Game<State, Action, Turn
 	}
 	
 	/* 
-	 * Questa funzione a differenza della checkMove già fornita salta alcuni controlli inutili per come vengono fornite le mosse da valutare (es: impossibile muovere in diagonale quindi non controllo).
+	 * Questa funzione a differenza della checkMove già fornita salta alcuni controlli inutili per come vengono fornite le mosse da valutare (es: impossibile valutare una mossa in diagonale quindi non controllo).
 	 * Un'altra differenza è che non muove la pedina nel caso la mossa sia possibile.
 	 * Resituisce 0 se la mossa è possibile, 1 altrimenti.
 	 * Viene chiamata in seguito all'interno di getActions().
@@ -214,7 +214,7 @@ public class MyGame extends GameAshtonTablut implements Game<State, Action, Turn
 		}
 
 			
-		//Arrivati qui it è impossibile che l'Iterator it sia ancora null
+		//Arrivati qui è impossibile che l'Iterator it sia ancora null
 		int colonna=0;
 		int riga=0;
 
@@ -235,7 +235,7 @@ public class MyGame extends GameAshtonTablut implements Game<State, Action, Turn
 			colonna=buf[1];  
 			riga=buf[0];
 
-			// System.out.println( "riga: " + buf[0] + " ");
+			//System.out.println( "riga: " + buf[0] + " ");
 			//System.out.println( "colonna: " + buf[1] + " \n");
 
 			//tengo ferma la riga e muovo la colonna

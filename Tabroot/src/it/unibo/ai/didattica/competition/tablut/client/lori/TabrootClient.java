@@ -2,20 +2,14 @@ package it.unibo.ai.didattica.competition.tablut.client.lori;
 
 import java.io.IOException;
 import java.net.UnknownHostException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
 
-import aima.core.search.adversarial.IterativeDeepeningAlphaBetaSearch;
-import aima.core.search.adversarial.MinimaxSearch;
+import aima.core.search.adversarial.*;
+import aima.core.search.framework.Metrics;
 import it.unibo.ai.didattica.competition.tablut.domain.*;
+import it.unibo.ai.didattica.competition.tablut.domain.Game;
 import it.unibo.ai.didattica.competition.tablut.domain.State.Turn;
 
-/**
- * 
- * @author A. Piretti, Andrea Galassi
- *
- */
+
 public class TabrootClient extends TablutClient {
 
 	private int game;
@@ -106,11 +100,13 @@ public class TabrootClient extends TablutClient {
 		//Creo l'oggetto IterativeDeepeningAlphaBetaSearch che realizzerà la ricerca della mossa nello spazio degli stati
 		IterativeDeepeningAlphaBetaSearch<State, Action, Turn> itDeepAlgorithm = IterativeDeepeningAlphaBetaSearch.createFor(myGame, Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, 10);
 		
-		//Eventuale altro algoritmo
+		//Eventuali altri algoritmi:
 		//MinimaxSearch<State, Action, Turn> miniMaxAlgorithm = MinimaxSearch.createFor(myGame);
 		
-		List<int[]> pawns = new ArrayList<int[]>();
-		List<int[]> empty = new ArrayList<int[]>();
+		/*
+		 * List<int[]> pawns = new ArrayList<int[]>();
+		 * List<int[]> empty = new ArrayList<int[]>();
+		 * */
 
 		System.out.println("You are player " + this.getPlayer().toString() + "!");
 
@@ -133,7 +129,14 @@ public class TabrootClient extends TablutClient {
 			if (this.getPlayer().equals(Turn.WHITE)) {
 				//sono il giocatore bianco
 				if (this.getCurrentState().getTurn().equals(StateTablut.Turn.WHITE)) {
-					// ed è il turno del bianco (tocca a me giocare)
+					//ed è il turno del bianco (tocca a me giocare)
+					
+					
+					/*
+					 * Scorro la scacchiera per salvarmi le mie pedine e le caselle vuote.
+					 * NB:Nel caso io utilizzi un algoritmo non serve perchè viene già fatto nella getActions()
+					 */
+					/*
 					int[] buf;
 					for (int i = 0; i < state.getBoard().length; i++) {
 						for (int j = 0; j < state.getBoard().length; j++) {
@@ -150,11 +153,8 @@ public class TabrootClient extends TablutClient {
 								empty.add(buf);
 							}
 						}
-					}
-
-					int[] selected = null;
-
-					boolean found = false;
+					}*/
+					
 					Action a = null;
 					try {
 						a = new Action("z0", "z0", State.Turn.WHITE);
@@ -162,6 +162,11 @@ public class TabrootClient extends TablutClient {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					}
+					
+					//Selezione azione RANDOM
+					/*
+					int[] selected = null;
+					boolean found = false;
 					while (!found) {
 						if (pawns.size() > 1) {
 							selected = pawns.get(new Random().nextInt(pawns.size() - 1));
@@ -188,17 +193,24 @@ public class TabrootClient extends TablutClient {
 
 						}
 
-					}
+					}*/
 
+					//Selezione azione con ALGORITMO
+					a = itDeepAlgorithm.makeDecision(state);
+					
 					System.out.println("Mossa scelta: " + a.toString());
+					printStatistics(itDeepAlgorithm);
 					try {
 						this.write(a);
 					} catch (ClassNotFoundException | IOException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
-					pawns.clear();
-					empty.clear();
+					/*
+					 * pawns.clear();
+					 * empty.clear();
+					 */
+					
 
 				}
 				// è il turno dell'avversario
@@ -225,6 +237,12 @@ public class TabrootClient extends TablutClient {
 				// sono il giocatore nero
 				if (this.getCurrentState().getTurn().equals(StateTablut.Turn.BLACK)) { 
 					// ed è il turno del nero (tocca a me giocare)
+					
+					/*
+					 * Scorro la scacchiera per salvarmi le mie pedine e le caselle vuote.
+					 * NB:Nel caso io utilizzi un algoritmo non serve perchè viene già fatto nella getActions()
+					 */
+					/*
 					int[] buf;
 					for (int i = 0; i < state.getBoard().length; i++) {
 						for (int j = 0; j < state.getBoard().length; j++) {
@@ -240,11 +258,8 @@ public class TabrootClient extends TablutClient {
 								empty.add(buf);
 							}
 						}
-					}
-
-					int[] selected = null;
-
-					boolean found = false;
+					}*/
+					
 					Action a = null;
 					try {
 						a = new Action("z0", "z0", State.Turn.BLACK);
@@ -252,9 +267,13 @@ public class TabrootClient extends TablutClient {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					}
+
+							
 					
 					//Selezione azione RANDOM
 					/*
+					int[] selected = null;
+					boolean found = false;
 					while (!found) {
 						selected = pawns.get(new Random().nextInt(pawns.size() - 1));
 						String from = this.getCurrentState().getBox(selected[0], selected[1]);
@@ -283,14 +302,18 @@ public class TabrootClient extends TablutClient {
 					a = itDeepAlgorithm.makeDecision(state);
 
 					System.out.println("Mossa scelta: " + a.toString());
+					printStatistics(itDeepAlgorithm);
 					try {
 						this.write(a);
 					} catch (ClassNotFoundException | IOException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
-					pawns.clear();
-					empty.clear();
+					/*
+					 * pawns.clear();
+					 * empty.clear();
+					 */
+					
 
 				}
 
@@ -310,5 +333,10 @@ public class TabrootClient extends TablutClient {
 			}
 		}
 
+	}
+	
+	private void printStatistics (AdversarialSearch<State, Action> algorithm) {
+		Metrics m = algorithm.getMetrics();
+		System.out.println(	"[nodesExpanded]:"+m.get("nodesExpanded")+"\n"+"[maxDepth]:"+m.get("maxDepth"));
 	}
 }
