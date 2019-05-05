@@ -98,11 +98,12 @@ public class TabrootClient extends TablutClient {
 		}
 		
 		//Creo l'oggetto IterativeDeepeningAlphaBetaSearch che realizzerà la ricerca della mossa nello spazio degli stati
-		IterativeDeepeningAlphaBetaSearch<State, Action, Turn> itDeepAlgorithm = IterativeDeepeningAlphaBetaSearch.createFor(myGame, Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, 10);
+		IterativeDeepeningAlphaBetaSearch<State, Action, Turn> itDeepAlgorithm = IterativeDeepeningAlphaBetaSearch.createFor(myGame, Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, 1);
 		
 		//Eventuali altri algoritmi:
-		//MinimaxSearch<State, Action, Turn> miniMaxAlgorithm = MinimaxSearch.createFor(myGame);
-		
+		MyIterativeDeepeningAlphaBetaSearch myItDeepAlgorithm = new MyIterativeDeepeningAlphaBetaSearch(myGame,Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, 600);
+		MinimaxSearch<State, Action, Turn> miniMaxAlgorithm = MinimaxSearch.createFor(myGame);
+		AlphaBetaSearch<State, Action, Turn> alphaBetaAlgorithm = AlphaBetaSearch.createFor(myGame);
 		/*
 		 * List<int[]> pawns = new ArrayList<int[]>();
 		 * List<int[]> empty = new ArrayList<int[]>();
@@ -196,10 +197,13 @@ public class TabrootClient extends TablutClient {
 					}*/
 
 					//Selezione azione con ALGORITMO
-					a = itDeepAlgorithm.makeDecision(state);
+					//a = itDeepAlgorithm.makeDecision(state);
+					//a=miniMaxAlgorithm.makeDecision(state);
+					//a=alphaBetaAlgorithm.makeDecision(state);
+					a=myItDeepAlgorithm.makeDecision(state);
 					
 					System.out.println("Mossa scelta: " + a.toString());
-					printStatistics(itDeepAlgorithm);
+					printStatistics(myItDeepAlgorithm);
 					try {
 						this.write(a);
 					} catch (ClassNotFoundException | IOException e) {
@@ -300,6 +304,7 @@ public class TabrootClient extends TablutClient {
 					
 					//Selezione azione con ALGORITMO
 					a = itDeepAlgorithm.makeDecision(state);
+					
 
 					System.out.println("Mossa scelta: " + a.toString());
 					printStatistics(itDeepAlgorithm);

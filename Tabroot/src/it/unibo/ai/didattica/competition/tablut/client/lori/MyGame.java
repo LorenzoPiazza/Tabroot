@@ -337,12 +337,64 @@ public class MyGame extends GameAshtonTablut implements Game<State, Action, Turn
 		if(state.getTurn().equalsTurn("WW")|| state.getTurn().equalsTurn("BW") || state.getTurn().equalsTurn("D"))
 			return true;
 		return false;
+		//return true;
 	}
 
 	// TODO: è la funzione euristica
 	@Override
-	public double getUtility(State arg0, Turn arg1) {
-		return Math.random();
+	public double getUtility(State state, Turn turn) {
+		if(state.getTurn().equalsTurn("WW"))
+			return Double.POSITIVE_INFINITY;
+		
+		if(state.getTurn().equalsTurn("BW"))
+			return Double.NEGATIVE_INFINITY;
+		
+		if(state.getTurn().equalsTurn("D"))
+			return 0;
+		
+		
+		//conto le pedine
+		List<int[]> white = new ArrayList<int[]>(); //tengo traccia della posizione nello stato dei bianchi
+		List<int[]> black = new ArrayList<int[]>(); //uguale per i neri
+	
+		
+
+		int[] buf; //mi indica la posizione ex."z6" 
+
+		for (int i = 0; i < state.getBoard().length; i++) {
+			for (int j = 0; j < state.getBoard().length; j++) {
+				if (state.getPawn(i, j).equalsPawn("W") 
+						|| state.getPawn(i, j).equalsPawn("K")) {
+					buf = new int[2];
+					buf[0] = i;
+					//System.out.println( "riga: " + buf[0] + " ");
+					buf[1] = j;
+					//System.out.println( "colonna: " + buf[1] + " \n");
+					white.add(buf);							
+				} else if (state.getPawn(i, j).equalsPawn("B")) {
+					buf = new int[2];
+					buf[0] = i;
+					buf[1] = j;
+					black.add(buf);
+				}
+			}
+		}
+		
+		int nWhite=white.size();
+		int nBlack=black.size();
+		
+		double conteggioPedineB=nWhite/8;
+		double conteggioPedineN=nBlack/16;
+		return conteggioPedineB-conteggioPedineN; 
+		
+		
+		//return getHeuristicValue(state, turn);
 	}
+	
+	
+/*	private double getHeuristicValue(State state, Turn turn) {
+		
+	}*/
+	
 
 }
