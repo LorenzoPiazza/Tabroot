@@ -3,6 +3,7 @@ Black Heuristic
 ***
 1)Possibilità di mangiare o di essere mangiato.
 Possibile implementazione: Conteggio delle pedine mie e di quelle dell'avversario.
+2)Non sempre mangiare la pedina bianca è la mossa migliore 
 
 ***
 
@@ -11,4 +12,14 @@ White Heuristic
 ***
 1)Possibilità di mangiare o di essere mangiato.
 Possibile implementazione: Conteggio delle pedine mie e di quelle dell'avversario.
+2)Avere una pedina negli angoli (spigolo) è molto buono (in A7/G7/A1/G1)
+3)Avere una pedina neglio angoli ma non negli spigoli (ex. considerando l'angolo a destra: G6/G5/F7/E7) è buono ma meno buono di (2)
+4)In caso di strategia difensivista del re avere delle pedine che coprono il re in orizzantale e in verticale è buona cosa (proteggere il re da due dei 4 lati, ex.se sposto il re in basso a destra lo proteggo dall'alto e da sinistra)
+5)In caso di strategia difensivista del re le pedine che coprono il re è meglio averle a distanza >1 dalle nere 
+6)Avere una pedina nell'angolo (spigolo) e un altra a distanza 2 (in verticale o orizzontale) è una buonissima situazione. 
+  Se non ci sono caselle nere che interferiscono e il re si trova sulla verticale o orizzontale dello spazio vuoto tra queste due pedine il bianco vince
+7)Conviene inziare a spostare il re quando il nero sposta una (o ancora meglio due) delle sue pedine da B4/F4/D2/D6 verso sinistra o destra. 
+  In questo modo quelle pedine non potendo tornare indietro ci permettono di non considerarle come minacce nella protezione del re
+8)Possibilità di essere mangiato: vedere sulla verticale o sulla orizzontale se ci sono due pedine nere di cui una a distanza=1 dalla nostra pedina e l'altra con campo libero per mangiarci alla prossima mossa avvicinandosi alla bianca con distanza=1
+9)Possibilità di mangiare: situazione opposta alla (8). Se una pedina bianca è a distanza=1 da una nera e sull'asse opposto (verticale o orizzontale) alla nostra pedina c'è un altra bianca che muovendosi nel turno successivo determina la cattuara della nera
 ***
