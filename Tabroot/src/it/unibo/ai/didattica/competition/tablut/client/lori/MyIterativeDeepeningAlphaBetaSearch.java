@@ -16,7 +16,7 @@ public class MyIterativeDeepeningAlphaBetaSearch extends IterativeDeepeningAlpha
 	
 	@Override
 	protected double eval(State state, Turn turn) {
-		double result= super.eval(state, turn);
-		return super.game.getUtility(state, turn);	
+		//double result= super.eval(state, turn);
+		return this.game.getUtility(state, turn);	
 	}
 }
