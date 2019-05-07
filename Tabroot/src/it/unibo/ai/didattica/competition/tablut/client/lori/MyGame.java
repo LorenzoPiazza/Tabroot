@@ -350,7 +350,11 @@ public class MyGame extends GameAshtonTablut implements Game<State, Action, Turn
 			newBoard[a.getRowTo()][a.getColumnTo()]=State.Pawn.BLACK;
 		}
 		
-		newBoard[a.getRowFrom()][a.getColumnFrom()]=State.Pawn.EMPTY;
+		
+		if(a.getColumnFrom()==4 && a.getRowFrom()==4)
+			newBoard[a.getRowFrom()][a.getColumnFrom()]= State.Pawn.THRONE;
+		else
+			newBoard[a.getRowFrom()][a.getColumnFrom()]=State.Pawn.EMPTY;
 		
 		
 		//aggiorno il tabellone
@@ -441,9 +445,6 @@ public class MyGame extends GameAshtonTablut implements Game<State, Action, Turn
 		double conteggioPedineB=nWhite/9.0;
 		double conteggioPedineN=nBlack/16.0;
 		return conteggioPedineB-conteggioPedineN; 
-		
-		
-		//return getHeuristicValue(state, turn);
 	}
 	
 	

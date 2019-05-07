@@ -102,7 +102,7 @@ public class TabrootClient extends TablutClient {
 		itDeepAlgorithm.setLogEnabled(true);
 		
 		//Eventuali altri algoritmi:
-		MyIterativeDeepeningAlphaBetaSearch myItDeepAlgorithm = new MyIterativeDeepeningAlphaBetaSearch(myGame, -1.0, 1.0, 100000);
+		MyIterativeDeepeningAlphaBetaSearch myItDeepAlgorithm = new MyIterativeDeepeningAlphaBetaSearch(myGame, Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, 2);
 		myItDeepAlgorithm.setLogEnabled(true);
 		MinimaxSearch<State, Action, Turn> miniMaxAlgorithm = MinimaxSearch.createFor(myGame);
 		AlphaBetaSearch<State, Action, Turn> alphaBetaAlgorithm = AlphaBetaSearch.createFor(myGame);
