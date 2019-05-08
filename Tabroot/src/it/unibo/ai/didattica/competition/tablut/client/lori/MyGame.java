@@ -46,112 +46,81 @@ public class MyGame extends GameAshtonTablut implements Game<State, Action, Turn
 	public int myCheckMove(int columnFrom, int columnTo, int rowFrom, int rowTo, int ctrl, State state){
 
 		if (columnFrom > state.getBoard().length - 1 || rowFrom > state.getBoard().length - 1
-				|| rowTo > state.getBoard().length - 1 || columnTo > state.getBoard().length - 1 || columnFrom < 0
-				|| rowFrom < 0 || rowTo < 0 || columnTo < 0) 
+				|| rowTo > state.getBoard().length - 1 || columnTo > state.getBoard().length - 1 
+				||columnFrom < 0 || rowFrom < 0 || rowTo < 0 || columnTo < 0) 
 			ctrl=1;
-
 
 		// controllo che non vada sul trono
-		if (state.getPawn(rowTo, columnTo).equalsPawn(State.Pawn.THRONE.toString())) {
+		if (state.getPawn(rowTo, columnTo).equalsPawn(State.Pawn.THRONE.toString()))
 			ctrl=1;
-		}
 
 		// controllo la casella di arrivo
-		if (!state.getPawn(rowTo, columnTo).equalsPawn(State.Pawn.EMPTY.toString())) {
+		if (!state.getPawn(rowTo, columnTo).equalsPawn(State.Pawn.EMPTY.toString()))
 			ctrl=1;
-		}
+		
 		if (this.getCitadels().contains(state.getBox(rowTo, columnTo))
-				&& !this.getCitadels().contains(state.getBox(rowFrom, columnFrom))) {
+				&& !this.getCitadels().contains(state.getBox(rowFrom, columnFrom)))
 			ctrl=1;
-		}
+		
 		if (this.getCitadels().contains(state.getBox(rowTo, columnTo))
 				&& this.getCitadels().contains(state.getBox(rowFrom, columnFrom))) {
 			if (rowFrom == rowTo) {
-				if (columnFrom - columnTo > 5 || columnFrom - columnTo < -5) {
+				if (columnFrom - columnTo > 5 || columnFrom - columnTo < -5)
 					ctrl=1;
-				}
 			} else {
-				if (rowFrom - rowTo > 5 || rowFrom - rowTo < -5) {
+				if (rowFrom - rowTo > 5 || rowFrom - rowTo < -5) 
 					ctrl=1;
-				}
 			}
-
 		}
 
 		// controllo se cerco di stare fermo
-		if (rowFrom == rowTo && columnFrom == columnTo) {
+		if (rowFrom == rowTo && columnFrom == columnTo) 
 			ctrl=1;
-		}
 
 		// controllo se sto muovendo una pedina giusta
 		if (state.getTurn().equalsTurn(State.Turn.WHITE.toString())) {
 			if (!state.getPawn(rowFrom, columnFrom).equalsPawn("W")
-					&& !state.getPawn(rowFrom, columnFrom).equalsPawn("K")) {
+					&& !state.getPawn(rowFrom, columnFrom).equalsPawn("K")) 
 				ctrl=1;
-			}
 		}
+		
 		if (state.getTurn().equalsTurn(State.Turn.BLACK.toString())) {
-			if (!state.getPawn(rowFrom, columnFrom).equalsPawn("B")) {
+			if (!state.getPawn(rowFrom, columnFrom).equalsPawn("B"))
 				ctrl=1;
-			}
 		}
-
 
 		// controllo di non scavalcare pedine
 		if (rowFrom == rowTo) {
 			if (columnFrom > columnTo) {
 				for (int i = columnTo; i < columnFrom; i++) {
-					if (!state.getPawn(rowFrom, i).equalsPawn(State.Pawn.EMPTY.toString())) {
-						if (state.getPawn(rowFrom, i).equalsPawn(State.Pawn.THRONE.toString())) {
-							ctrl=1;
-						} else {
-							ctrl=1;
-						}
-					}
-					if (this.getCitadels().contains(state.getBox(rowFrom, i))
-							&& !this.getCitadels().contains(state.getBox(rowFrom, columnFrom))) {
+					if (!state.getPawn(rowFrom, i).equalsPawn(State.Pawn.EMPTY.toString())) 
 						ctrl=1;
-					}
+					if (this.getCitadels().contains(state.getBox(rowFrom, i))
+							&& !this.getCitadels().contains(state.getBox(rowFrom, columnFrom))) 
+						ctrl=1;
 				}
 			} else {
 				for (int i = columnFrom + 1; i <= columnTo; i++) {
-					if (!state.getPawn(rowFrom, i).equalsPawn(State.Pawn.EMPTY.toString())) {
-						if (state.getPawn(rowFrom, i).equalsPawn(State.Pawn.THRONE.toString())) {
-							ctrl=1;
-						} else {
-							ctrl=1;
-						}
-					}
-					if (this.getCitadels().contains(state.getBox(rowFrom, i))
-							&& !this.getCitadels().contains(state.getBox(rowFrom, columnFrom))) {
+					if (!state.getPawn(rowFrom, i).equalsPawn(State.Pawn.EMPTY.toString()))
 						ctrl=1;
-					}
+					if (this.getCitadels().contains(state.getBox(rowFrom, i))
+							&& !this.getCitadels().contains(state.getBox(rowFrom, columnFrom)))
+						ctrl=1;
 				}
 			}
 		} else {
 			if (rowFrom > rowTo) {
 				for (int i = rowTo; i < rowFrom; i++) {
-					if (!state.getPawn(i, columnFrom).equalsPawn(State.Pawn.EMPTY.toString())) {
-						if (state.getPawn(i, columnFrom).equalsPawn(State.Pawn.THRONE.toString())) {
-							ctrl=1;
-						} else {
-							ctrl=1;
-						}
-					}
-					if (this.getCitadels().contains(state.getBox(i, columnFrom))
-							&& !this.getCitadels().contains(state.getBox(rowFrom, columnFrom))) {
+					if (!state.getPawn(i, columnFrom).equalsPawn(State.Pawn.EMPTY.toString()))
 						ctrl=1;
-					}
+					if (this.getCitadels().contains(state.getBox(i, columnFrom))
+							&& !this.getCitadels().contains(state.getBox(rowFrom, columnFrom)))
+						ctrl=1;
 				}
 			} else {
 				for (int i = rowFrom + 1; i <= rowTo; i++) {
-					if (!state.getPawn(i, columnFrom).equalsPawn(State.Pawn.EMPTY.toString())) {
-						if (state.getPawn(i, columnFrom).equalsPawn(State.Pawn.THRONE.toString())) {
-							ctrl=1;
-						} else {
-							ctrl=1;
-						}
-					}
+					if (!state.getPawn(i, columnFrom).equalsPawn(State.Pawn.EMPTY.toString())) 
+						ctrl=1;
 					if (this.getCitadels().contains(state.getBox(i, columnFrom))
 							&& !this.getCitadels().contains(state.getBox(rowFrom, columnFrom))) {
 						ctrl=1;
@@ -298,13 +267,11 @@ public class MyGame extends GameAshtonTablut implements Game<State, Action, Turn
 		    			// TODO Auto-generated catch block
 		    			e.printStackTrace();
 		    		}
-
+		    		
 		    		//System.out.println(action.toString() + "\n");
 		    		actions.add(action);
 		    	}
-
 		    }
-
 		}
 		//System.out.println("tutte le possibili mosse: " + actions.toString());
 		return actions;
@@ -339,7 +306,6 @@ public class MyGame extends GameAshtonTablut implements Game<State, Action, Turn
 		//funzione di aggiornamento di uno stato data una azione
 		State.Pawn[][] newBoard = state.getBoard();
 
-
 		//metto nel nuovo tabellone la pedina mossa
 		if (state.getTurn().equalsTurn("W")) {
 			if(state.getPawn(a.getRowFrom(), a.getColumnFrom()).equalsPawn("K"))
@@ -349,17 +315,14 @@ public class MyGame extends GameAshtonTablut implements Game<State, Action, Turn
 		} else if (state.getTurn().equalsTurn("B")) {
 			newBoard[a.getRowTo()][a.getColumnTo()]=State.Pawn.BLACK;
 		}
-		
-		
+				
 		if(a.getColumnFrom()==4 && a.getRowFrom()==4)
 			newBoard[a.getRowFrom()][a.getColumnFrom()]= State.Pawn.THRONE;
 		else
 			newBoard[a.getRowFrom()][a.getColumnFrom()]=State.Pawn.EMPTY;
 		
-		
 		//aggiorno il tabellone
 		 state.setBoard(newBoard);
-		
 		
 		//effettuo eventuali catture 
 		if (state.getTurn().equalsTurn("B")) {
@@ -369,34 +332,27 @@ public class MyGame extends GameAshtonTablut implements Game<State, Action, Turn
 		}
 		
 		
-		
-		
 		//cambio il turno
 		if(state.getTurn().equalsTurn(State.Turn.WHITE.toString())
-				&& !state.getTurn().equalsTurn("WW") 
-				&& !state.getTurn().equalsTurn("BW") 
+				&& !state.getTurn().equalsTurn("WW") && !state.getTurn().equalsTurn("BW") 
 				&& !state.getTurn().equalsTurn("D") )
 			state.setTurn(State.Turn.BLACK);
 		if(state.getTurn().equalsTurn(State.Turn.BLACK.toString())
-				&& !state.getTurn().equalsTurn("WW") 
-				&& !state.getTurn().equalsTurn("BW") 
+				&& !state.getTurn().equalsTurn("WW") && !state.getTurn().equalsTurn("BW") 
 				&& !state.getTurn().equalsTurn("D") )
 			state.setTurn(State.Turn.WHITE);
-	
 
 		//System.out.println(state.toString());
-		return state;
-		
+		return state;		
 	}
 		
-
 	//Codice by A.Fuschino
 	@Override
 	public boolean isTerminal(State state) {
-		if(state.getTurn().equalsTurn("WW")|| state.getTurn().equalsTurn("BW") || state.getTurn().equalsTurn("D"))
+		if(state.getTurn().equalsTurn("WW")|| state.getTurn().equalsTurn("BW") 
+				|| state.getTurn().equalsTurn("D"))
 			return true;
 		return false;
-		//return true;
 	}
 
 	// TODO: è la funzione euristica
@@ -422,8 +378,7 @@ public class MyGame extends GameAshtonTablut implements Game<State, Action, Turn
 
 		for (int i = 0; i < state.getBoard().length; i++) {
 			for (int j = 0; j < state.getBoard().length; j++) {
-				if (state.getPawn(i, j).equalsPawn("W") 
-						|| state.getPawn(i, j).equalsPawn("K")) {
+				if (state.getPawn(i, j).equalsPawn("W") || state.getPawn(i, j).equalsPawn("K")) {
 					buf = new int[2];
 					buf[0] = i;
 					//System.out.println( "riga: " + buf[0] + " ");
@@ -453,7 +408,6 @@ public class MyGame extends GameAshtonTablut implements Game<State, Action, Turn
 	}*/
 	
 	
-
 	private State checkCaptureWhite(State state, Action a) {
 		// controllo se mangio a destra
 		if (a.getColumnTo() < state.getBoard().length - 2
@@ -461,7 +415,11 @@ public class MyGame extends GameAshtonTablut implements Game<State, Action, Turn
 				&& (state.getPawn(a.getRowTo(), a.getColumnTo() + 2).equalsPawn("W")
 						|| state.getPawn(a.getRowTo(), a.getColumnTo() + 2).equalsPawn("T")
 						|| state.getPawn(a.getRowTo(), a.getColumnTo() + 2).equalsPawn("K")
-						|| (this.getCitadels().contains(state.getBox(a.getRowTo(), a.getColumnTo() + 2)) &&!(a.getColumnTo()+2==8&&a.getRowTo()==4)&&!(a.getColumnTo()+2==4&&a.getRowTo()==0)&&!(a.getColumnTo()+2==4&&a.getRowTo()==8)&&!(a.getColumnTo()+2==0&&a.getRowTo()==4)))) {
+						|| (this.getCitadels().contains(state.getBox(a.getRowTo(), a.getColumnTo() + 2)) 
+						&&!(a.getColumnTo()+2==8&&a.getRowTo()==4)
+						&&!(a.getColumnTo()+2==4&&a.getRowTo()==0)
+						&&!(a.getColumnTo()+2==4&&a.getRowTo()==8)
+						&&!(a.getColumnTo()+2==0&&a.getRowTo()==4)))) {
 			state.removePawn(a.getRowTo(), a.getColumnTo() + 1);
 		}
 		// controllo se mangio a sinistra
@@ -469,7 +427,11 @@ public class MyGame extends GameAshtonTablut implements Game<State, Action, Turn
 				&& (state.getPawn(a.getRowTo(), a.getColumnTo() - 2).equalsPawn("W")
 						|| state.getPawn(a.getRowTo(), a.getColumnTo() - 2).equalsPawn("T")
 						|| state.getPawn(a.getRowTo(), a.getColumnTo() - 2).equalsPawn("K")
-						|| (this.getCitadels().contains(state.getBox(a.getRowTo(), a.getColumnTo() - 2)) &&!(a.getColumnTo()-2==8&&a.getRowTo()==4)&&!(a.getColumnTo()-2==4&&a.getRowTo()==0)&&!(a.getColumnTo()-2==4&&a.getRowTo()==8)&&!(a.getColumnTo()-2==0&&a.getRowTo()==4)))) {
+						|| (this.getCitadels().contains(state.getBox(a.getRowTo(), a.getColumnTo() - 2)) 
+						&&!(a.getColumnTo()-2==8&&a.getRowTo()==4)
+						&&!(a.getColumnTo()-2==4&&a.getRowTo()==0)
+						&&!(a.getColumnTo()-2==4&&a.getRowTo()==8)
+						&&!(a.getColumnTo()-2==0&&a.getRowTo()==4)))) {
 			state.removePawn(a.getRowTo(), a.getColumnTo() - 1);
 		}
 		// controllo se mangio sopra
@@ -477,7 +439,11 @@ public class MyGame extends GameAshtonTablut implements Game<State, Action, Turn
 				&& (state.getPawn(a.getRowTo() - 2, a.getColumnTo()).equalsPawn("W")
 						|| state.getPawn(a.getRowTo() - 2, a.getColumnTo()).equalsPawn("T")
 						|| state.getPawn(a.getRowTo() - 2, a.getColumnTo()).equalsPawn("K")
-						|| (this.getCitadels().contains(state.getBox(a.getRowTo() - 2, a.getColumnTo()))&&!(a.getColumnTo()==8&&a.getRowTo()-2==4)&&!(a.getColumnTo()==4&&a.getRowTo()-2==0)&&!(a.getColumnTo()==4&&a.getRowTo()-2==8)&&!(a.getColumnTo()==0&&a.getRowTo()-2==4)) )) {
+						|| (this.getCitadels().contains(state.getBox(a.getRowTo() - 2, a.getColumnTo()))
+						&&!(a.getColumnTo()==8&&a.getRowTo()-2==4)
+						&&!(a.getColumnTo()==4&&a.getRowTo()-2==0)
+						&&!(a.getColumnTo()==4&&a.getRowTo()-2==8)
+						&&!(a.getColumnTo()==0&&a.getRowTo()-2==4)) )) {
 			state.removePawn(a.getRowTo() - 1, a.getColumnTo());
 		}
 		// controllo se mangio sotto
@@ -486,17 +452,19 @@ public class MyGame extends GameAshtonTablut implements Game<State, Action, Turn
 				&& (state.getPawn(a.getRowTo() + 2, a.getColumnTo()).equalsPawn("W")
 						|| state.getPawn(a.getRowTo() + 2, a.getColumnTo()).equalsPawn("T")
 						|| state.getPawn(a.getRowTo() + 2, a.getColumnTo()).equalsPawn("K")
-						|| (this.getCitadels().contains(state.getBox(a.getRowTo() + 2, a.getColumnTo()))&&!(a.getColumnTo()==8&&a.getRowTo()+2==4)&&!(a.getColumnTo()==4&&a.getRowTo()+2==0)&&!(a.getColumnTo()==4&&a.getRowTo()+2==8)&&!(a.getColumnTo()==0&&a.getRowTo()+2==4)))) {
+						|| (this.getCitadels().contains(state.getBox(a.getRowTo() + 2, a.getColumnTo()))
+						&&!(a.getColumnTo()==8&&a.getRowTo()+2==4)
+						&&!(a.getColumnTo()==4&&a.getRowTo()+2==0)
+						&&!(a.getColumnTo()==4&&a.getRowTo()+2==8)
+						&&!(a.getColumnTo()==0&&a.getRowTo()+2==4)))) {
 			state.removePawn(a.getRowTo() + 1, a.getColumnTo());
 		}
 		// controllo se ho vinto
 		if (a.getRowTo() == 0 || a.getRowTo() == state.getBoard().length - 1 || a.getColumnTo() == 0
 				|| a.getColumnTo() == state.getBoard().length - 1) {
-			if (state.getPawn(a.getRowTo(), a.getColumnTo()).equalsPawn("K")) {
+			if (state.getPawn(a.getRowTo(), a.getColumnTo()).equalsPawn("K"))
 				state.setTurn(State.Turn.WHITEWIN);
-			}
 		}
-
 		return state;
 	}
 
@@ -507,37 +475,25 @@ public class MyGame extends GameAshtonTablut implements Game<State, Action, Turn
 			//re sul trono
 			if(state.getBox(a.getRowTo(), a.getColumnTo()-1).equals("e5"))
 			{
-				if(state.getPawn(3, 4).equalsPawn("B")
-						&& state.getPawn(4, 3).equalsPawn("B")
+				if(state.getPawn(3, 4).equalsPawn("B")&& state.getPawn(4, 3).equalsPawn("B")
 						&& state.getPawn(5, 4).equalsPawn("B"))
-				{
 					state.setTurn(State.Turn.BLACKWIN);
-				}
 			}
 			//re adiacente al trono
 			if(state.getBox(a.getRowTo(), a.getColumnTo()-1).equals("e4"))
 			{
-				if(state.getPawn(2, 4).equalsPawn("B")
-						&& state.getPawn(3, 3).equalsPawn("B"))
-				{
+				if(state.getPawn(2, 4).equalsPawn("B") && state.getPawn(3, 3).equalsPawn("B"))
 					state.setTurn(State.Turn.BLACKWIN);
-				}
 			}
 			if(state.getBox(a.getRowTo(), a.getColumnTo()-1).equals("e6"))
 			{
-				if(state.getPawn(5, 3).equalsPawn("B")
-						&& state.getPawn(6, 4).equalsPawn("B"))
-				{
+				if(state.getPawn(5, 3).equalsPawn("B")&& state.getPawn(6, 4).equalsPawn("B"))
 					state.setTurn(State.Turn.BLACKWIN);
-				}
 			}
 			if(state.getBox(a.getRowTo(), a.getColumnTo()-1).equals("f5"))
 			{
-				if(state.getPawn(3, 5).equalsPawn("B")
-						&& state.getPawn(5, 5).equalsPawn("B"))
-				{
+				if(state.getPawn(3, 5).equalsPawn("B") && state.getPawn(5, 5).equalsPawn("B"))
 					state.setTurn(State.Turn.BLACKWIN);
-				}
 			}
 			//sono fuori dalle zone del trono
 			if(!state.getBox(a.getRowTo(), a.getColumnTo()-1).equals("e5")
@@ -547,9 +503,7 @@ public class MyGame extends GameAshtonTablut implements Game<State, Action, Turn
 			{
 				if(state.getPawn(a.getRowTo(), a.getColumnTo() - 2).equalsPawn("B")
 						|| this.getCitadels().contains(state.getBox(a.getRowTo(), a.getColumnTo()-2)))
-				{
 					state.setTurn(State.Turn.BLACKWIN);
-				}					
 			}
 		}		
 		return state;
@@ -562,37 +516,25 @@ public class MyGame extends GameAshtonTablut implements Game<State, Action, Turn
 			//re sul trono
 			if(state.getBox(a.getRowTo(), a.getColumnTo()+1).equals("e5"))
 			{
-				if(state.getPawn(3, 4).equalsPawn("B")
-						&& state.getPawn(4, 5).equalsPawn("B")
+				if(state.getPawn(3, 4).equalsPawn("B") && state.getPawn(4, 5).equalsPawn("B")
 						&& state.getPawn(5, 4).equalsPawn("B"))
-				{
 					state.setTurn(State.Turn.BLACKWIN);
-				}
 			}
 			//re adiacente al trono
 			if(state.getBox(a.getRowTo(), a.getColumnTo()+1).equals("e4"))
 			{
-				if(state.getPawn(2, 4).equalsPawn("B")
-						&& state.getPawn(3, 5).equalsPawn("B"))
-				{
+				if(state.getPawn(2, 4).equalsPawn("B")&& state.getPawn(3, 5).equalsPawn("B"))
 					state.setTurn(State.Turn.BLACKWIN);
-				}
 			}
 			if(state.getBox(a.getRowTo(), a.getColumnTo()+1).equals("e6"))
 			{
-				if(state.getPawn(5, 5).equalsPawn("B")
-						&& state.getPawn(6, 4).equalsPawn("B"))
-				{
+				if(state.getPawn(5, 5).equalsPawn("B") && state.getPawn(6, 4).equalsPawn("B"))
 					state.setTurn(State.Turn.BLACKWIN);
-				}
 			}
 			if(state.getBox(a.getRowTo(), a.getColumnTo()+1).equals("d5"))
 			{
-				if(state.getPawn(3, 3).equalsPawn("B")
-						&& state.getPawn(3, 5).equalsPawn("B"))
-				{
+				if(state.getPawn(3, 3).equalsPawn("B")&& state.getPawn(3, 5).equalsPawn("B"))
 					state.setTurn(State.Turn.BLACKWIN);
-				}
 			}
 			//sono fuori dalle zone del trono
 			if(!state.getBox(a.getRowTo(), a.getColumnTo()+1).equals("d5")
@@ -602,9 +544,7 @@ public class MyGame extends GameAshtonTablut implements Game<State, Action, Turn
 			{
 				if(state.getPawn(a.getRowTo(), a.getColumnTo() + 2).equalsPawn("B")
 						|| this.getCitadels().contains(state.getBox(a.getRowTo(), a.getColumnTo()+2)))
-				{
 					state.setTurn(State.Turn.BLACKWIN);
-				}					
 			}
 		}
 		return state;
