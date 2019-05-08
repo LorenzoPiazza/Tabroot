@@ -7,6 +7,7 @@ import java.util.List;
 
 import aima.core.search.adversarial.Game;
 import it.unibo.ai.didattica.competition.tablut.domain.*;
+import it.unibo.ai.didattica.competition.tablut.domain.State.Pawn;
 import it.unibo.ai.didattica.competition.tablut.domain.State.Turn;
 
 
@@ -312,7 +313,7 @@ public class MyGame extends GameAshtonTablut implements Game<State, Action, Turn
 				newBoard[a.getRowTo()][a.getColumnTo()]=State.Pawn.KING;
 			else
 				newBoard[a.getRowTo()][a.getColumnTo()]=State.Pawn.WHITE;
-		} else if (state.getTurn().equalsTurn("B")) {
+		} else /*if (state.getTurn().equalsTurn("B"))*/ {
 			newBoard[a.getRowTo()][a.getColumnTo()]=State.Pawn.BLACK;
 		}
 				
@@ -327,7 +328,7 @@ public class MyGame extends GameAshtonTablut implements Game<State, Action, Turn
 		//effettuo eventuali catture 
 		if (state.getTurn().equalsTurn("B")) {
 			state = this.checkCaptureBlack(state, a);
-		} else if (state.getTurn().equalsTurn("W")) {
+		} else /*if (state.getTurn().equalsTurn("W"))*/ {
 			state = this.checkCaptureWhite(state, a);
 		}
 		
@@ -413,20 +414,66 @@ public class MyGame extends GameAshtonTablut implements Game<State, Action, Turn
 		int nWhite=white.size();
 		double conteggioPedine=nWhite/9.0;
 		double posKing=0;
+		double pedineInAngolo=0;
+		double scappaRe=0;
+		int latiCopertiDelRe=0;
+		int[] controlloPedine= {0,0};
 		
+		/*indice 0 riga, indice 1 colonna*/
 		if((king[0]==2)&&( king[1]==2 ||king[1]==6))
 			posKing=0.5;
 		if((king[0]==6)&&( king[1]==2 ||king[1]==6))
 			posKing=0.5;
 		
-		double result= conteggioPedine+posKing;
+		/*Pedine negli angoli*/
+		for(int i=0;i<nWhite;i++){
+			controlloPedine=white.get(i);
+			if(controlloPedine[0]==0 && controlloPedine[1]==0)
+				pedineInAngolo+=0.2;
+			if(controlloPedine[0]==8 && controlloPedine[1]==8)
+				pedineInAngolo+=0.2;
+			if(controlloPedine[0]==8 && controlloPedine[1]==0 )
+				pedineInAngolo+=0.2;
+			if(controlloPedine[0]==0 && controlloPedine[1]==8)
+				pedineInAngolo+=0.2;
+		}
+		
+		/*Controllo che il re sia circondato da 3 pedine o da una casella "sponda" */
+		for(int i=0;i<black.size();i++) {
+			controlloPedine=black.get(i);
+			//controllo a sinistra del re
+			if(controlloPedine[0]==(king[0]-1) &&controlloPedine[1]==(king[1])) 
+				latiCopertiDelRe++;
+			//controllo a destra del re
+			if(controlloPedine[0]==(1+king[0]) &&controlloPedine[1]==(king[1])) 
+				latiCopertiDelRe++;
+			//controllo a sopra del re
+			if(controlloPedine[0]==(king[0]) &&controlloPedine[1]==(king[1]-1)) 
+				latiCopertiDelRe++;
+			//controllo a sotto del re
+			if(controlloPedine[0]==(king[0]) &&controlloPedine[1]==(1+king[1])) 
+				latiCopertiDelRe++;
+		}
+		/*controllo se il re è vicino al trono o a una casa del nero*/
+		if((king[0]== 3 && king[1]==4)||(king[0]== 5 && king[1]==4)||(king[0]== 4 && king[1]==3)
+				||(king[0]== 4 && king[1]==5)||(king[0]== 1 && king[1]==3)||(king[0]== 1 && king[1]==5)
+				||(king[0]== 2 && king[1]==4)||(king[0]== 7 && king[1]==3)||(king[0]== 7 && king[1]==5)
+				||(king[0]== 6 && king[1]==4)||(king[0]== 0 && king[1]==2)||(king[0]== 3 && king[1]==1)
+				||(king[0]== 5 && king[1]==1)||(king[0]== 4 && king[1]==2)||(king[0]== 3 && king[1]==7)
+				||(king[0]== 4 && king[1]==6)||(king[0]== 5 && king[1]==7))
+			latiCopertiDelRe++;
+		/*Se il re ha tre lati coperti penalizzo questa mossa (dovrebbe andare bene il valore negativo).*/
+		if(latiCopertiDelRe==3)
+			scappaRe=-1;
+		
+		double result= conteggioPedine+posKing+pedineInAngolo+scappaRe;
 		return result;
 	}
 	
 	//euristica nero
 		private double getHeuristicValueBlack(State state,List<int[]> white, List<int[]> black, int[] king ) {
 			int nBlack=black.size();
-			double conteggioPedine=nBlack/9.0;
+			double conteggioPedine=nBlack/16.0;
 			
 			double result= conteggioPedine;
 			return result;
