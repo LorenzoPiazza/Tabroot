@@ -364,14 +364,16 @@ public class MyGame extends GameAshtonTablut implements Game<State, Action, Turn
 		if(state.getTurn().equalsTurn("BW"))
 			return Double.NEGATIVE_INFINITY;
 		
+		/*
 		if(state.getTurn().equalsTurn("D"))
 			return 0;
-		
+		*/
 		
 		//conto le pedine
 		List<int[]> white = new ArrayList<int[]>(); //tengo traccia della posizione nello stato dei bianchi
+		int[] king =new int[2]; //tengo traccia della posizione del king
 		List<int[]> black = new ArrayList<int[]>(); //uguale per i neri
-	
+		
 		
 
 		int[] buf; //mi indica la posizione ex."z6" 
@@ -379,6 +381,10 @@ public class MyGame extends GameAshtonTablut implements Game<State, Action, Turn
 		for (int i = 0; i < state.getBoard().length; i++) {
 			for (int j = 0; j < state.getBoard().length; j++) {
 				if (state.getPawn(i, j).equalsPawn("W") || state.getPawn(i, j).equalsPawn("K")) {
+					if(state.getPawn(i, j).equalsPawn("K")){
+						king[0]=i;
+						king[1]=j;
+					}
 					buf = new int[2];
 					buf[0] = i;
 					//System.out.println( "riga: " + buf[0] + " ");
@@ -394,19 +400,37 @@ public class MyGame extends GameAshtonTablut implements Game<State, Action, Turn
 			}
 		}
 		
-		int nWhite=white.size();
-		int nBlack=black.size();
-		
-		double conteggioPedineB=nWhite/9.0;
-		double conteggioPedineN=nBlack/16.0;
-		return conteggioPedineB-conteggioPedineN; 
+		double euristicaWhite= getHeuristicValueWhite(state,white, black, king);
+		double euristicaBlack= getHeuristicValueBlack(state,white, black,king);
+		if(turn.equalsTurn("W"))
+			return euristicaWhite-euristicaBlack;
+		else
+			return euristicaBlack-euristicaWhite;
 	}
 	
-	
-/*	private double getHeuristicValue(State state, Turn turn) {
+	//euristica bianco
+	private double getHeuristicValueWhite(State state,List<int[]> white, List<int[]> black, int[] king ) {
+		int nWhite=white.size();
+		double conteggioPedine=nWhite/9.0;
+		double posKing=0;
 		
-	}*/
+		if((king[0]==2)&&( king[1]==2 ||king[1]==6))
+			posKing=0.5;
+		if((king[0]==6)&&( king[1]==2 ||king[1]==6))
+			posKing=0.5;
+		
+		double result= conteggioPedine+posKing;
+		return result;
+	}
 	
+	//euristica nero
+		private double getHeuristicValueBlack(State state,List<int[]> white, List<int[]> black, int[] king ) {
+			int nBlack=black.size();
+			double conteggioPedine=nBlack/9.0;
+			
+			double result= conteggioPedine;
+			return result;
+		}
 	
 	private State checkCaptureWhite(State state, Action a) {
 		// controllo se mangio a destra
@@ -598,9 +622,7 @@ public class MyGame extends GameAshtonTablut implements Game<State, Action, Turn
 			{
 				if(state.getPawn(a.getRowTo()+2, a.getColumnTo()).equalsPawn("B")
 						|| this.getCitadels().contains(state.getBox(a.getRowTo()+2, a.getColumnTo())))
-				{
 					state.setTurn(State.Turn.BLACKWIN);
-				}					
 			}			
 		}		
 		return state;
@@ -613,8 +635,7 @@ public class MyGame extends GameAshtonTablut implements Game<State, Action, Turn
 			//re sul trono
 			if(state.getBox(a.getRowTo()-1, a.getColumnTo()).equals("e5"))
 			{
-				if(state.getPawn(3, 4).equalsPawn("B")
-						&& state.getPawn(4, 5).equalsPawn("B")
+				if(state.getPawn(3, 4).equalsPawn("B") && state.getPawn(4, 5).equalsPawn("B")
 						&& state.getPawn(4, 3).equalsPawn("B"))
 				{
 					state.setTurn(State.Turn.BLACKWIN);
