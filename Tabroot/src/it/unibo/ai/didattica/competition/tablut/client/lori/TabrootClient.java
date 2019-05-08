@@ -1,6 +1,7 @@
 package it.unibo.ai.didattica.competition.tablut.client.lori;
 
 import java.io.IOException;
+import java.lang.management.MemoryUsage;
 import java.net.UnknownHostException;
 
 import aima.core.search.adversarial.*;
@@ -67,7 +68,6 @@ public class TabrootClient extends TablutClient {
 		}
 
 		State state;
-
 		Game rules = null;
 		MyGame myGame = null; 
 		
@@ -102,14 +102,10 @@ public class TabrootClient extends TablutClient {
 		itDeepAlgorithm.setLogEnabled(true);
 		
 		//Eventuali altri algoritmi:
-		MyIterativeDeepeningAlphaBetaSearch myItDeepAlgorithm = new MyIterativeDeepeningAlphaBetaSearch(myGame, Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, 2);
+		MyIterativeDeepeningAlphaBetaSearch myItDeepAlgorithm = new MyIterativeDeepeningAlphaBetaSearch(myGame, Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, 5);
 		myItDeepAlgorithm.setLogEnabled(true);
 		MinimaxSearch<State, Action, Turn> miniMaxAlgorithm = MinimaxSearch.createFor(myGame);
 		AlphaBetaSearch<State, Action, Turn> alphaBetaAlgorithm = AlphaBetaSearch.createFor(myGame);
-		/*
-		 * List<int[]> pawns = new ArrayList<int[]>();
-		 * List<int[]> empty = new ArrayList<int[]>();
-		 * */
 
 		System.out.println("You are player " + this.getPlayer().toString() + "!");
 
@@ -207,6 +203,11 @@ public class TabrootClient extends TablutClient {
 					System.out.println("Mossa scelta: " + a.toString());
 					//printStatistics(itDeepAlgorithm);
 					printStatistics(myItDeepAlgorithm);
+					
+					/*GESTIONE MEMORIA: DA CONTROLLARE!!!*/
+					/*long memOccupata=Runtime.getRuntime().totalMemory()-Runtime.getRuntime().freeMemory();
+					double memOccupataMB=memOccupata*Math.pow(9.537, Math.pow(10, -7));
+					System.out.println("MEMORIA OCCUPATA: " + memOccupataMB+" MB");*/
 					try {
 						this.write(a);
 					} catch (ClassNotFoundException | IOException e) {
@@ -306,11 +307,11 @@ public class TabrootClient extends TablutClient {
 					}*/
 					
 					//Selezione azione con ALGORITMO
-					a = itDeepAlgorithm.makeDecision(state);
+					a = myItDeepAlgorithm.makeDecision(state);
 					
 
 					System.out.println("Mossa scelta: " + a.toString());
-					printStatistics(itDeepAlgorithm);
+					printStatistics(myItDeepAlgorithm);
 					try {
 						this.write(a);
 					} catch (ClassNotFoundException | IOException e) {

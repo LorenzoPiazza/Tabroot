@@ -145,7 +145,11 @@ public class MyGame extends GameAshtonTablut implements Game<State, Action, Turn
 	
 	@Override
 	public List<Action> getActions(State state) {
-			
+		return myGetActions(state);	
+
+	}
+	
+	private List<Action> myGetActions(State state){
 		List<int[]> white = new ArrayList<int[]>(); //tengo traccia della posizione nello stato dei bianchi
 		List<int[]> black = new ArrayList<int[]>(); //uguale per i neri
 
@@ -333,16 +337,11 @@ public class MyGame extends GameAshtonTablut implements Game<State, Action, Turn
 		
 		
 		//cambio il turno
-		if(state.getTurn().equalsTurn(State.Turn.WHITE.toString())
-				&& !state.getTurn().equalsTurn("WW") && !state.getTurn().equalsTurn("BW") 
-				&& !state.getTurn().equalsTurn("D") )
+		if(state.getTurn().equalsTurn(State.Turn.WHITE.toString()))
 			state.setTurn(State.Turn.BLACK);
-		if(state.getTurn().equalsTurn(State.Turn.BLACK.toString())
-				&& !state.getTurn().equalsTurn("WW") && !state.getTurn().equalsTurn("BW") 
-				&& !state.getTurn().equalsTurn("D") )
+		else if(state.getTurn().equalsTurn(State.Turn.BLACK.toString()))
 			state.setTurn(State.Turn.WHITE);
 
-		//System.out.println(state.toString());
 		return state;		
 	}
 		
@@ -426,9 +425,9 @@ public class MyGame extends GameAshtonTablut implements Game<State, Action, Turn
 	//euristica nero
 		private double getHeuristicValueBlack(State state,List<int[]> white, List<int[]> black, int[] king ) {
 			int nBlack=black.size();
-			double conteggioPedine=nBlack/9.0;
+			double conteggioPedine=nBlack/16.0;
 			
-			double result= conteggioPedine;
+			double result=conteggioPedine;
 			return result;
 		}
 	
@@ -578,7 +577,6 @@ public class MyGame extends GameAshtonTablut implements Game<State, Action, Turn
 		//ho il re sotto
 		if (a.getRowTo()<state.getBoard().length-2&&state.getPawn(a.getRowTo()+1,a.getColumnTo()).equalsPawn("K"))
 		{
-			System.out.println("Ho il re sotto");
 			//re sul trono
 			if(state.getBox(a.getRowTo()+1, a.getColumnTo()).equals("e5"))
 			{
