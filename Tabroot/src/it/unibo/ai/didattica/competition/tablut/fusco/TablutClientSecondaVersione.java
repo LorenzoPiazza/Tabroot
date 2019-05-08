@@ -180,9 +180,43 @@ public abstract class TablutClientSecondaVersione implements Runnable {
 	//funzione euristica random
 	
 	private double getHeuristicValue(State state) {
-		double v=(double) (Math.random() * 100);
-		//System.out.println("valutazione= " +v);
-		return v;
+		List<int[]> white = new ArrayList<int[]>(); //tengo traccia della posizione nello stato dei bianchi
+		List<int[]> black = new ArrayList<int[]>(); //uguale per i neri
+
+		int[] buf; //mi indica la posizione ex."z6" 
+
+		for (int i = 0; i < state.getBoard().length; i++) {
+			for (int j = 0; j < state.getBoard().length; j++) {
+				if (state.getPawn(i, j).equalsPawn("W") 
+						|| state.getPawn(i, j).equalsPawn("K")) {
+					buf = new int[2];
+					buf[0] = i;
+					//System.out.println( "riga: " + buf[0] + " ");
+					buf[1] = j;
+					//System.out.println( "colonna: " + buf[1] + " \n");
+					white.add(buf);							
+				} else if (state.getPawn(i, j).equalsPawn("B")) {
+					buf = new int[2];
+					buf[0] = i;
+					buf[1] = j;
+					black.add(buf);
+				}
+			}
+		}
+		
+		if(state.getTurn().toString().equals("WW"))
+			return Double.POSITIVE_INFINITY;
+		
+		if(state.getTurn().toString().equals("BW"))
+			return Double.NEGATIVE_INFINITY;
+		
+		if(state.getTurn().toString().equals("D"))
+			return 0;
+		
+		if (state.getTurn().toString().equals("W"))
+			return black.size()*(-1);
+		else
+			return white.size();
 	}
 	
 	
