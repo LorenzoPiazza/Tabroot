@@ -415,7 +415,6 @@ public class MyGame extends GameAshtonTablut implements Game<State, Action, Turn
 		double posKing=0;
 		double pedineInAngolo=0;
 		double scappaRe=0;
-		int latiCopertiDelRe=0;
 		int[] controlloPedine= {0,0};
 		
 		/*indice 0 riga, indice 1 colonna*/
@@ -437,33 +436,53 @@ public class MyGame extends GameAshtonTablut implements Game<State, Action, Turn
 				pedineInAngolo+=0.2;
 		}
 		
-		/*Controllo che il re sia circondato da 3 pedine o da una casella "sponda" */
+		
+		/*Controllo che il re sia circondato da pedine nere*/
+		
+		int latiCopertiDelRe=0;
+		int sottoRe=0;
+		int sopraRe=0;
+		int destraRe=0;
+		int sinistraRe=0;
 		for(int i=0;i<black.size();i++) {
 			controlloPedine=black.get(i);
 			//controllo a sinistra del re
-			if(controlloPedine[0]==(king[0]-1) &&controlloPedine[1]==(king[1])) 
-				latiCopertiDelRe++;
-			//controllo a destra del re
-			if(controlloPedine[0]==(1+king[0]) &&controlloPedine[1]==(king[1])) 
-				latiCopertiDelRe++;
-			//controllo a sopra del re
 			if(controlloPedine[0]==(king[0]) &&controlloPedine[1]==(king[1]-1)) 
-				latiCopertiDelRe++;
+				sinistraRe++;
+			//controllo a destra del re
+			if(controlloPedine[0]==(1+king[0]) &&controlloPedine[1]==(king[1]+1)) 
+				destraRe++;
+			//controllo a sopra del re
+			if(controlloPedine[0]==(king[0]-1) &&controlloPedine[1]==(king[1]))
+				sopraRe++;
 			//controllo a sotto del re
-			if(controlloPedine[0]==(king[0]) &&controlloPedine[1]==(1+king[1])) 
-				latiCopertiDelRe++;
+			if(controlloPedine[0]==(king[0]+1) &&controlloPedine[1]==(king[1])) 
+				sottoRe++;
 		}
-		/*controllo se il re è vicino al trono o a una casa del nero*/
-		if((king[0]== 3 && king[1]==4)||(king[0]== 5 && king[1]==4)||(king[0]== 4 && king[1]==3)
-				||(king[0]== 4 && king[1]==5)||(king[0]== 1 && king[1]==3)||(king[0]== 1 && king[1]==5)
-				||(king[0]== 2 && king[1]==4)||(king[0]== 7 && king[1]==3)||(king[0]== 7 && king[1]==5)
-				||(king[0]== 6 && king[1]==4)||(king[0]== 0 && king[1]==2)||(king[0]== 3 && king[1]==1)
-				||(king[0]== 5 && king[1]==1)||(king[0]== 4 && king[1]==2)||(king[0]== 3 && king[1]==7)
-				||(king[0]== 4 && king[1]==6)||(king[0]== 5 && king[1]==7))
+		//controllo se il re è vicino al trono
+		if((king[0]== 3 && king[1]==4)||(king[0]== 5 && king[1]==4)
+				||(king[0]== 4 && king[1]==3)||(king[0]== 4 && king[1]==5))
 			latiCopertiDelRe++;
-		/*Se il re ha tre lati coperti penalizzo questa mossa (dovrebbe andare bene il valore negativo).*/
+		//Controllo le caselle base per i neri se sono vuote
+		//controllo le caselle a sinistra
+		if(sinistraRe==0 && ((king[0]== 3 && king[1]==1)||(king[0]== 5 && king[1]==1)
+				||(king[0]== 1 && king[1]==5)||(king[0]== 7 && king[1]==5)))
+			sinistraRe++;
+		if(destraRe==0 &&((king[0]== 1 && king[1]==3)||(king[0]== 7 && king[1]==3)
+				||(king[0]== 3 && king[1]==7)||(king[0]== 5 && king[1]==7)))
+			destraRe++;
+		if(sottoRe==0 &&((king[0]== 6 && king[1]==4)||(king[0]== 3 && king[1]==1)
+				||(king[0]== 3 && king[1]==7)||(king[0]== 7 && king[1]==3)
+				||(king[0]== 7 && king[1]==5)))
+			sottoRe++;
+		if(sopraRe==0 &&((king[0]== 1 && king[1]==3)||(king[0]== 1 && king[1]==5
+				||(king[0]== 5 && king[1]==2)||(king[0]== 5 && king[1]==7))))
+			sopraRe++;
+		latiCopertiDelRe+=sopraRe+sottoRe+sinistraRe+destraRe;
+		//Se il re ha tre lati coperti penalizzo questa mossa (dovrebbe andare bene il valore negativo).
 		if(latiCopertiDelRe==3)
-			scappaRe=-1;
+			scappaRe=-10;
+		
 		
 		double result= conteggioPedine+posKing+pedineInAngolo+scappaRe;
 		return result;
@@ -628,7 +647,7 @@ public class MyGame extends GameAshtonTablut implements Game<State, Action, Turn
 			// ho il re sotto
 			if (a.getRowTo() < state.getBoard().length - 2
 					&& state.getPawn(a.getRowTo() + 1, a.getColumnTo()).equalsPawn("K")) {
-				System.out.println("Ho il re sotto");
+				//System.out.println("Ho il re sotto");
 				// re sul trono
 				if (state.getBox(a.getRowTo() + 1, a.getColumnTo()).equals("e5")) {
 					if (state.getPawn(5, 4).equalsPawn("B") && state.getPawn(4, 5).equalsPawn("B")
