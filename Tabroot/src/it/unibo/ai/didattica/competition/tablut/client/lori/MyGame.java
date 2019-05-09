@@ -437,73 +437,57 @@ public class MyGame extends GameAshtonTablut implements Game<State, Action, Turn
 		}
 		
 		
-		/*Controllo che il re sia circondato da pedine nere*/
-		
-		int latiCopertiDelRe=0;
-		int sottoRe=0;
-		int sopraRe=0;
-		int destraRe=0;
-		int sinistraRe=0;
-		boolean nessunBiancoVicinoAlRe=true;
-		for(int i=0;i<white.size();i++) {
-			controlloPedine=white.get(i);
-			//controllo a sinistra del re
-			if(controlloPedine[0]==(king[0]) &&controlloPedine[1]==(king[1]-1)) 
-				nessunBiancoVicinoAlRe=false;
-			//controllo a destra del re
-			if(controlloPedine[0]==(king[0]) &&controlloPedine[1]==(king[1]+1)) 
-				nessunBiancoVicinoAlRe=false;
-			//controllo a sopra del re
-			if(controlloPedine[0]==(king[0]-1) &&controlloPedine[1]==(king[1]))
-				nessunBiancoVicinoAlRe=false;
-			//controllo a sotto del re
-			if(controlloPedine[0]==(king[0]+1) &&controlloPedine[1]==(king[1])) 
-				nessunBiancoVicinoAlRe=false;
-		}
-		if(nessunBiancoVicinoAlRe==true) {
+		/*Controllo che il re sia circondato da pedine nere*/		
+		int latiCopertiDalTronoDelRe=0;
+		int neriVicinoAlRe=0;
+
+		//controllo se il re è vicino al trono
+		if((king[0]== 3 && king[1]==4)||(king[0]== 5 && king[1]==4)
+				||(king[0]== 4 && king[1]==3)||(king[0]== 4 && king[1]==5))
+			latiCopertiDalTronoDelRe++;
+		//se sono sul trono o sono vicino al trono il re deve essere circondato
+		if((king[0]== 4 && king[1]==4)||(latiCopertiDalTronoDelRe==1))
+		{
+			//conto i neri vicino al re
 			for(int i=0;i<black.size();i++) {
 				controlloPedine=black.get(i);
 				//controllo a sinistra del re
 				if(controlloPedine[0]==(king[0]) &&controlloPedine[1]==(king[1]-1)) 
-					sinistraRe++;
+					neriVicinoAlRe++;
 				//controllo a destra del re
 				if(controlloPedine[0]==(king[0]) &&controlloPedine[1]==(king[1]+1)) 
-					destraRe++;
+					neriVicinoAlRe++;
 				//controllo a sopra del re
 				if(controlloPedine[0]==(king[0]-1) &&controlloPedine[1]==(king[1]))
-					sopraRe++;
+					neriVicinoAlRe++;
 				//controllo a sotto del re
 				if(controlloPedine[0]==(king[0]+1) &&controlloPedine[1]==(king[1])) 
-					sottoRe++;
+					neriVicinoAlRe++;
 			}
-			//controllo se il re è vicino al trono
-			if((king[0]== 3 && king[1]==4)||(king[0]== 5 && king[1]==4)
-					||(king[0]== 4 && king[1]==3)||(king[0]== 4 && king[1]==5))
-				latiCopertiDelRe++;
-			//Controllo le caselle base per i neri se sono vuote
-			//controllo le caselle a sinistra
-			if(sinistraRe==0 && ((king[0]== 3 && king[1]==1)||(king[0]== 5 && king[1]==1)
-					||(king[0]== 1 && king[1]==5)||(king[0]== 7 && king[1]==5)
-					||(king[0]== 4 && king[1]==2)))
-				sinistraRe++;
-			if(destraRe==0 &&((king[0]== 1 && king[1]==3)||(king[0]== 7 && king[1]==3)
-					||(king[0]== 3 && king[1]==7)||(king[0]== 5 && king[1]==7)
-					||(king[0]== 4 && king[1]==6)))
-				destraRe++;
-			if(sottoRe==0 &&((king[0]== 6 && king[1]==4)||(king[0]== 3 && king[1]==1)
-					||(king[0]== 3 && king[1]==7)||(king[0]== 7 && king[1]==3)
-					||(king[0]== 7 && king[1]==5)))
-				sottoRe++;
-			if(sopraRe==0 &&((king[0]== 1 && king[1]==3)||(king[0]== 1 && king[1]==5
-					||(king[0]== 5 && king[1]==2)||(king[0]== 5 && king[1]==7)
-					||(king[0]== 2 && king[1]==4))))
-				sopraRe++;
-			latiCopertiDelRe+=sopraRe+sottoRe+sinistraRe+destraRe;
-			//Se il re ha tre lati coperti penalizzo questa mossa (dovrebbe andare bene il valore negativo).
-			if(latiCopertiDelRe==3)
+			latiCopertiDalTronoDelRe+=neriVicinoAlRe;
+			//Se ho più di tre lati occupati devo scappare con il re.
+			if(latiCopertiDalTronoDelRe>=3)
 				scappaRe=-10;
 		}
-		
+		else {/*non sono sul trono e neanche accanto ad esso,
+			quindi puo' essere mangiato normalmente.*/
+			//controllo le intersezioni doppie D2/F2/H4/H6/F8/D8/B6/B4
+			boolean intersezioneDoppia=false;
+			boolean singoloAccampamento=false;
+			if((king[0]== 3 && king[1]==1)||(king[0]== 5 && king[1]==1)
+				||(king[0]== 1 && king[1]==3)||(king[0]== 1 && king[1]==5)
+				||(king[0]== 7 && king[1]==3)||(king[0]== 7 && king[1]==5)
+				||(king[0]== 3 && king[1]==7)||(king[0]== 5 && king[1]==7))
+				intersezioneDoppia=true;
+			//controllo gli accampamenti E3/C5/H5/E5
+			if((king[0]== 2 && king[1]==4)||(king[0]== 6 && king[1]==4)
+					||(king[0]== 4 && king[1]==2)||(king[0]== 4 && king[1]==6))
+				singoloAccampamento=true;
+			if(singoloAccampamento)
+				scappaRe=-8;
+			if(intersezioneDoppia)
+				scappaRe=-10;
+		}
 		
 		
 		/*A.Fuschino
@@ -537,7 +521,6 @@ public class MyGame extends GameAshtonTablut implements Game<State, Action, Turn
 			if(controlloPedine[0]==2 && controlloPedine[1]==8)
 				valutazionePedinaBordiAngoli+=0.01;
 			
-
 			//in basso a sinistra 
 			if(controlloPedine[0]==6 && controlloPedine[1]==0)
 				valutazionePedinaBordiAngoli+=0.01;
@@ -557,7 +540,6 @@ public class MyGame extends GameAshtonTablut implements Game<State, Action, Turn
 				valutazionePedinaBordiAngoli+=0.01;
 			if(controlloPedine[0]==8 && controlloPedine[1]==6)
 				valutazionePedinaBordiAngoli+=0.01;
-			
 		}
 		
 		
@@ -581,13 +563,7 @@ public class MyGame extends GameAshtonTablut implements Game<State, Action, Turn
 				valutazioneAssettoFusco+=5;
 			if(controlloPedine[0]==5 && controlloPedine[1]==3 && (king[0]==5 && king[1]==4) && (state.getPawn(7,4).equalsPawn("O") || state.getPawn(4,7).equalsPawn("O")))
 				valutazioneAssettoFusco+=5;
-			
-		
 		}
-		
-		
-		
-		
 		
 		double result= conteggioPedine+posKing+pedineInAngolo+scappaRe +valutazioneAssettoFusco+valutazionePedinaBordiAngoli;
 		return result;
