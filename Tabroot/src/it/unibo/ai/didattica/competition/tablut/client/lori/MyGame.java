@@ -355,19 +355,21 @@ public class MyGame extends GameAshtonTablut implements Game<State, Action, Turn
 		return false;
 	}
 
-	// TODO: è la funzione euristica
+	// funzione euristica
 	@Override
 	public double getUtility(State state, Turn turn) {
-		if(state.getTurn().equalsTurn("WW"))
-			return Double.POSITIVE_INFINITY;
-		
-		if(state.getTurn().equalsTurn("BW"))
-			return Double.NEGATIVE_INFINITY;
 		
 		/*
-		if(state.getTurn().equalsTurn("D"))
-			return 0;
-		*/
+		 * Primi controlli per tentare vincere/evitare di perdere:
+		 * 1.Se sono il nero o sono il bianco e sto per vincere ritorno +infinito
+		 * 2.Altrimenti se sono il bianco o sono il nero e sto per perdere ritorno -infinito
+		 * Codice by L.Piazza
+		 */
+		if((turn.equalsTurn("B") && state.getTurn().equalsTurn("BW"))	|| (turn.equalsTurn("W") && state.getTurn().equalsTurn("WW")))
+			return Double.POSITIVE_INFINITY;
+		else if((turn.equalsTurn("B") && state.getTurn().equalsTurn("WW"))	|| (turn.equalsTurn("B") && state.getTurn().equalsTurn("BW")))
+			return Double.NEGATIVE_INFINITY;	
+		
 		
 		//conto le pedine
 		List<int[]> white = new ArrayList<int[]>(); //tengo traccia della posizione nello stato dei bianchi
@@ -408,6 +410,7 @@ public class MyGame extends GameAshtonTablut implements Game<State, Action, Turn
 			return euristicaBlack-euristicaWhite;
 	}
 	
+
 	//euristica bianco
 	private double getHeuristicValueWhite(State state,List<int[]> white, List<int[]> black, int[] king ) {
 		int nWhite=white.size();
@@ -628,7 +631,6 @@ public class MyGame extends GameAshtonTablut implements Game<State, Action, Turn
 			// ho il re sotto
 			if (a.getRowTo() < state.getBoard().length - 2
 					&& state.getPawn(a.getRowTo() + 1, a.getColumnTo()).equalsPawn("K")) {
-				System.out.println("Ho il re sotto");
 				// re sul trono
 				if (state.getBox(a.getRowTo() + 1, a.getColumnTo()).equals("e5")) {
 					if (state.getPawn(5, 4).equalsPawn("B") && state.getPawn(4, 5).equalsPawn("B")

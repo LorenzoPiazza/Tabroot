@@ -1,7 +1,6 @@
 package it.unibo.ai.didattica.competition.tablut.client.lori;
 
 import java.io.IOException;
-import java.lang.management.MemoryUsage;
 import java.net.UnknownHostException;
 
 import aima.core.search.adversarial.*;
@@ -130,30 +129,6 @@ public class TabrootClient extends TablutClient {
 				if (this.getCurrentState().getTurn().equals(StateTablut.Turn.WHITE)) {
 					//ed è il turno del bianco (tocca a me giocare)
 					
-					
-					/*
-					 * Scorro la scacchiera per salvarmi le mie pedine e le caselle vuote.
-					 * NB:Nel caso io utilizzi un algoritmo non serve perchè viene già fatto nella getActions()
-					 */
-					/*
-					int[] buf;
-					for (int i = 0; i < state.getBoard().length; i++) {
-						for (int j = 0; j < state.getBoard().length; j++) {
-							if (state.getPawn(i, j).equalsPawn(State.Pawn.WHITE.toString())
-									|| state.getPawn(i, j).equalsPawn(State.Pawn.KING.toString())) {
-								buf = new int[2];
-								buf[0] = i;
-								buf[1] = j;
-								pawns.add(buf);
-							} else if (state.getPawn(i, j).equalsPawn(State.Pawn.EMPTY.toString())) {
-								buf = new int[2];
-								buf[0] = i;
-								buf[1] = j;
-								empty.add(buf);
-							}
-						}
-					}*/
-					
 					Action a = null;
 					try {
 						a = new Action("z0", "z0", State.Turn.WHITE);
@@ -161,38 +136,6 @@ public class TabrootClient extends TablutClient {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					}
-					
-					//Selezione azione RANDOM
-					/*
-					int[] selected = null;
-					boolean found = false;
-					while (!found) {
-						if (pawns.size() > 1) {
-							selected = pawns.get(new Random().nextInt(pawns.size() - 1));
-						} else {
-							selected = pawns.get(0);
-						}
-
-						String from = this.getCurrentState().getBox(selected[0], selected[1]);
-
-						selected = empty.get(new Random().nextInt(empty.size() - 1));
-						String to = this.getCurrentState().getBox(selected[0], selected[1]);
-
-						try {
-							a = new Action(from, to, State.Turn.WHITE);
-						} catch (IOException e1) {
-							// TODO Auto-generated catch block
-							e1.printStackTrace();
-						}
-
-						try {
-							rules.checkMove(state, a);
-							found = true;
-						} catch (Exception e) {
-
-						}
-
-					}*/
 
 					//Selezione azione con ALGORITMO
 					//a=itDeepAlgorithm.makeDecision(state);
@@ -215,12 +158,6 @@ public class TabrootClient extends TablutClient {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
-					/*
-					 * pawns.clear();
-					 * empty.clear();
-					 */
-					
-
 				}
 				// è il turno dell'avversario
 				else if (state.getTurn().equals(StateTablut.Turn.BLACK)) {
@@ -246,29 +183,7 @@ public class TabrootClient extends TablutClient {
 				// sono il giocatore nero
 				if (this.getCurrentState().getTurn().equals(StateTablut.Turn.BLACK)) { 
 					// ed è il turno del nero (tocca a me giocare)
-					
-					/*
-					 * Scorro la scacchiera per salvarmi le mie pedine e le caselle vuote.
-					 * NB:Nel caso io utilizzi un algoritmo non serve perchè viene già fatto nella getActions()
-					 */
-					/*
-					int[] buf;
-					for (int i = 0; i < state.getBoard().length; i++) {
-						for (int j = 0; j < state.getBoard().length; j++) {
-							if (state.getPawn(i, j).equalsPawn(State.Pawn.BLACK.toString())) {
-								buf = new int[2];
-								buf[0] = i;
-								buf[1] = j;
-								pawns.add(buf);
-							} else if (state.getPawn(i, j).equalsPawn(State.Pawn.EMPTY.toString())) {
-								buf = new int[2];
-								buf[0] = i;
-								buf[1] = j;
-								empty.add(buf);
-							}
-						}
-					}*/
-					
+						
 					Action a = null;
 					try {
 						a = new Action("z0", "z0", State.Turn.BLACK);
@@ -276,41 +191,10 @@ public class TabrootClient extends TablutClient {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					}
-
-							
-					
-					//Selezione azione RANDOM
-					/*
-					int[] selected = null;
-					boolean found = false;
-					while (!found) {
-						selected = pawns.get(new Random().nextInt(pawns.size() - 1));
-						String from = this.getCurrentState().getBox(selected[0], selected[1]);
-
-						selected = empty.get(new Random().nextInt(empty.size() - 1));
-						String to = this.getCurrentState().getBox(selected[0], selected[1]);
-
-						try {
-							a = new Action(from, to, State.Turn.BLACK);
-						} catch (IOException e1) {
-							// TODO Auto-generated catch block
-							e1.printStackTrace();
-						}
-
-						System.out.println("try: " + a.toString());
-						try {
-							rules.checkMove(state, a);
-							found = true;
-						} catch (Exception e) {
-
-						}
-
-					}*/
 					
 					//Selezione azione con ALGORITMO
 					a = myItDeepAlgorithm.makeDecision(state);
 					
-
 					System.out.println("Mossa scelta: " + a.toString());
 					printStatistics(myItDeepAlgorithm);
 					try {
@@ -319,11 +203,6 @@ public class TabrootClient extends TablutClient {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
-					/*
-					 * pawns.clear();
-					 * empty.clear();
-					 */
-					
 
 				}
 
