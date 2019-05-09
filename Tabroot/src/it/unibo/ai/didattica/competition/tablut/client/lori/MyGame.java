@@ -505,7 +505,91 @@ public class MyGame extends GameAshtonTablut implements Game<State, Action, Turn
 		}
 		
 		
-		double result= conteggioPedine+posKing+pedineInAngolo+scappaRe;
+		
+		/*A.Fuschino
+		 * valuto positivamente(ma meno rispetto a una pedina nell'angolo) una pedina vicina a gli angoli e ai bordi della tavola da gioco
+		 * variabile: valutazionePedinaBordiAngoli
+		 * valutazione: 0.01 ???
+		 */
+		
+		double valutazionePedinaBordiAngoli=0;
+		
+		for(int i=0;i<nWhite;i++){
+			controlloPedine=white.get(i);
+			
+			//in alto a sinistra
+			if(controlloPedine[0]==1 && controlloPedine[1]==0)
+				valutazionePedinaBordiAngoli+=0.01;
+			if(controlloPedine[0]==2 && controlloPedine[1]==0)
+				valutazionePedinaBordiAngoli+=0.01;
+			if(controlloPedine[0]==0 && controlloPedine[1]==1 )
+				valutazionePedinaBordiAngoli+=0.01;
+			if(controlloPedine[0]==0 && controlloPedine[1]==2)				
+				valutazionePedinaBordiAngoli+=0.01;
+			
+			//in alto a destra
+			if(controlloPedine[0]==1 && controlloPedine[1]==8)
+				valutazionePedinaBordiAngoli+=0.01;
+			if(controlloPedine[0]==2 && controlloPedine[1]==0)
+				valutazionePedinaBordiAngoli+=0.01;
+			if(controlloPedine[0]==0 && controlloPedine[1]==7 )
+				valutazionePedinaBordiAngoli+=0.01;
+			if(controlloPedine[0]==2 && controlloPedine[1]==8)
+				valutazionePedinaBordiAngoli+=0.01;
+			
+
+			//in basso a sinistra 
+			if(controlloPedine[0]==6 && controlloPedine[1]==0)
+				valutazionePedinaBordiAngoli+=0.01;
+			if(controlloPedine[0]==7 && controlloPedine[1]==0)
+				valutazionePedinaBordiAngoli+=0.01;;
+			if(controlloPedine[0]==8 && controlloPedine[1]==1 )
+				valutazionePedinaBordiAngoli+=0.01;
+			if(controlloPedine[0]==8 && controlloPedine[1]==2)
+				valutazionePedinaBordiAngoli+=0.01;
+			
+			//in basso a destra 
+			if(controlloPedine[0]==7 && controlloPedine[1]==8)
+				valutazionePedinaBordiAngoli+=0.01;
+			if(controlloPedine[0]==6 && controlloPedine[1]==8)
+				valutazionePedinaBordiAngoli+=0.01;
+			if(controlloPedine[0]==8 && controlloPedine[1]==7 )
+				valutazionePedinaBordiAngoli+=0.01;
+			if(controlloPedine[0]==8 && controlloPedine[1]==6)
+				valutazionePedinaBordiAngoli+=0.01;
+			
+		}
+		
+		
+		/*A.Fuschino
+		 * controllo se i bianchi sono nella formazione buona per poter iniziare a muovere il re (quella che piace a me)
+		 * variaibile: valutazioneAssettoFusco
+		 * note: per ora ho considerato il quadrante in basso a destra bisogna fare la stessa cosa con gli altri 3 quadranti a seconda se i neri hanno mosso una o due pedine critiche
+		 */
+		
+		double valutazioneAssettoFusco=0;
+			
+		for(int i=0;i<nWhite;i++){
+			controlloPedine=white.get(i);
+			
+			//in basso a destra 
+			if(controlloPedine[0]==3 && controlloPedine[1]==5 &&  (king[0]==5 && king[1]==4) && (state.getPawn(7,4).equalsPawn("O") || state.getPawn(4,7).equalsPawn("O")))
+				valutazioneAssettoFusco+=5;
+			if(controlloPedine[0]==4 && controlloPedine[1]==6 && (king[0]==5 && king[1]==4) && (state.getPawn(7,4).equalsPawn("O") || state.getPawn(4,7).equalsPawn("O")))
+				valutazioneAssettoFusco+=5;
+			if(controlloPedine[0]==6 && controlloPedine[1]==4 && (king[0]==5 && king[1]==4) && (state.getPawn(7,4).equalsPawn("O") || state.getPawn(4,7).equalsPawn("O")))
+				valutazioneAssettoFusco+=5;
+			if(controlloPedine[0]==5 && controlloPedine[1]==3 && (king[0]==5 && king[1]==4) && (state.getPawn(7,4).equalsPawn("O") || state.getPawn(4,7).equalsPawn("O")))
+				valutazioneAssettoFusco+=5;
+			
+		
+		}
+		
+		
+		
+		
+		
+		double result= conteggioPedine+posKing+pedineInAngolo+scappaRe +valutazioneAssettoFusco+valutazionePedinaBordiAngoli;
 		return result;
 	}
 	

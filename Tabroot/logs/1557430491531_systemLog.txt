@@ -1,0 +1,8 @@
+May 09, 2019 9:34:51 PM it.unibo.ai.didattica.competition.tablut.server.Server run
+BUONO: Accensione server
+May 09, 2019 9:34:51 PM it.unibo.ai.didattica.competition.tablut.server.Server run
+BUONO: Partita di Tablut
+May 09, 2019 9:34:51 PM it.unibo.ai.didattica.competition.tablut.server.Server run
+AVVERTENZA: Errore connessioni
+May 09, 2019 9:34:51 PM it.unibo.ai.didattica.competition.tablut.server.Server run
+AVVERTENZA: Chiusura sistema
