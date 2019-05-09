@@ -102,7 +102,7 @@ public class TabrootClient extends TablutClient {
 		itDeepAlgorithm.setLogEnabled(true);
 		
 		//Eventuali altri algoritmi:
-		MyIterativeDeepeningAlphaBetaSearch myItDeepAlgorithm = new MyIterativeDeepeningAlphaBetaSearch(myGame, Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, 5);
+		MyIterativeDeepeningAlphaBetaSearch myItDeepAlgorithm = new MyIterativeDeepeningAlphaBetaSearch(myGame, Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, 15);
 		myItDeepAlgorithm.setLogEnabled(true);
 		MinimaxSearch<State, Action, Turn> miniMaxAlgorithm = MinimaxSearch.createFor(myGame);
 		AlphaBetaSearch<State, Action, Turn> alphaBetaAlgorithm = AlphaBetaSearch.createFor(myGame);
@@ -205,9 +205,10 @@ public class TabrootClient extends TablutClient {
 					printStatistics(myItDeepAlgorithm);
 					
 					/*GESTIONE MEMORIA: DA CONTROLLARE!!!*/
-					/*long memOccupata=Runtime.getRuntime().totalMemory()-Runtime.getRuntime().freeMemory();
+					long memOccupata=Runtime.getRuntime().totalMemory()-Runtime.getRuntime().freeMemory();
+					/*Conversione da bytes a MB*/
 					double memOccupataMB=memOccupata*Math.pow(9.537, Math.pow(10, -7));
-					System.out.println("MEMORIA OCCUPATA: " + memOccupataMB+" MB");*/
+					System.out.println("MEMORIA OCCUPATA: " + memOccupataMB+" MB");
 					try {
 						this.write(a);
 					} catch (ClassNotFoundException | IOException e) {
