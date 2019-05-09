@@ -444,44 +444,65 @@ public class MyGame extends GameAshtonTablut implements Game<State, Action, Turn
 		int sopraRe=0;
 		int destraRe=0;
 		int sinistraRe=0;
-		for(int i=0;i<black.size();i++) {
-			controlloPedine=black.get(i);
+		boolean nessunBiancoVicinoAlRe=true;
+		for(int i=0;i<white.size();i++) {
+			controlloPedine=white.get(i);
 			//controllo a sinistra del re
 			if(controlloPedine[0]==(king[0]) &&controlloPedine[1]==(king[1]-1)) 
-				sinistraRe++;
+				nessunBiancoVicinoAlRe=false;
 			//controllo a destra del re
-			if(controlloPedine[0]==(1+king[0]) &&controlloPedine[1]==(king[1]+1)) 
-				destraRe++;
+			if(controlloPedine[0]==(king[0]) &&controlloPedine[1]==(king[1]+1)) 
+				nessunBiancoVicinoAlRe=false;
 			//controllo a sopra del re
 			if(controlloPedine[0]==(king[0]-1) &&controlloPedine[1]==(king[1]))
-				sopraRe++;
+				nessunBiancoVicinoAlRe=false;
 			//controllo a sotto del re
 			if(controlloPedine[0]==(king[0]+1) &&controlloPedine[1]==(king[1])) 
-				sottoRe++;
+				nessunBiancoVicinoAlRe=false;
 		}
-		//controllo se il re è vicino al trono
-		if((king[0]== 3 && king[1]==4)||(king[0]== 5 && king[1]==4)
-				||(king[0]== 4 && king[1]==3)||(king[0]== 4 && king[1]==5))
-			latiCopertiDelRe++;
-		//Controllo le caselle base per i neri se sono vuote
-		//controllo le caselle a sinistra
-		if(sinistraRe==0 && ((king[0]== 3 && king[1]==1)||(king[0]== 5 && king[1]==1)
-				||(king[0]== 1 && king[1]==5)||(king[0]== 7 && king[1]==5)))
-			sinistraRe++;
-		if(destraRe==0 &&((king[0]== 1 && king[1]==3)||(king[0]== 7 && king[1]==3)
-				||(king[0]== 3 && king[1]==7)||(king[0]== 5 && king[1]==7)))
-			destraRe++;
-		if(sottoRe==0 &&((king[0]== 6 && king[1]==4)||(king[0]== 3 && king[1]==1)
-				||(king[0]== 3 && king[1]==7)||(king[0]== 7 && king[1]==3)
-				||(king[0]== 7 && king[1]==5)))
-			sottoRe++;
-		if(sopraRe==0 &&((king[0]== 1 && king[1]==3)||(king[0]== 1 && king[1]==5
-				||(king[0]== 5 && king[1]==2)||(king[0]== 5 && king[1]==7))))
-			sopraRe++;
-		latiCopertiDelRe+=sopraRe+sottoRe+sinistraRe+destraRe;
-		//Se il re ha tre lati coperti penalizzo questa mossa (dovrebbe andare bene il valore negativo).
-		if(latiCopertiDelRe==3)
-			scappaRe=-10;
+		if(nessunBiancoVicinoAlRe==true) {
+			for(int i=0;i<black.size();i++) {
+				controlloPedine=black.get(i);
+				//controllo a sinistra del re
+				if(controlloPedine[0]==(king[0]) &&controlloPedine[1]==(king[1]-1)) 
+					sinistraRe++;
+				//controllo a destra del re
+				if(controlloPedine[0]==(king[0]) &&controlloPedine[1]==(king[1]+1)) 
+					destraRe++;
+				//controllo a sopra del re
+				if(controlloPedine[0]==(king[0]-1) &&controlloPedine[1]==(king[1]))
+					sopraRe++;
+				//controllo a sotto del re
+				if(controlloPedine[0]==(king[0]+1) &&controlloPedine[1]==(king[1])) 
+					sottoRe++;
+			}
+			//controllo se il re è vicino al trono
+			if((king[0]== 3 && king[1]==4)||(king[0]== 5 && king[1]==4)
+					||(king[0]== 4 && king[1]==3)||(king[0]== 4 && king[1]==5))
+				latiCopertiDelRe++;
+			//Controllo le caselle base per i neri se sono vuote
+			//controllo le caselle a sinistra
+			if(sinistraRe==0 && ((king[0]== 3 && king[1]==1)||(king[0]== 5 && king[1]==1)
+					||(king[0]== 1 && king[1]==5)||(king[0]== 7 && king[1]==5)
+					||(king[0]== 4 && king[1]==2)))
+				sinistraRe++;
+			if(destraRe==0 &&((king[0]== 1 && king[1]==3)||(king[0]== 7 && king[1]==3)
+					||(king[0]== 3 && king[1]==7)||(king[0]== 5 && king[1]==7)
+					||(king[0]== 4 && king[1]==6)))
+				destraRe++;
+			if(sottoRe==0 &&((king[0]== 6 && king[1]==4)||(king[0]== 3 && king[1]==1)
+					||(king[0]== 3 && king[1]==7)||(king[0]== 7 && king[1]==3)
+					||(king[0]== 7 && king[1]==5)))
+				sottoRe++;
+			if(sopraRe==0 &&((king[0]== 1 && king[1]==3)||(king[0]== 1 && king[1]==5
+					||(king[0]== 5 && king[1]==2)||(king[0]== 5 && king[1]==7)
+					||(king[0]== 2 && king[1]==4))))
+				sopraRe++;
+			latiCopertiDelRe+=sopraRe+sottoRe+sinistraRe+destraRe;
+			//Se il re ha tre lati coperti penalizzo questa mossa (dovrebbe andare bene il valore negativo).
+			if(latiCopertiDelRe==3)
+				scappaRe=-10;
+		}
 		
 		
 		double result= conteggioPedine+posKing+pedineInAngolo+scappaRe;
