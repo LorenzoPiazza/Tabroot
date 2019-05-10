@@ -440,7 +440,7 @@ public class MyGame extends GameAshtonTablut implements Game<State, Action, Turn
 		/*Controllo che il re sia circondato da pedine nere*/		
 		int latiCopertiDalTronoDelRe=0;
 		int neriVicinoAlRe=0;
-
+		
 		//controllo se il re è vicino al trono
 		if((king[0]== 3 && king[1]==4)||(king[0]== 5 && king[1]==4)
 				||(king[0]== 4 && king[1]==3)||(king[0]== 4 && king[1]==5))
@@ -448,6 +448,40 @@ public class MyGame extends GameAshtonTablut implements Game<State, Action, Turn
 		//se sono sul trono o sono vicino al trono il re deve essere circondato
 		if((king[0]== 4 && king[1]==4)||(latiCopertiDalTronoDelRe==1))
 		{
+				//conto i neri vicino al re
+				for(int i=0;i<black.size();i++) {
+					controlloPedine=black.get(i);
+					//controllo a sinistra del re
+					if(controlloPedine[0]==(king[0]) &&controlloPedine[1]==(king[1]-1)) 
+						neriVicinoAlRe++;
+					//controllo a destra del re
+					if(controlloPedine[0]==(king[0]) &&controlloPedine[1]==(king[1]+1)) 
+						neriVicinoAlRe++;
+					//controllo a sopra del re
+					if(controlloPedine[0]==(king[0]-1) &&controlloPedine[1]==(king[1]))
+						neriVicinoAlRe++;
+					//controllo a sotto del re
+					if(controlloPedine[0]==(king[0]+1) &&controlloPedine[1]==(king[1])) 
+						neriVicinoAlRe++;
+				}
+				latiCopertiDalTronoDelRe+=neriVicinoAlRe;
+				//Se ho più di tre lati occupati devo scappare con il re.
+				if(latiCopertiDalTronoDelRe>=3)
+					scappaRe=-10;
+		}
+		else {/*non sono sul trono e neanche accanto ad esso,
+			quindi puo' essere mangiato normalmente.*/
+			//controllo le intersezioni doppie D2/F2/H4/H6/F8/D8/B6/B4
+			boolean adiacenteAccampamento=false;
+			if((king[0]== 3 && king[1]==1)||(king[0]== 5 && king[1]==1)
+				||(king[0]== 1 && king[1]==3)||(king[0]== 1 && king[1]==5)
+				||(king[0]== 7 && king[1]==3)||(king[0]== 7 && king[1]==5)
+				||(king[0]== 3 && king[1]==7)||(king[0]== 5 && king[1]==7))
+				adiacenteAccampamento=true;
+			//controllo gli accampamenti E3/C5/H5/E5
+			if((king[0]== 2 && king[1]==4)||(king[0]== 6 && king[1]==4)
+					||(king[0]== 4 && king[1]==2)||(king[0]== 4 && king[1]==6))
+				adiacenteAccampamento=true;
 			//conto i neri vicino al re
 			for(int i=0;i<black.size();i++) {
 				controlloPedine=black.get(i);
@@ -464,29 +498,9 @@ public class MyGame extends GameAshtonTablut implements Game<State, Action, Turn
 				if(controlloPedine[0]==(king[0]+1) &&controlloPedine[1]==(king[1])) 
 					neriVicinoAlRe++;
 			}
-			latiCopertiDalTronoDelRe+=neriVicinoAlRe;
-			//Se ho più di tre lati occupati devo scappare con il re.
-			if(latiCopertiDalTronoDelRe>=3)
+			if(neriVicinoAlRe>=1 || adiacenteAccampamento)
 				scappaRe=-10;
-		}
-		else {/*non sono sul trono e neanche accanto ad esso,
-			quindi puo' essere mangiato normalmente.*/
-			//controllo le intersezioni doppie D2/F2/H4/H6/F8/D8/B6/B4
-			boolean intersezioneDoppia=false;
-			boolean singoloAccampamento=false;
-			if((king[0]== 3 && king[1]==1)||(king[0]== 5 && king[1]==1)
-				||(king[0]== 1 && king[1]==3)||(king[0]== 1 && king[1]==5)
-				||(king[0]== 7 && king[1]==3)||(king[0]== 7 && king[1]==5)
-				||(king[0]== 3 && king[1]==7)||(king[0]== 5 && king[1]==7))
-				intersezioneDoppia=true;
-			//controllo gli accampamenti E3/C5/H5/E5
-			if((king[0]== 2 && king[1]==4)||(king[0]== 6 && king[1]==4)
-					||(king[0]== 4 && king[1]==2)||(king[0]== 4 && king[1]==6))
-				singoloAccampamento=true;
-			if(singoloAccampamento)
-				scappaRe=-8;
-			if(intersezioneDoppia)
-				scappaRe=-10;
+			
 		}
 		
 		
