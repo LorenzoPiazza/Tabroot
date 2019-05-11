@@ -7,7 +7,6 @@ import java.util.List;
 
 import aima.core.search.adversarial.Game;
 import it.unibo.ai.didattica.competition.tablut.domain.*;
-import it.unibo.ai.didattica.competition.tablut.domain.State.Pawn;
 import it.unibo.ai.didattica.competition.tablut.domain.State.Turn;
 
 
