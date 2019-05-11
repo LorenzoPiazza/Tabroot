@@ -578,7 +578,7 @@ public class MyGame extends GameAshtonTablut implements Game<State, Action, Turn
 				valutazioneAssettoFusco+=5;
 		}
 		
-		double result= conteggioPedine+posKing+pedineInAngolo+/*scappaRe+valutazioneAssettoFusco*/+valutazionePedinaBordiAngoli;
+		double result= conteggioPedine+posKing+pedineInAngolo+scappaRe+valutazioneAssettoFusco+valutazionePedinaBordiAngoli;
 		return result;
 	}
 	
