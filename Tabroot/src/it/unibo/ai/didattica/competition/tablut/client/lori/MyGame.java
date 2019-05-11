@@ -578,7 +578,7 @@ public class MyGame extends GameAshtonTablut implements Game<State, Action, Turn
 				valutazioneAssettoFusco+=5;
 		}
 		
-		double result= conteggioPedine+posKing+pedineInAngolo+scappaRe +valutazioneAssettoFusco+valutazionePedinaBordiAngoli;
+		double result= conteggioPedine+posKing+pedineInAngolo+/*scappaRe+valutazioneAssettoFusco*/+valutazionePedinaBordiAngoli;
 		return result;
 	}
 	
@@ -587,8 +587,61 @@ public class MyGame extends GameAshtonTablut implements Game<State, Action, Turn
 			int nBlack=black.size();
 			double conteggioPedine=nBlack/16.0;
 			
-			double result=conteggioPedine;
+			double result=conteggioPedine+(doGabbia(state)*100);
 			return result;
+		}
+		
+		private double doGabbia(State state) {
+			BlackOpenings blackStrategy=new BlackOpenings();
+			
+			switch(blackStrategy.findKing(state)) { 
+				case "UL":
+					if(blackStrategy.whiteInBorderUpLeft(state)==false) {	
+						if(state.getPawn(1,2).equalsPawn("B") && state.getPawn(2,1).equalsPawn("B") ) {
+							return 2.0;
+						}
+						if(state.getPawn(1,2).equalsPawn("B") || state.getPawn(2,1).equalsPawn("B") ) {
+							return 1.0;
+						}
+					}
+					break;
+				case"UR":
+					if(blackStrategy.whiteInBorderUpRight(state)==false) {	
+						if(state.getPawn(1,6).equalsPawn("B") && state.getPawn(2,7).equalsPawn("B") ) {
+							return 2.0;
+						}
+						if(state.getPawn(1,6).equalsPawn("B") || state.getPawn(2,7).equalsPawn("B") ) {
+							return 1.0;
+						}
+					}
+					break;
+				case"DL":
+					if(blackStrategy.whiteInBorderDownLeft(state)==false) {	
+						if(state.getPawn(6,1).equalsPawn("B") && state.getPawn(7,2).equalsPawn("B") ) {
+							return 2.0;
+						}
+						if(state.getPawn(6,1).equalsPawn("B") || state.getPawn(7,2).equalsPawn("B") ) {
+							return 1.0;
+						}
+					}
+					break;
+				case"DR":
+					if(blackStrategy.whiteInBorderDownLeft(state)==false) {	
+						if(state.getPawn(7,6).equalsPawn("B") && state.getPawn(6,7).equalsPawn("B") ) {
+							return 2.0;
+						}
+						if(state.getPawn(7,6).equalsPawn("B") || state.getPawn(6,7).equalsPawn("B") ) {
+							return 1.0;
+						}
+					}
+					break;
+				case "Cross":
+					//TODO
+					return blackStrategy.blackInAssettoGabbia(state)/8.0;
+				default:
+					return 0;
+			}
+			return 0;	
 		}
 	
 

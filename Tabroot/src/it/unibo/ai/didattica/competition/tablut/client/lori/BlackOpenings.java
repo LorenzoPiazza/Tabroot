@@ -13,13 +13,12 @@ import it.unibo.ai.didattica.competition.tablut.domain.State;
 public class BlackOpenings {
 	private GameAshtonTablut game;
 	
-	public BlackOpenings(MyGame game) {
-		this.game=game;
+	public BlackOpenings() {
 	}
 	
 	
 	public void openingsGabbia(State state) {
-	
+		
 	}
 	
 	
@@ -30,7 +29,7 @@ public class BlackOpenings {
 	 * 
 	 * (Code by L.Piazza)
 	 */
-	public List<int[]> blackInAssettoGabbia(State state) {
+	public int blackInAssettoGabbia(State state) {
 		int [] posizione = new int[2];
 		List<int[]> blackInAssetto = new ArrayList<int[]>();
 	
@@ -75,7 +74,7 @@ public class BlackOpenings {
 			blackInAssetto.add(posizione);
 		}
 		
-		return blackInAssetto;
+		return blackInAssetto.size();
 	}
 	
 	/**
@@ -90,5 +89,124 @@ public class BlackOpenings {
 		
 		return false;
 	}
-	  
+	 
+	
+	public boolean whiteInBorderUpLeft(State state) {
+		boolean result=false;
+		
+		for(int i=0; i<3 && !result; i++) {
+			if(state.getPawn(i, 0).equalsPawn("W")) {
+				result=true;
+			}
+		}
+		for(int i=0; i<2 && !result; i++) {
+			if(state.getPawn(i, 1).equalsPawn("W")) {
+				result=true;
+			}
+		}
+		if(!result && state.getPawn(0, 2).equalsPawn("W")) {
+			result=true;
+		}
+		return result;	
+	}
+	
+	public boolean whiteInBorderDownLeft(State state) {
+		boolean result=false;
+		
+		for(int i=6; i<9 && !result; i++) {
+			if(state.getPawn(i, 0).equalsPawn("W")) {
+				result=true;
+			}
+		}
+		for(int i=7; i<9 && !result; i++) {
+			if(state.getPawn(i, 1).equalsPawn("W")) {
+				result=true;
+			}
+		}
+		if(!result && state.getPawn(8, 2).equalsPawn("W")) {
+			result=true;
+		}
+		return result;	
+	}
+	
+	public boolean whiteInBorderUpRight(State state) {
+		boolean result=false;
+		
+		for(int i=0; i<3 && !result; i++) {
+			if(state.getPawn(i, 8).equalsPawn("W")) {
+				result=true;
+			}
+		}
+		for(int i=0; i<2 && !result; i++) {
+			if(state.getPawn(i, 7).equalsPawn("W")) {
+				result=true;
+			}
+		}
+		if(!result && state.getPawn(0, 6).equalsPawn("W")) {
+			result=true;
+		}
+		return result;	
+	}
+	
+	public boolean whiteInBorderDownRight(State state) {
+		boolean result=false;
+		
+		for(int i=6; i<9 && !result; i++) {
+			if(state.getPawn(i, 8).equalsPawn("W")) {
+				result=true;
+			}
+		}
+		for(int i=7; i<9 && !result; i++) {
+			if(state.getPawn(i, 7).equalsPawn("W")) {
+				result=true;
+			}
+		}
+		if(!result && state.getPawn(8, 6).equalsPawn("W")) {
+			result=true;
+		}
+		return result;	
+	}
+	
+	public String findKing(State state) {
+		String result="Cross";
+		boolean trovato=false;
+		
+		for(int i=1; i<4 && !trovato; i++) {
+			for(int j=1; j<4 && !trovato; j++) {
+				if(state.getPawn(i, j).equalsPawn("K")) {
+					trovato=true;
+					result="UL";
+				}	
+			}
+		}
+		
+		for(int i=5; i<8 && !trovato; i++) {
+			for(int j=1; j<4 && !trovato; j++) {
+				if(state.getPawn(i, j).equalsPawn("K")) {
+					trovato=true;
+					result="DL";
+				}	
+			}
+		}
+		
+		for(int i=1; i<4 && !trovato; i++) {
+			for(int j=5; j<8 && !trovato; j++) {
+				if(state.getPawn(i, j).equalsPawn("K")) {
+					trovato=true;
+					result="UR";
+				}	
+			}
+		}
+		
+		for(int i=5; i<8 && !trovato; i++) {
+			for(int j=5; j<8 && !trovato; j++) {
+				if(state.getPawn(i, j).equalsPawn("K")) {
+					trovato=true;
+					result="DR";
+				}	
+			}
+		}
+
+		return result;
+	}
 }
