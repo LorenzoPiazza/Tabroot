@@ -365,7 +365,7 @@ public class MyGame extends GameAshtonTablut implements Game<State, Action, Turn
 		 */
 		if((turn.equalsTurn("B") && state.getTurn().equalsTurn("BW"))	|| (turn.equalsTurn("W") && state.getTurn().equalsTurn("WW")))
 			return Double.POSITIVE_INFINITY;
-		else if((turn.equalsTurn("B") && state.getTurn().equalsTurn("WW"))	|| (turn.equalsTurn("B") && state.getTurn().equalsTurn("BW")))
+		else if((turn.equalsTurn("B") && state.getTurn().equalsTurn("WW"))	|| (turn.equalsTurn("W") && state.getTurn().equalsTurn("BW")))
 			return Double.NEGATIVE_INFINITY;	
 		
 		//conto le pedine
