@@ -239,4 +239,76 @@ public class WhiteStrategy {
 		return valutazioneAssettoFusco;
 	}
 	
+	public double valutazioneAssettoTorre(State state, List<int[]> white, int[] king){
+		double valutazioneAssettoTorre=0;
+		int torreAltaDestra=0;
+		int torreAltaSinistra=0;
+		int torreBassaSinistra=0;
+		int torreBassaDestra=0;
+		int[] controlloPedine= {0,0};
+		int nBianche=white.size();
+		if(nBianche>=4)
+		{
+			for(int i=0;i<nBianche;i++){
+				controlloPedine=white.get(i);
+				//controllo che il re abbia una pedina bianca sopra
+				if(controlloPedine[0]==king[0]-1 && controlloPedine[1]==king[1]) {
+					torreAltaSinistra++;
+					torreAltaDestra++;
+				}
+				//controllo che il re abbia una pedina bianca sotto
+				if(controlloPedine[0]==king[0]+1 && controlloPedine[1]==king[1]) {
+					torreBassaSinistra++;
+					torreBassaDestra++;
+				}
+				//controllo che il re abbia una pedina bianca sotto a sinistra
+				if(controlloPedine[0]==king[0]+1 && controlloPedine[1]==king[1]-1) {
+					torreBassaSinistra++;
+				}
+				//controllo che il re abbia una pedina bianca sotto a destra
+				if(controlloPedine[0]==king[0]+1 && controlloPedine[1]==king[1]+1) {
+					torreBassaDestra++;
+				}
+				if(torreBassaDestra==3 || torreBassaSinistra==3
+						|| torreAltaSinistra==3 || torreAltaDestra==3)
+					valutazioneAssettoTorre=10;
+			}	
+		}
+		return valutazioneAssettoTorre;
+	}
+	
+	public double catturaPassiva(State state, List<int[]> white,List<int[]> black, int[] king){
+		double valutazioneCatturaPassiva=0;
+		int sopraSotto=0;
+		int sinistraDestra=0;
+		int[] controlloPedineBianche= {0,0};
+		int[] controlloPedineNere= {0,0};
+		
+		for(int i=0;i<white.size();i++){
+			controlloPedineBianche=white.get(i);
+			for(int j=0;j<black.size();j++) {
+				controlloPedineNere=black.get(j);
+				//controllo se la bianca ha una nera sopra
+				if(controlloPedineBianche[0]-1==controlloPedineNere[0] &&
+						controlloPedineBianche[1]==controlloPedineNere[1])
+					sopraSotto++;
+				//controllo se la bianca ha una nera sotto
+				if(controlloPedineBianche[0]+1==controlloPedineNere[0] &&
+						controlloPedineBianche[1]==controlloPedineNere[1])
+					sopraSotto++;
+				//controllo se la bianca ha una nera a sinistra
+				if(controlloPedineBianche[0]==controlloPedineNere[0] &&
+						controlloPedineBianche[1]-1==controlloPedineNere[1])
+					sinistraDestra++;
+				//controllo se la bianca ha una nera a destra
+				if(controlloPedineBianche[0]==controlloPedineNere[0] &&
+						controlloPedineBianche[1]+1==controlloPedineNere[1])
+					sinistraDestra++;
+			}
+			
+		}
+
+		return valutazioneCatturaPassiva;
+	}
+	
 }

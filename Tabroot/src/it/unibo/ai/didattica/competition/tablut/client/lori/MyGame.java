@@ -400,6 +400,7 @@ public class MyGame extends GameAshtonTablut implements Game<State, Action, Turn
 		double euristicaSpecificaBlack = getSpecificHeuristicValueBlack(state, white, black, king);
 		double euristicaGeneraleBlack = getGeneralHeuristicValueBlack(state, white, black, king);
 		
+
 		/*
 		 * Se è il turno del bianco ritorno la valutazione della strategia del nostro
 		 * White player(Euristica generale+Euristica specifica) a cui sottraggo solo
@@ -443,9 +444,15 @@ public class MyGame extends GameAshtonTablut implements Game<State, Action, Turn
 
 		//Guardo l'assetto Fusco. Range: da NORMALIZZARE tra 0 e 1!! **
 		double assettoFusco = whiteStrategy.valutazioneAssettoFusco(state, white, king);
+		
+		/*Guardo l'assetto torre (Per torre si intende che nella scacchiera ho 4 pedine, di cui una è il re,
+		 in posizione tale che non si fanno mangiare. Le pedine saranno disposte in due righe una sopra l'altra. 
+		Valore ritornato da controllare.
+		*/
+		double assettoTorre=whiteStrategy.valutazioneAssettoTorre(state, white, king);
 
 		/*TODO:QUI VIENE FATTO IL TUNING E IL BILANCIAMENTO DEI VALORI! */
-		return conteggioPedine + posKing + scappaRe + pedineInAngoli + valutazionePedinaBordiAngoli + assettoFusco;
+		return conteggioPedine + posKing + scappaRe + pedineInAngoli + valutazionePedinaBordiAngoli + assettoFusco+assettoTorre;
 	}
 
 	/**
