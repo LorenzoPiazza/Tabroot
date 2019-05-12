@@ -211,31 +211,71 @@ public class WhiteStrategy {
 	 * note: per ora ho considerato il quadrante in basso a destra bisogna fare la stessa cosa con gli altri 3 quadranti a seconda se i neri hanno mosso una o due pedine critiche
 	 *(LORI: Ho aggiunto il continue per evitare dei controlli if superflui. Va bene??)*/
 	public double valutazioneAssettoFusco(State state, List<int[]> white, int[] king){
-		double valutazioneAssettoFusco=0;
-		int[] controlloPedine= {0,0};
-
-		for(int i=0;i<white.size();i++){
-			controlloPedine=white.get(i);
-
-			//in basso a destra 
-			if(controlloPedine[0]==3 && controlloPedine[1]==5 &&  (king[0]==5 && king[1]==4) && (state.getPawn(7,4).equalsPawn("O") || state.getPawn(4,7).equalsPawn("O"))) {
-				valutazioneAssettoFusco+=5;
-				continue;
-			}
-			if(controlloPedine[0]==4 && controlloPedine[1]==6 && (king[0]==5 && king[1]==4) && (state.getPawn(7,4).equalsPawn("O") || state.getPawn(4,7).equalsPawn("O"))){
-				valutazioneAssettoFusco+=5;
-				continue;
-			}
-			if(controlloPedine[0]==6 && controlloPedine[1]==4 && (king[0]==5 && king[1]==4) && (state.getPawn(7,4).equalsPawn("O") || state.getPawn(4,7).equalsPawn("O"))){
-				valutazioneAssettoFusco+=5;
-				continue;
-			}
-			if(controlloPedine[0]==5 && controlloPedine[1]==3 && (king[0]==5 && king[1]==4) && (state.getPawn(7,4).equalsPawn("O") || state.getPawn(4,7).equalsPawn("O"))){
-				valutazioneAssettoFusco+=5;
-				continue;
-			}
-		}
 		
+		double valutazioneAssettoFusco=0;
+		//int[] controlloPedine= {0,0};
+			
+	
+
+
+		//in basso a destra 			
+		if((state.getPawn(7,4).equalsPawn("O")) || (state.getPawn(4,7).equalsPawn("O"))){
+			
+			valutazioneAssettoFusco+=0.25;
+				
+
+			if(state.getPawn(7,6).equalsPawn("B")&& state.getPawn(6,7).equalsPawn("B"))
+				return 0;
+
+			if((state.getPawn(7,4).equalsPawn("O")) && (state.getPawn(4,7).equalsPawn("O")))	
+				valutazioneAssettoFusco+=0.3;
+
+
+
+
+			if(state.getPawn(7,6).equalsPawn("B"))
+				if(state.getPawn(6,8).equalsPawn("W"))
+					valutazioneAssettoFusco+=0.25;
+
+			if(state.getPawn(6,7).equalsPawn("B"))
+				if(state.getPawn(7,6).equalsPawn("W"))
+					valutazioneAssettoFusco+=0.25;
+
+			
+			//assetto base inziale
+
+			if(state.getPawn(4,5).equalsPawn("W") && state.getPawn(3,5).equalsPawn("W"))
+				valutazioneAssettoFusco+=0.15;
+			if(state.getPawn(5,4).equalsPawn("W") && state.getPawn(5,3).equalsPawn("W"))
+				valutazioneAssettoFusco+=0.15;							
+			if(state.getPawn(4,6).equalsPawn("W")) 
+				valutazioneAssettoFusco+=0.15;				
+			if(state.getPawn(6,4).equalsPawn("W")) 
+				valutazioneAssettoFusco+=0.15;	
+			
+			/*
+
+			if(state.getPawn(7,4).equalsPawn("O") && state.getPawn(6,8).equalsPawn("W"))
+				valutazioneAssettoFusco+=3;
+			if(state.getPawn(4,7).equalsPawn("O") && state.getPawn(8,6).equalsPawn("W"))
+				valutazioneAssettoFusco+=3;
+			 */
+
+
+			if(state.getPawn(7,5).equalsPawn("W") && state.getPawn(3,5).equalsPawn("W"))
+				valutazioneAssettoFusco+=0.25;
+			if(state.getPawn(5,7).equalsPawn("W") && state.getPawn(5,3).equalsPawn("W"))
+				valutazioneAssettoFusco+=0.25;
+
+			if(state.getPawn(5,3).equalsPawn("W")  & (king[0]==5 && king[1]==4))
+				valutazioneAssettoFusco+=0.25;
+
+		
+
+
+		}
+
+
 		return valutazioneAssettoFusco;
 	}
 	
