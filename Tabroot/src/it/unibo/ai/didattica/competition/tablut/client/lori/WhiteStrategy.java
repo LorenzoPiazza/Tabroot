@@ -284,7 +284,7 @@ public class WhiteStrategy {
 					pedinaSopraSinistra=true;
 				}
 				//controllo che il re abbia una pedina bianca sopra a destra
-				if(controlloPedine[0]==king[0]+1 && controlloPedine[1]==king[1]+1) {
+				if(controlloPedine[0]==king[0]-1 && controlloPedine[1]==king[1]+1) {
 					pedinaSopraDestra=true;
 				}
 				
