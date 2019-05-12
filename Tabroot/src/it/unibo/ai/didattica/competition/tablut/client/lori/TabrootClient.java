@@ -20,11 +20,11 @@ public class TabrootClient extends TablutClient {
 	}
 
 	public TabrootClient(String player) throws UnknownHostException, IOException {
-		this(player, "Tabroot",  10);
+		this(player, "Tabroot",  59);
 	}
 
 	public TabrootClient(String player, String name) throws UnknownHostException, IOException {
-		this(player, name, 10);
+		this(player, name, 59);
 	}
 
 	public TabrootClient(String player, int time) throws UnknownHostException, IOException {
@@ -34,7 +34,7 @@ public class TabrootClient extends TablutClient {
 	public static void main(String[] args) throws UnknownHostException, IOException, ClassNotFoundException {
 		String role = "";
 		String name = "Tabroot";
-		int time = 10;		
+		int time = 60;		
 		
 		String usage = "Usage: java TabrootClient WHITE or BLACK [-t <time>] [-n <name>]\n"
 				+"\ttime must be an integer (number of seconds for evaluate the next action); default: 60\n"
