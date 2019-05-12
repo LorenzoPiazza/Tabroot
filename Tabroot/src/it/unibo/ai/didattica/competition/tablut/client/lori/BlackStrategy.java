@@ -191,7 +191,7 @@ public class BlackStrategy {
 	 * (Code by L.Piazza A.Dalmonte)
 	 */
 	public String quadranteKing(int[] king) {
-		String result="Cross";
+		String result="Throne";
 		
 		//Re nel quadrante in alto a sinistra
 		if( (king[0]>=1 && king[0]<=3) && (king[1]>=1 && king[1]<=3) )
@@ -209,53 +209,111 @@ public class BlackStrategy {
 		if( (king[0]>=5 && king[0]<=7) && (king[1]>=5 && king[1]>=7) )
 			result="DR";
 		
+		//Re nella parte alta della croce
+		if((king[0]==2 || king[0]==3) && king[1]==4) {
+			result="CU";
+		}
+		
+		//Re nella parte bassa della croce
+		if((king[0]==5 || king[0]==6) && king[1]==4) {
+			result="CD";
+		}
+		
+		//Re nella parte destra della croce
+		if(king[0]==4 && (king[0]==5 || king[0]==6)) {
+			result="CR";
+		}
+		
+		//Re nella parte sinistra della croce
+		if(king[0]==4 && (king[0]==2 || king[0]==3)) {
+			result="CR";
+		}
 		return result;
 	}
+	
+	//modifica per guardare le gabbie adiacenti al quadrante del rè dato un valore minore (Alan)
+	//inoltre guarda anche se si è messo nella croce in che parte di essa e da un valore un pò buono alla gabbia in quei due lati della croce
 	
 	public double valutaAssettoGabbia(State state, int[] king) {
 		switch(quadranteKing(king)) { 
 			case "UL":
 				if(whiteInBorderUpLeft(state)==false) {	
 					if(state.getPawn(1,2).equalsPawn("B") && state.getPawn(2,1).equalsPawn("B") ) {
-						return 2.0;
-					}
-					if(state.getPawn(1,2).equalsPawn("B") || state.getPawn(2,1).equalsPawn("B") ) {
 						return 1.0;
 					}
+					if(state.getPawn(1,2).equalsPawn("B") || state.getPawn(2,1).equalsPawn("B") ) {
+						return 0.5;
+					}
+				}
+				else if ((whiteInBorderUpRight(state) == false && state.getPawn(1,6).equalsPawn("B") || state.getPawn(2,7).equalsPawn("B"))
+						|| (whiteInBorderDownLeft(state) == false && state.getPawn(6,1).equalsPawn("B") || state.getPawn(7,2).equalsPawn("B")) ) {
+						return 0.2;
 				}
 				break;
 			case"UR":
 				if(whiteInBorderUpRight(state)==false) {	
 					if(state.getPawn(1,6).equalsPawn("B") && state.getPawn(2,7).equalsPawn("B") ) {
-						return 2.0;
-					}
-					if(state.getPawn(1,6).equalsPawn("B") || state.getPawn(2,7).equalsPawn("B") ) {
 						return 1.0;
 					}
+					if(state.getPawn(1,6).equalsPawn("B") || state.getPawn(2,7).equalsPawn("B") ) {
+						return 0.5;
+					}
+				}else if((whiteInBorderUpLeft(state) == false && state.getPawn(1,2).equalsPawn("B") || state.getPawn(2,1).equalsPawn("B"))
+						|| (whiteInBorderDownRight(state) == false && state.getPawn(7,6).equalsPawn("B") || state.getPawn(6,7).equalsPawn("B"))) {
+					return 0.2;
 				}
 				break;
 			case"DL":
 				if(whiteInBorderDownLeft(state)==false) {	
 					if(state.getPawn(6,1).equalsPawn("B") && state.getPawn(7,2).equalsPawn("B") ) {
-						return 2.0;
-					}
-					if(state.getPawn(6,1).equalsPawn("B") || state.getPawn(7,2).equalsPawn("B") ) {
 						return 1.0;
 					}
+					if(state.getPawn(6,1).equalsPawn("B") || state.getPawn(7,2).equalsPawn("B") ) {
+						return 0.5;
+					}
+				}else if ((whiteInBorderDownRight(state) == false && state.getPawn(7,6).equalsPawn("B") || state.getPawn(6,7).equalsPawn("B"))
+						|| (whiteInBorderUpLeft(state) == false && state.getPawn(1,2).equalsPawn("B") || state.getPawn(2,1).equalsPawn("B"))) {
+					return 0.2;
 				}
 				break;
 			case"DR":
-				if(whiteInBorderDownLeft(state)==false) {	
+				if(whiteInBorderDownRight(state)==false) {	
 					if(state.getPawn(7,6).equalsPawn("B") && state.getPawn(6,7).equalsPawn("B") ) {
-						return 2.0;
-					}
-					if(state.getPawn(7,6).equalsPawn("B") || state.getPawn(6,7).equalsPawn("B") ) {
 						return 1.0;
 					}
+					if(state.getPawn(7,6).equalsPawn("B") || state.getPawn(6,7).equalsPawn("B") ) {
+						return 0.5;
+					}
+				}else if((whiteInBorderDownLeft(state) == false && state.getPawn(6,1).equalsPawn("B") || state.getPawn(7,2).equalsPawn("B"))
+						|| (whiteInBorderUpRight(state) == false && state.getPawn(1,6).equalsPawn("B") || state.getPawn(2,7).equalsPawn("B"))) {
+					return 0.2;
 				}
 				break;
-			case "Cross":
-				//TODO
+			case"CU":
+				if(whiteInBorderUpRight(state) == false && state.getPawn(1,6).equalsPawn("B") || state.getPawn(2,7).equalsPawn("B")
+				|| (whiteInBorderUpLeft(state) == false && state.getPawn(1,2).equalsPawn("B") || state.getPawn(2,1).equalsPawn("B"))) {
+					return 0.3;
+				}
+				break;
+			case"CD":
+				if(whiteInBorderDownRight(state) == false && state.getPawn(7,6).equalsPawn("B") || state.getPawn(6,7).equalsPawn("B")
+				|| (whiteInBorderDownLeft(state) == false && state.getPawn(6,1).equalsPawn("B") || state.getPawn(7,2).equalsPawn("B"))) {
+					return 0.3;
+				}
+				break;
+			case"CR":
+				if(whiteInBorderDownRight(state) == false && state.getPawn(7,6).equalsPawn("B") || state.getPawn(6,7).equalsPawn("B")
+				|| (whiteInBorderUpRight(state) == false && state.getPawn(1,6).equalsPawn("B") || state.getPawn(2,7).equalsPawn("B"))) {
+					return 0.3;
+				}
+				break;
+			case"CL":
+				if(whiteInBorderDownLeft(state) == false && state.getPawn(6,1).equalsPawn("B") || state.getPawn(7,2).equalsPawn("B")
+				|| (whiteInBorderUpLeft(state) == false && state.getPawn(1,2).equalsPawn("B") || state.getPawn(2,1).equalsPawn("B"))) {
+					return 0.3;
+				}
+				break;
+			case "Throne":
 				return blackInAssettoGabbia(state)/8.0;
 			default:
 				return 0;
