@@ -28,19 +28,19 @@ public class WhiteStrategy {
 		for(int i=0;i<white.size();i++){
 			controlloPedine=white.get(i);
 			if(controlloPedine[0]==0 && controlloPedine[1]==0) {
-				pedineInAngolo+=0.2;
+				pedineInAngolo+=0.07;
 				continue;
 			}				
 			if(controlloPedine[0]==8 && controlloPedine[1]==8) {
-				pedineInAngolo+=0.2;
+				pedineInAngolo+=0.07;
 				continue;
 			}				
 			if(controlloPedine[0]==8 && controlloPedine[1]==0 ) {
-				pedineInAngolo+=0.2;
+				pedineInAngolo+=0.07;
 				continue;
 			}				
 			if(controlloPedine[0]==0 && controlloPedine[1]==8) {
-				pedineInAngolo+=0.2;
+				pedineInAngolo+=0.07;
 				continue;
 			}		
 		}
@@ -213,68 +213,74 @@ public class WhiteStrategy {
 	public double valutazioneAssettoFusco(State state, List<int[]> white, int[] king){
 		
 		double valutazioneAssettoFusco=0;
-		//int[] controlloPedine= {0,0};
 			
 	
+		//assetto base inziale
 
+		int assettoIniziale=0;
+	
 
-		//in basso a destra 			
-		if((state.getPawn(7,4).equalsPawn("O")) || (state.getPawn(4,7).equalsPawn("O"))){
-			
-			valutazioneAssettoFusco+=0.25;
-				
-
-			if(state.getPawn(7,6).equalsPawn("B")&& state.getPawn(6,7).equalsPawn("B"))
-				return 0;
-
-			if((state.getPawn(7,4).equalsPawn("O")) && (state.getPawn(4,7).equalsPawn("O")))	
-				valutazioneAssettoFusco+=0.3;
-
-
-
-
-			if(state.getPawn(7,6).equalsPawn("B"))
-				if(state.getPawn(6,8).equalsPawn("W"))
-					valutazioneAssettoFusco+=0.25;
-
-			if(state.getPawn(6,7).equalsPawn("B"))
-				if(state.getPawn(7,6).equalsPawn("W"))
-					valutazioneAssettoFusco+=0.25;
-
-			
-			//assetto base inziale
-
-			if(state.getPawn(4,5).equalsPawn("W") && state.getPawn(3,5).equalsPawn("W"))
-				valutazioneAssettoFusco+=0.15;
-			if(state.getPawn(5,4).equalsPawn("W") && state.getPawn(5,3).equalsPawn("W"))
-				valutazioneAssettoFusco+=0.15;							
-			if(state.getPawn(4,6).equalsPawn("W")) 
-				valutazioneAssettoFusco+=0.15;				
-			if(state.getPawn(6,4).equalsPawn("W")) 
-				valutazioneAssettoFusco+=0.15;	
-			
-			/*
-
-			if(state.getPawn(7,4).equalsPawn("O") && state.getPawn(6,8).equalsPawn("W"))
-				valutazioneAssettoFusco+=3;
-			if(state.getPawn(4,7).equalsPawn("O") && state.getPawn(8,6).equalsPawn("W"))
-				valutazioneAssettoFusco+=3;
-			 */
-
-
-			if(state.getPawn(7,5).equalsPawn("W") && state.getPawn(3,5).equalsPawn("W"))
-				valutazioneAssettoFusco+=0.25;
-			if(state.getPawn(5,7).equalsPawn("W") && state.getPawn(5,3).equalsPawn("W"))
-				valutazioneAssettoFusco+=0.25;
-
-			if(state.getPawn(5,3).equalsPawn("W")  & (king[0]==5 && king[1]==4))
-				valutazioneAssettoFusco+=0.25;
-
-		
-
-
+		if(state.getPawn(4,5).equalsPawn("W") && state.getPawn(3,5).equalsPawn("W")){
+			valutazioneAssettoFusco+=1;
+			assettoIniziale++;
 		}
 
+		if(state.getPawn(5,4).equalsPawn("W") && state.getPawn(5,3).equalsPawn("W")){
+			valutazioneAssettoFusco+=1;		
+			assettoIniziale++;
+		}
+		
+	
+
+		if(state.getPawn(4,6).equalsPawn("W")) {
+			valutazioneAssettoFusco+=0.2;		
+			assettoIniziale++;
+		}
+
+		if(state.getPawn(6,4).equalsPawn("W")) {
+			valutazioneAssettoFusco+=0.2;	
+			assettoIniziale++;
+		}
+
+
+		//cerca di contrastare la gabbia 
+
+		if(state.getPawn(7,6).equalsPawn("B"))
+			if(state.getPawn(6,7).equalsPawn("W"))
+				valutazioneAssettoFusco+=0.35;
+
+		if(state.getPawn(6,7).equalsPawn("B"))
+			if(state.getPawn(7,6).equalsPawn("W"))
+				valutazioneAssettoFusco+=0.35;
+
+		
+		//mosse dopo l'assetto inziale	
+
+
+		if(state.getPawn(7,5).equalsPawn("W") && state.getPawn(3,5).equalsPawn("W"))
+			valutazioneAssettoFusco+=0.7;
+		if(state.getPawn(5,7).equalsPawn("W") && state.getPawn(5,3).equalsPawn("W"))
+			valutazioneAssettoFusco+=0.7;
+
+
+		if(!state.getPawn(6,0).equalsPawn("B") && !state.getPawn(6,1).equalsPawn("B") && !state.getPawn(6,2).equalsPawn("B") && !state.getPawn(6,3).equalsPawn("B") && assettoIniziale==4)  
+			if(state.getPawn(6,8).equalsPawn("W"))
+				valutazioneAssettoFusco+=0.35;	
+		if(!state.getPawn(0,6).equalsPawn("B") && !state.getPawn(1,6).equalsPawn("B") && !state.getPawn(2,6).equalsPawn("B") && !state.getPawn(3,6).equalsPawn("B") && assettoIniziale==4)  
+			if(state.getPawn(6,8).equalsPawn("W"))
+				valutazioneAssettoFusco+=0.35;
+
+		if(state.getPawn(6,2).equalsPawn("W") && state.getPawn(6,3).equalsPawn("W") && assettoIniziale==4)  
+			valutazioneAssettoFusco+=0.25;
+		if(state.getPawn(2,6).equalsPawn("W") && state.getPawn(3,6).equalsPawn("W") && assettoIniziale==4)  
+			valutazioneAssettoFusco+=0.25;
+
+
+		//incomincio a muovere il re 
+		if(state.getPawn(5,3).equalsPawn("W") && (king[0]==5 && king[1]==4) && assettoIniziale==4)
+			valutazioneAssettoFusco+=0.35;
+
+	
 
 		return valutazioneAssettoFusco;
 	}
