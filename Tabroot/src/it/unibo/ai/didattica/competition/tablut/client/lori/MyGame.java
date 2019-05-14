@@ -436,23 +436,23 @@ public class MyGame extends GameAshtonTablut implements Game<State, Action, Turn
 		//Controlli per far scappare il Re. Attenzione che il range è negativo! Range: [-1,0]
 		double scappaRe = whiteStrategy.scappaRe(state, white, black, king);
 
-		//Guardo se ho delle pedine bianche negli angoli. Range: da NORMALIZZARE tra 0 e 1!! **
-		double pedineInAngoli = whiteStrategy.pedineInAngoli(white);
+		//Guardo se ho delle pedine bianche negli angoli. Range [0,1]
+		double pedineInAngoli = whiteStrategy.pedineInAngoli(state, king);
 
-		//Guardo se ho delle pedine bianche nei bordi. Range: da NORMALIZZARE tra 0 e 1!! **
-		double valutazionePedinaBordiAngoli = whiteStrategy.vicinanzaBordiAngoli(white);
+		//Guardo se ho delle pedine bianche nei bordi. Da TOGLIERE **
+		//double valutazionePedinaBordiAngoli = whiteStrategy.vicinanzaBordiAngoli(white);
 
 		//Guardo l'assetto Fusco. Range: da NORMALIZZARE tra 0 e 1!! **
-		double assettoFusco = whiteStrategy.valutazioneAssettoFusco(state, white, king);
+		//double assettoFusco = whiteStrategy.valutazioneAssettoFusco(state, white, king);
 		
 		/*Guardo l'assetto torre (Per torre si intende che nella scacchiera ho 4 pedine, di cui una è il re,
 		 in posizione tale che non si fanno mangiare. Le pedine saranno disposte in due righe una sopra l'altra. 
-		Valore ritornato da controllare.
+		Range [0,1]
 		*/
 		double assettoTorre=whiteStrategy.valutazioneAssettoTorre(state, white, king);
 
 		/*TODO:QUI VIENE FATTO IL TUNING E IL BILANCIAMENTO DEI VALORI! */
-		return conteggioPedine + posKing + scappaRe + pedineInAngoli + valutazionePedinaBordiAngoli + assettoFusco+assettoTorre;
+		return 0.55*conteggioPedine + 0.05*posKing + 0.1*scappaRe + 0.35*pedineInAngoli + 0.15*assettoTorre;
 	}
 
 	/**
@@ -475,9 +475,21 @@ public class MyGame extends GameAshtonTablut implements Game<State, Action, Turn
 
 		//Controlli per far scappare il Re. Attenzione che il range è negativo! Range: [-1,0]
 		double scappaRe = whiteStrategy.scappaRe(state, white, black, king);
+		
+		//Guardo se ho delle pedine bianche negli angoli. Range [0,1]
+		double pedineInAngoli = whiteStrategy.pedineInAngoli(state, king);
+
+		//Guardo se ho delle pedine bianche nei bordi. Da TOGLIERE **
+		//double valutazionePedinaBordiAngoli = whiteStrategy.vicinanzaBordiAngoli(white);
+		
+		/*Guardo l'assetto torre (Per torre si intende che nella scacchiera ho 4 pedine, di cui una è il re,
+		 in posizione tale che non si fanno mangiare. Le pedine saranno disposte in due righe una sopra l'altra. 
+		Range [0,1]
+		*/
+		double assettoTorre=whiteStrategy.valutazioneAssettoTorre(state, white, king);
 
 		/* TODO:QUI VIENE FATTO IL TUNING E IL BILANCIAMENTO DEI VALORI! */
-		return conteggioPedine + posKing + scappaRe;
+		return 0.55*conteggioPedine + 0.05*posKing + 0.1*scappaRe + 0.35*pedineInAngoli + 0.15*assettoTorre;
 	}
 	
 	
@@ -496,11 +508,11 @@ public class MyGame extends GameAshtonTablut implements Game<State, Action, Turn
 		//Conteggio delle pedine nere. Range [0,1]
 		double conteggioPedine = black.size() / 16.0;
 		
-		//Valutazione dell'assetto gabbia. Range DA NORMALIZZARE TRA 0 e 1!! **
+		//Valutazione dell'assetto gabbia. Range [0,1]
 		double assettoGabbia=blackStrategy.valutaAssettoGabbia(state, king);
 		
 		/* TODO:QUI VIENE FATTO IL TUNING E IL BILANCIAMENTO DEI VALORI! */
-		return conteggioPedine+assettoGabbia;
+		return 0.5*conteggioPedine+0.5*assettoGabbia;
 	}
 	
 	/**
@@ -512,11 +524,17 @@ public class MyGame extends GameAshtonTablut implements Game<State, Action, Turn
 	 * @return Un valore nel range [0,1]
 	 */
 	private double getGeneralHeuristicValueBlack(State state, List<int[]> white, List<int[]> black, int[] king) {
+		BlackStrategy blackStrategy = new BlackStrategy();
 		int nBlack = black.size();
+		
+		//Conteggio delle pedine nere. Range [0,1]
 		double conteggioPedine = nBlack / 16.0;
+		
+		//Valutazione dell'assetto gabbia. Range [0,1]
+		double assettoGabbia=blackStrategy.valutaAssettoGabbia(state, king);
 
 		/* TODO:QUI VIENE FATTO IL TUNING E IL BILANCIAMENTO DEI VALORI! */
-		return conteggioPedine; //Mettere anche scappaRe per prevedere che i neri si avvicineranno al Re ?
+		return 0.5*conteggioPedine+0.5*assettoGabbia; //Mettere anche scappaRe per prevedere che i neri si avvicineranno al Re ?
 	}
 
 
