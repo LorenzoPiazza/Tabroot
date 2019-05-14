@@ -231,6 +231,25 @@ public class BlackStrategy {
 		return result;
 	}
 	
+	
+	/*private List<int[]> puntiDiFugaRe(State state){
+		List<int[]> puntiDiFugaRe=new ArrayList<int[]>();
+		if(state.getPawn(3, 4).equalsPawn("O")) {
+			puntiDiFugaRe.add(new int [] {3,4});
+		}
+		if(state.getPawn(4, 5).equalsPawn("O")) {
+			puntiDiFugaRe.add(new int [] {4,5});
+		}
+		if(state.getPawn(5, 4).equalsPawn("O")) {
+			puntiDiFugaRe.add(new int [] {5,4});
+		}
+		if(state.getPawn(4, 3).equalsPawn("O")) {
+			puntiDiFugaRe.add(new int [] {4,3});
+		}
+		
+		return puntiDiFugaRe;
+	}*/
+	
 	//modifica per guardare le gabbie adiacenti al quadrante del rè dato un valore minore (Alan)
 	//inoltre guarda anche se si è messo nella croce in che parte di essa e da un valore un pò buono alla gabbia in quei due lati della croce
 	
@@ -292,25 +311,25 @@ public class BlackStrategy {
 			case"CU":
 				if(whiteInBorderUpRight(state) == false && state.getPawn(1,6).equalsPawn("B") || state.getPawn(2,7).equalsPawn("B")
 				|| (whiteInBorderUpLeft(state) == false && state.getPawn(1,2).equalsPawn("B") || state.getPawn(2,1).equalsPawn("B"))) {
-					return 0.3;
+					return 0.5;
 				}
 				break;
 			case"CD":
 				if(whiteInBorderDownRight(state) == false && state.getPawn(7,6).equalsPawn("B") || state.getPawn(6,7).equalsPawn("B")
 				|| (whiteInBorderDownLeft(state) == false && state.getPawn(6,1).equalsPawn("B") || state.getPawn(7,2).equalsPawn("B"))) {
-					return 0.3;
+					return 0.5;
 				}
 				break;
 			case"CR":
 				if(whiteInBorderDownRight(state) == false && state.getPawn(7,6).equalsPawn("B") || state.getPawn(6,7).equalsPawn("B")
 				|| (whiteInBorderUpRight(state) == false && state.getPawn(1,6).equalsPawn("B") || state.getPawn(2,7).equalsPawn("B"))) {
-					return 0.3;
+					return 0.5;
 				}
 				break;
 			case"CL":
 				if(whiteInBorderDownLeft(state) == false && state.getPawn(6,1).equalsPawn("B") || state.getPawn(7,2).equalsPawn("B")
 				|| (whiteInBorderUpLeft(state) == false && state.getPawn(1,2).equalsPawn("B") || state.getPawn(2,1).equalsPawn("B"))) {
-					return 0.3;
+					return 0.5;
 				}
 				break;
 			case "Throne":

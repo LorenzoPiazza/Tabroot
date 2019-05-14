@@ -1,5 +1,6 @@
 package it.unibo.ai.didattica.competition.tablut.client.lori;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import it.unibo.ai.didattica.competition.tablut.domain.State;
@@ -20,31 +21,57 @@ public class WhiteStrategy {
 		return posKing;
 	}
 	
-	/*(LORI: Ho aggiunto il continue per evitare dei controlli if superflui). Va bene??*/
-	public double pedineInAngoli(List<int[]> white) {
-		int[] controlloPedine= {0,0};
-		double pedineInAngolo=0;
-		
-		for(int i=0;i<white.size();i++){
-			controlloPedine=white.get(i);
-			if(controlloPedine[0]==0 && controlloPedine[1]==0) {
-				pedineInAngolo+=0.15;
-				continue;
-			}				
-			if(controlloPedine[0]==8 && controlloPedine[1]==8) {
-				pedineInAngolo+=0.15;
-				continue;
-			}				
-			if(controlloPedine[0]==8 && controlloPedine[1]==0 ) {
-				pedineInAngolo+=0.15;
-				continue;
-			}				
-			if(controlloPedine[0]==0 && controlloPedine[1]==8) {
-				pedineInAngolo+=0.15;
-				continue;
-			}		
+
+	
+	public double pedineInAngoli(State state, int[] king) {
+		switch(quadranteKing(king)) { 
+		case "UL":
+			if(state.getPawn(0, 0).equalsPawn("W"))
+				return 1.0;		
+			break;
+		case"UR":
+			if(state.getPawn(0, 8).equalsPawn("W"))
+				return 1.0;	
+			break;
+		case"DL":
+			if(state.getPawn(8, 0).equalsPawn("W"))
+				return 1.0;	
+			break;
+		case"DR":
+			if(state.getPawn(8, 8).equalsPawn("W"))
+				return 1.0;	
+			break;
+		case"CU":
+			if(state.getPawn(0, 0).equalsPawn("W") && state.getPawn(0, 8).equalsPawn("W"))
+				return 1.0;
+			else if(state.getPawn(0, 0).equalsPawn("W") || state.getPawn(0, 8).equalsPawn("W"))
+				return 0.5;
+			break;
+		case"CD":
+			if(state.getPawn(8, 0).equalsPawn("W") && state.getPawn(8, 8).equalsPawn("W"))
+				return 1.0;
+			else if(state.getPawn(8, 0).equalsPawn("W") || state.getPawn(8, 8).equalsPawn("W"))
+				return 0.5;
+			break;
+		case"CR":
+			if(state.getPawn(0, 8).equalsPawn("W") && state.getPawn(8, 8).equalsPawn("W"))
+				return 1.0;
+			else if(state.getPawn(0, 8).equalsPawn("W") || state.getPawn(8, 8).equalsPawn("W"))
+				return 0.5;
+			break;
+		case"CL":
+			if(state.getPawn(8, 0).equalsPawn("W") && state.getPawn(0, 0).equalsPawn("W"))
+				return 1.0;
+			else if(state.getPawn(8, 0).equalsPawn("W") || state.getPawn(0, 0).equalsPawn("W"))
+				return 0.5;
+			break;
+		case "Throne":
+			return whiteInAngoli(state)/4.0;
+		default:
+			return 0;
+
 		}
-		return pedineInAngolo;
+		return 0;
 	}
 	
 	public double scappaRe(State state, List<int[]> white, List<int[]> black, int[] king) {
@@ -120,8 +147,8 @@ public class WhiteStrategy {
 	 * valuto positivamente(ma meno rispetto a una pedina nell'angolo) una pedina vicina a gli angoli e ai bordi della tavola da gioco
 	 * variabile: valutazionePedinaBordiAngoli
 	 * valutazione: 0.01 ???
-	 *(LORI: Ho aggiunto il continue per evitare dei controlli if superflui. Va bene??)*/
-	public double vicinanzaBordiAngoli(List<int[]> white) {
+	DA TOGLIERE?!
+	/*public double vicinanzaBordiAngoli(List<int[]> white) {
 		double valutazionePedinaBordiAngoli=0;
 		int[] controlloPedine= {0,0};
 		
@@ -202,7 +229,7 @@ public class WhiteStrategy {
 		}
 		return valutazionePedinaBordiAngoli;
 		
-	}
+	}*/
 	
 
 	/*A.Fuschino
@@ -529,14 +556,83 @@ public class WhiteStrategy {
 				//se ha due lati coperti, esempio sopra e destra
 				if((pedinaSinistra && pedinaSotto )||(pedinaSinistra && pedinaSopra)||
 						(pedinaDestra&&pedinaSotto)||(pedinaDestra&&pedinaSopra))
-					valutazioneAssettoTorre=5;
+					valutazioneAssettoTorre=0.5;
 				//configurazione torre
 				if((pedinaSinistra && pedinaSotto && pedinaSottoSinistra)||(pedinaSinistra && pedinaSopra&& pedinaSopraSinistra)||
 						(pedinaDestra&&pedinaSotto&&pedinaSottoDestra)||(pedinaDestra&&pedinaSopra&&pedinaSopraDestra))
-					valutazioneAssettoTorre=10;
+					valutazioneAssettoTorre=1;
 			}	
 		}
 		return valutazioneAssettoTorre;
 	}
 	
+	
+	public String quadranteKing(int[] king) {
+		String result="Throne";
+		
+		//Re nel quadrante in alto a sinistra
+		if( (king[0]>=1 && king[0]<=3) && (king[1]>=1 && king[1]<=3) )
+			result="UL";
+		
+		//Re nel quadrante in basso a sinistra
+		if( (king[0]>=5 && king[0]<=7) && (king[1]>=1 && king[1]>=3) )
+			result="DL";
+		
+		//Re nel quadrante in alto a destra
+		if( (king[0]>=1 && king[0]<=3) && (king[1]>=5 && king[1]>=7) )
+			result="UR";
+		
+		//Re nel quadrante in basso a destra
+		if( (king[0]>=5 && king[0]<=7) && (king[1]>=5 && king[1]>=7) )
+			result="DR";
+		
+		//Re nella parte alta della croce
+		if((king[0]==2 || king[0]==3) && king[1]==4) {
+			result="CU";
+		}
+		
+		//Re nella parte bassa della croce
+		if((king[0]==5 || king[0]==6) && king[1]==4) {
+			result="CD";
+		}
+		
+		//Re nella parte destra della croce
+		if(king[0]==4 && (king[0]==5 || king[0]==6)) {
+			result="CR";
+		}
+		
+		//Re nella parte sinistra della croce
+		if(king[0]==4 && (king[0]==2 || king[0]==3)) {
+			result="CR";
+		}
+		return result;
+	}
+	
+	private int whiteInAngoli(State state) {
+		int [] posizione = new int[2];
+		List<int[]> whiteInAngoli = new ArrayList<int[]>();
+	
+		if(state.getPawn(0,0).equalsPawn("W")) {
+			posizione[0]=0;
+			posizione[1]=0;
+			whiteInAngoli.add(posizione);
+		}
+		if(state.getPawn(0,8).equalsPawn("W")) {
+			posizione[0]=0;
+			posizione[1]=8;
+			whiteInAngoli.add(posizione);
+		}
+		if(state.getPawn(8,0).equalsPawn("W")) {
+			posizione[0]=8;
+			posizione[1]=0;
+			whiteInAngoli.add(posizione);
+		}
+		if(state.getPawn(8,8).equalsPawn("W")) {
+			posizione[0]=8;
+			posizione[1]=8;
+			whiteInAngoli.add(posizione);
+		}
+		
+		return whiteInAngoli.size();
+	}
 }
