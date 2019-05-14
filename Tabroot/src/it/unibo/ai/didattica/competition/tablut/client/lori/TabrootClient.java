@@ -101,7 +101,7 @@ public class TabrootClient extends TablutClient {
 
 		
 		//Creo l'oggetto MyIterativeDeepeningAlphaBetaSearch che realizzerà la ricerca della mossa nello spazio degli stati
-		MyIterativeDeepeningAlphaBetaSearch myItDeepAlgorithm = new MyIterativeDeepeningAlphaBetaSearch(myGame, Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, time);
+		MyIterativeDeepeningAlphaBetaSearch myItDeepAlgorithm = new MyIterativeDeepeningAlphaBetaSearch(myGame, Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, 15);
 		myItDeepAlgorithm.setLogEnabled(true);
 		
 		

@@ -450,9 +450,14 @@ public class MyGame extends GameAshtonTablut implements Game<State, Action, Turn
 		Valore ritornato da controllare.
 		*/
 		double assettoTorre=whiteStrategy.valutazioneAssettoTorre(state, white, king);
+		
+		//new
+		double contrastaGabbia=whiteStrategy.contrastaGabbia(state, white, king);
+		double mosseIntelligenti=whiteStrategy.mosseIntelligenti(state, white, king);
+		double valQuadranti=whiteStrategy.valQuadranti(state);
 
 		/*TODO:QUI VIENE FATTO IL TUNING E IL BILANCIAMENTO DEI VALORI! */
-		return conteggioPedine + posKing + scappaRe + pedineInAngoli + valutazionePedinaBordiAngoli + assettoFusco+assettoTorre;
+		return conteggioPedine + posKing + scappaRe + pedineInAngoli + valutazionePedinaBordiAngoli + valQuadranti+mosseIntelligenti+contrastaGabbia;
 	}
 
 	/**
