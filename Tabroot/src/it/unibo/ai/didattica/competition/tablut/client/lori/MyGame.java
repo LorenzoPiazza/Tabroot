@@ -458,7 +458,7 @@ public class MyGame extends GameAshtonTablut implements Game<State, Action, Turn
 
 		/*TODO:QUI VIENE FATTO IL TUNING E IL BILANCIAMENTO DEI VALORI! */
 
-		return 0.55*conteggioPedine + 0.05*posKing + 0.1*scappaRe + 0.35*pedineInAngoli + 0.15*assettoTorre;
+		return 0.35*conteggioPedine + 0.05*posKing + 0.1*scappaRe + 0.20*pedineInAngoli + 0.05*assettoTorre+0.05*contrastaGabbia+0.15*mosseIntelligenti+0.25*valQuadranti;
 
 	}
 
@@ -494,9 +494,14 @@ public class MyGame extends GameAshtonTablut implements Game<State, Action, Turn
 		Range [0,1]
 		*/
 		double assettoTorre=whiteStrategy.valutazioneAssettoTorre(state, white, king);
+		
+		//new
+		double contrastaGabbia=whiteStrategy.contrastaGabbia(state, white, king);
+		double mosseIntelligenti=whiteStrategy.mosseIntelligenti(state, white, king);
+		double valQuadranti=whiteStrategy.valQuadranti(state);
 
 		/* TODO:QUI VIENE FATTO IL TUNING E IL BILANCIAMENTO DEI VALORI! */
-		return 0.55*conteggioPedine + 0.05*posKing + 0.1*scappaRe + 0.35*pedineInAngoli + 0.15*assettoTorre;
+		return 0.55*conteggioPedine + 0.05*posKing + 0.1*scappaRe + 0.1*pedineInAngoli + 0.05*assettoTorre+0.05*contrastaGabbia+0.10*mosseIntelligenti+0.20*valQuadranti;
 	}
 	
 	
@@ -519,7 +524,7 @@ public class MyGame extends GameAshtonTablut implements Game<State, Action, Turn
 		double assettoGabbia=blackStrategy.valutaAssettoGabbia(state, king);
 		
 		/* TODO:QUI VIENE FATTO IL TUNING E IL BILANCIAMENTO DEI VALORI! */
-		return 0.5*conteggioPedine+0.5*assettoGabbia;
+		return 0.45*conteggioPedine+0.55*assettoGabbia;
 	}
 	
 	/**
@@ -541,7 +546,7 @@ public class MyGame extends GameAshtonTablut implements Game<State, Action, Turn
 		double assettoGabbia=blackStrategy.valutaAssettoGabbia(state, king);
 
 		/* TODO:QUI VIENE FATTO IL TUNING E IL BILANCIAMENTO DEI VALORI! */
-		return 0.5*conteggioPedine+0.5*assettoGabbia; //Mettere anche scappaRe per prevedere che i neri si avvicineranno al Re ?
+		return 0.55*conteggioPedine+0.45*assettoGabbia;
 	}
 
 
