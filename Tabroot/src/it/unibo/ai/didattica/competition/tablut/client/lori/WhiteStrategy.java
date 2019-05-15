@@ -402,7 +402,9 @@ public class WhiteStrategy {
 	 */
 
 	public double valQuadranti(State state) {	
-		return valQuadranteAltoSX(state)+ valQuadranteAltoDX(state)+valQuadranteBassoDX(state)+valQuadranteBassoSX(state);
+		if(state.getPawn(4, 4).equals("K"))
+			return Math.max(valQuadranteAltoSX(state),Math.max( valQuadranteAltoDX(state),Math.max(valQuadranteBassoDX(state),valQuadranteBassoSX(state))));
+		return 0;
 	}
 
 
@@ -410,6 +412,9 @@ public class WhiteStrategy {
 
 		boolean pedinaNeraSuRiga=false;
 		boolean pedinaNeraSuColonna=false;
+		int countBianchi=0;
+		
+		
 		double valutazione=0;
 
 		for(int i=0; i<=4;i++) {
@@ -418,11 +423,39 @@ public class WhiteStrategy {
 			if(state.getPawn(i, 1).equals("B"))
 				pedinaNeraSuColonna=true;
 		}
+		
+		
+		if(state.getPawn(0, 0).equals("W"))
+				countBianchi++;
+		
+		for(int j=1; j<3;j++) {
+			
+			if(state.getPawn(0, j).equals("W"))
+				countBianchi++;
+			
+			if(state.getPawn(j, 0).equals("W"))
+				countBianchi++;	
+			
+		}
+		
+		
+		if(countBianchi==1) {
 
-		if(state.getPawn(3, 4).equals("K")){
-			valutazione+= 0.4;
-			if(state.getPawn(3, 5).equals("W")&& !pedinaNeraSuRiga&&!pedinaNeraSuColonna)
-				valutazione+=0.6;
+			if(state.getPawn(3, 4).equals("K")&& !pedinaNeraSuRiga&&!pedinaNeraSuColonna) {
+				valutazione= 0.50;	
+				if(state.getPawn(3, 5).equals("W"))
+					valutazione=0.75;
+			}
+			
+		}else if(countBianchi>1) {
+
+			if(state.getPawn(3, 4).equals("K")&& !pedinaNeraSuRiga&&!pedinaNeraSuColonna) {
+				valutazione= 0.75;				
+				if(state.getPawn(3, 5).equals("W"))
+					valutazione=1.0;
+			}
+
+
 		}
 	
 		return valutazione; 
@@ -434,6 +467,7 @@ public class WhiteStrategy {
 
 		boolean pedinaNeraSuRiga=false;
 		boolean pedinaNeraSuColonna=false;
+		int countBianchi=0;
 		double valutazione=0;
 
 		for(int i=0; i<=4;i++) {
@@ -442,11 +476,39 @@ public class WhiteStrategy {
 			if(state.getPawn(i, 7).equals("B"))
 				pedinaNeraSuColonna=true;
 		}
+		
+		
+		if(state.getPawn(0, 8).equals("W"))
+			countBianchi++;
 
-		if(state.getPawn(3, 4).equals("K")){
-			valutazione+= 0.4;
-			if(state.getPawn(3, 3).equals("W")&&!pedinaNeraSuRiga&&!pedinaNeraSuColonna)
-				valutazione+=0.6;
+		for(int j=1; j<3;j++) {
+
+			if(state.getPawn(0, 5+j).equals("W"))
+				countBianchi++;
+
+			if(state.getPawn(j, 8).equals("W"))
+				countBianchi++;	
+
+		}
+
+	
+		if(countBianchi==1) {
+
+			if(state.getPawn(3, 4).equals("K")&& !pedinaNeraSuRiga&&!pedinaNeraSuColonna) {
+				valutazione= 0.50;	
+				if(state.getPawn(3, 3).equals("W"))
+					valutazione=0.75;
+			}
+
+		}else if(countBianchi>1) {
+
+			if(state.getPawn(3, 4).equals("K")&& !pedinaNeraSuRiga&&!pedinaNeraSuColonna) {
+				valutazione= 0.75;				
+				if(state.getPawn(3, 3).equals("W"))
+					valutazione=1.0;
+			}
+
+
 		}
 
 		return valutazione; 
@@ -458,6 +520,7 @@ public class WhiteStrategy {
 
 		boolean pedinaNeraSuRiga=false;
 		boolean pedinaNeraSuColonna=false;
+		int countBianchi=0;
 		double valutazione=0;
 
 		for(int i=0; i<=4;i++) {
@@ -466,13 +529,43 @@ public class WhiteStrategy {
 			if(state.getPawn(i+4, 7).equals("B"))
 				pedinaNeraSuColonna=true;
 		}
-
-		if(state.getPawn(5, 4).equals("K")){
-			valutazione+= 0.4;
-			if(state.getPawn(5, 3).equals("W")&&!pedinaNeraSuRiga&&!pedinaNeraSuColonna)
-				valutazione+=0.6;
-		}
 		
+		
+		if(state.getPawn(8, 8).equals("W"))
+			countBianchi++;
+
+		for(int j=1; j<3;j++) {
+
+			if(state.getPawn(8, 5+j).equals("W"))
+				countBianchi++;
+
+			if(state.getPawn(5+j, 8).equals("W"))
+				countBianchi++;	
+
+		}
+
+
+
+		if(countBianchi==1) {
+
+			if(state.getPawn(5, 4).equals("K")&& !pedinaNeraSuRiga&&!pedinaNeraSuColonna) {
+				valutazione=0.50;	
+				if(state.getPawn(5, 3).equals("W"))
+					valutazione=0.75;
+			}
+
+		}else if(countBianchi>1) {
+
+			if(state.getPawn(5, 4).equals("K")&& !pedinaNeraSuRiga&&!pedinaNeraSuColonna) {
+				valutazione=0.75;				
+				if(state.getPawn(5, 3).equals("W"))
+					valutazione=1;
+			}
+
+
+		}
+
+
 		return valutazione; 
 
 	}
@@ -482,6 +575,7 @@ public class WhiteStrategy {
 
 		boolean pedinaNeraSuRiga=false;
 		boolean pedinaNeraSuColonna=false;
+		int countBianchi=0;
 		double valutazione=0;
 
 		for(int i=0; i<=4;i++) {
@@ -490,11 +584,40 @@ public class WhiteStrategy {
 			if(state.getPawn(i+4, 1).equals("B"))
 				pedinaNeraSuColonna=true;
 		}
+		
+		
 
-		if(state.getPawn(5, 4).equals("K")){
-			valutazione+=0.4;
-			if(state.getPawn(5, 5).equals("W")&&!pedinaNeraSuRiga&&!pedinaNeraSuColonna)
-				valutazione+=0.6;
+		if(state.getPawn(8, 0).equals("W"))
+			countBianchi++;
+
+		for(int j=1; j<3;j++) {
+
+			if(state.getPawn(8, j).equals("W"))
+				countBianchi++;
+
+			if(state.getPawn(5+j, 0).equals("W"))
+				countBianchi++;	
+
+		}
+
+
+		if(countBianchi==1) {
+
+			if(state.getPawn(5, 4).equals("K")&& !pedinaNeraSuRiga&&!pedinaNeraSuColonna) {
+				valutazione=0.50;	
+				if(state.getPawn(5, 5).equals("W"))
+					valutazione=0.75;
+			}
+
+		}else if(countBianchi>1) {
+
+			if(state.getPawn(5, 4).equals("K")&& !pedinaNeraSuRiga&&!pedinaNeraSuColonna) {
+				valutazione=0.75;				
+				if(state.getPawn(5, 5).equals("W"))
+					valutazione=1;
+			}
+
+
 		}
 
 		return valutazione; 
