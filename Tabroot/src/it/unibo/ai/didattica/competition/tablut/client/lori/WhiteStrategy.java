@@ -20,9 +20,7 @@ public class WhiteStrategy {
 		
 		return posKing;
 	}
-	
-
-	
+		
 	public double pedineInAngoli(State state, int[] king) {
 		switch(quadranteKing(king)) { 
 		case "UL":
@@ -237,15 +235,14 @@ public class WhiteStrategy {
 	 * variabile: valutazioneAssettoFusco
 	 * note: per ora ho considerato il quadrante in basso a destra bisogna fare la stessa cosa con gli altri 3 quadranti a seconda se i neri hanno mosso una o due pedine critiche
 	 *(LORI: Ho aggiunto il continue per evitare dei controlli if superflui. Va bene??)*/
+	/*
 	public double valutazioneAssettoFusco(State state, List<int[]> white, int[] king){
 		
 		double valutazioneAssettoFusco=0;
-			
-	
+				
 		//assetto base inziale
 
 		int assettoIniziale=0;
-	
 
 		if(state.getPawn(4,5).equalsPawn("W") && state.getPawn(3,5).equalsPawn("W")){
 			valutazioneAssettoFusco+=1;
@@ -256,8 +253,6 @@ public class WhiteStrategy {
 			valutazioneAssettoFusco+=1;		
 			assettoIniziale++;
 		}
-		
-	
 
 		if(state.getPawn(4,6).equalsPawn("W")) {
 			valutazioneAssettoFusco+=0.2;		
@@ -269,7 +264,6 @@ public class WhiteStrategy {
 			assettoIniziale++;
 		}
 
-
 		//cerca di contrastare la gabbia 
 
 		if(state.getPawn(7,6).equalsPawn("B"))
@@ -279,21 +273,20 @@ public class WhiteStrategy {
 		if(state.getPawn(6,7).equalsPawn("B"))
 			if(state.getPawn(7,6).equalsPawn("W"))
 				valutazioneAssettoFusco+=0.35;
-
 		
 		//mosse dopo l'assetto inziale	
-
 
 		if(state.getPawn(7,5).equalsPawn("W") && state.getPawn(3,5).equalsPawn("W"))
 			valutazioneAssettoFusco+=0.7;
 		if(state.getPawn(5,7).equalsPawn("W") && state.getPawn(5,3).equalsPawn("W"))
 			valutazioneAssettoFusco+=0.7;
 
-
-		if(!state.getPawn(6,0).equalsPawn("B") && !state.getPawn(6,1).equalsPawn("B") && !state.getPawn(6,2).equalsPawn("B") && !state.getPawn(6,3).equalsPawn("B") && assettoIniziale==4)  
+		if(!state.getPawn(6,0).equalsPawn("B") && !state.getPawn(6,1).equalsPawn("B") && 
+				!state.getPawn(6,2).equalsPawn("B") && !state.getPawn(6,3).equalsPawn("B") && assettoIniziale==4)  
 			if(state.getPawn(6,8).equalsPawn("W"))
 				valutazioneAssettoFusco+=0.35;	
-		if(!state.getPawn(0,6).equalsPawn("B") && !state.getPawn(1,6).equalsPawn("B") && !state.getPawn(2,6).equalsPawn("B") && !state.getPawn(3,6).equalsPawn("B") && assettoIniziale==4)  
+		if(!state.getPawn(0,6).equalsPawn("B") && !state.getPawn(1,6).equalsPawn("B") && 
+				!state.getPawn(2,6).equalsPawn("B") && !state.getPawn(3,6).equalsPawn("B") && assettoIniziale==4)  
 			if(state.getPawn(6,8).equalsPawn("W"))
 				valutazioneAssettoFusco+=0.35;
 
@@ -302,16 +295,13 @@ public class WhiteStrategy {
 		if(state.getPawn(2,6).equalsPawn("W") && state.getPawn(3,6).equalsPawn("W") && assettoIniziale==4)  
 			valutazioneAssettoFusco+=0.25;
 
-
 		//incomincio a muovere il re 
 		if(state.getPawn(5,3).equalsPawn("W") && (king[0]==5 && king[1]==4) && assettoIniziale==4)
 			valutazioneAssettoFusco+=0.35;
 
-	
-
 		return valutazioneAssettoFusco;
 	}
-	
+	*/
 	
 	/*A.Fuschino
 	 * controlla se nero sta facendo la gabbia e cerca di dargli fastidio mettendo pedine bianche in mezzoz al suo assetto
@@ -345,8 +335,7 @@ public class WhiteStrategy {
 		if(state.getPawn(1,2).equalsPawn("W") && state.getPawn(2,1).equalsPawn("B"))
 			contrastaGabbia+=0.125;
 		
-		return contrastaGabbia;
-		
+		return contrastaGabbia;		
 	}
 	
 	
@@ -363,37 +352,51 @@ public class WhiteStrategy {
 
 
 		//quadrante dx in basso: sinistra  
-		if(state.getPawn(4,7).equalsPawn("O") && !state.getPawn(5,7).equalsPawn("B")  && !state.getPawn(6,7).equalsPawn("B") && !state.getPawn(7,7).equalsPawn("B")&& !state.getPawn(8,7).equalsPawn("B")&& state.getPawn(8,6).equalsPawn("W") && !state.getPawn(8,8).equalsPawn("B") )
+		if(state.getPawn(4,7).equalsPawn("O") && !state.getPawn(5,7).equalsPawn("B")  && 
+				!state.getPawn(6,7).equalsPawn("B") && !state.getPawn(7,7).equalsPawn("B")&& 
+				!state.getPawn(8,7).equalsPawn("B")&& state.getPawn(8,6).equalsPawn("W") && !state.getPawn(8,8).equalsPawn("B") )
 			valutazioneMosseIntelligenti+=0.125;	
 		//quadrante dx in basso: destra  
-		if(state.getPawn(7,4).equalsPawn("O") && state.getPawn(6,8).equalsPawn("W") && !state.getPawn(7,5).equalsPawn("B") && !state.getPawn(7,6).equalsPawn("B") && !state.getPawn(7,7).equalsPawn("B")&& !state.getPawn(7,8).equalsPawn("B")&& !state.getPawn(8,8).equalsPawn("B"))
+		if(state.getPawn(7,4).equalsPawn("O") && state.getPawn(6,8).equalsPawn("W") && 
+				!state.getPawn(7,5).equalsPawn("B") && !state.getPawn(7,6).equalsPawn("B") && 
+				!state.getPawn(7,7).equalsPawn("B")&& !state.getPawn(7,8).equalsPawn("B")&& !state.getPawn(8,8).equalsPawn("B"))
 			valutazioneMosseIntelligenti+=0.125;
 
 
 		//quadrante dx in alto: destra
-		if(state.getPawn(1,4).equalsPawn("O") && state.getPawn(2,8).equalsPawn("W") && !state.getPawn(1,5).equalsPawn("B") && !state.getPawn(1,6).equalsPawn("B") && !state.getPawn(1,7).equalsPawn("B")&& !state.getPawn(1,8).equalsPawn("B") && !state.getPawn(0,8).equalsPawn("B"))
+		if(state.getPawn(1,4).equalsPawn("O") && state.getPawn(2,8).equalsPawn("W") && 
+				!state.getPawn(1,5).equalsPawn("B") && !state.getPawn(1,6).equalsPawn("B") && 
+				!state.getPawn(1,7).equalsPawn("B")&& !state.getPawn(1,8).equalsPawn("B") && !state.getPawn(0,8).equalsPawn("B"))
 			valutazioneMosseIntelligenti+=0.125;
 		//quadrante dx in alto: sinistra 
-		if(state.getPawn(4,7).equalsPawn("O") && state.getPawn(0,6).equalsPawn("W") && !state.getPawn(3,7).equalsPawn("B") && !state.getPawn(2,7).equalsPawn("B") && !state.getPawn(1,7).equalsPawn("B")&& !state.getPawn(0,7).equalsPawn("B")&& !state.getPawn(0,8).equalsPawn("B"))
+		if(state.getPawn(4,7).equalsPawn("O") && state.getPawn(0,6).equalsPawn("W") && 
+				!state.getPawn(3,7).equalsPawn("B") && !state.getPawn(2,7).equalsPawn("B") && 
+				!state.getPawn(1,7).equalsPawn("B")&& !state.getPawn(0,7).equalsPawn("B")&& !state.getPawn(0,8).equalsPawn("B"))
 			valutazioneMosseIntelligenti+=0.125;
-
 
 		//quadrante sx in alto: destra
-		if(state.getPawn(1,4).equalsPawn("O") && state.getPawn(2,0).equalsPawn("W") && !state.getPawn(1,3).equalsPawn("B") && !state.getPawn(1,2).equalsPawn("B") && !state.getPawn(1,1).equalsPawn("B")&& !state.getPawn(1,0).equalsPawn("B")&& !state.getPawn(0,0).equalsPawn("B"))
+		if(state.getPawn(1,4).equalsPawn("O") && state.getPawn(2,0).equalsPawn("W") &&
+				!state.getPawn(1,3).equalsPawn("B") &&!state.getPawn(1,2).equalsPawn("B") && 
+				!state.getPawn(1,1).equalsPawn("B")&& !state.getPawn(1,0).equalsPawn("B")&& !state.getPawn(0,0).equalsPawn("B"))
 			valutazioneMosseIntelligenti+=0.125;
+
 		//quadrante sx in alto: sinistra 
-		if(state.getPawn(4,1).equalsPawn("O") && state.getPawn(0,2).equalsPawn("W") && !state.getPawn(3,1).equalsPawn("B") && !state.getPawn(2,1).equalsPawn("B") && !state.getPawn(1,1).equalsPawn("B")&& !state.getPawn(0,1).equalsPawn("B")&& !state.getPawn(0,0).equalsPawn("B"))
+		if(state.getPawn(4,1).equalsPawn("O") && state.getPawn(0,2).equalsPawn("W") &&
+				!state.getPawn(3,1).equalsPawn("B") && !state.getPawn(2,1).equalsPawn("B") && 
+				!state.getPawn(1,1).equalsPawn("B")&& !state.getPawn(0,1).equalsPawn("B")&& !state.getPawn(0,0).equalsPawn("B"))
 			valutazioneMosseIntelligenti+=0.125;
 
 		//quadrante sx in basso: destra
-		if(state.getPawn(7,4).equalsPawn("O") && state.getPawn(6,0).equalsPawn("W") && !state.getPawn(7,3).equalsPawn("B") && !state.getPawn(7,2).equalsPawn("B") && !state.getPawn(7,1).equalsPawn("B")&& !state.getPawn(7,0).equalsPawn("B")&& !state.getPawn(8,0).equalsPawn("B"))
+		if(state.getPawn(7,4).equalsPawn("O") && state.getPawn(6,0).equalsPawn("W") &&
+				!state.getPawn(7,3).equalsPawn("B") && !state.getPawn(7,2).equalsPawn("B") && 
+				!state.getPawn(7,1).equalsPawn("B")&& !state.getPawn(7,0).equalsPawn("B")&& !state.getPawn(8,0).equalsPawn("B"))
 			valutazioneMosseIntelligenti+=0.125;
+		
 		//quadrante sx in basso: sinistra 
 		if(state.getPawn(4,1).equalsPawn("O") && state.getPawn(8,2).equalsPawn("W") && !state.getPawn(5,1).equalsPawn("B") && !state.getPawn(6,1).equalsPawn("B") && !state.getPawn(7,1).equalsPawn("B")&& !state.getPawn(8,1).equalsPawn("B")&& !state.getPawn(8,0).equalsPawn("B"))
 			valutazioneMosseIntelligenti+=0.125;
 		
-		return valutazioneMosseIntelligenti;
-		
+		return valutazioneMosseIntelligenti;	
 	}
 	
 	
@@ -404,7 +407,6 @@ public class WhiteStrategy {
 	public double valQuadranti(State state) {	
 		return valQuadranteAltoSX(state)+ valQuadranteAltoDX(state)+valQuadranteBassoDX(state)+valQuadranteBassoSX(state);
 	}
-
 
 	public double valQuadranteAltoSX(State state) {
 
@@ -426,7 +428,6 @@ public class WhiteStrategy {
 		}
 	
 		return valutazione; 
-
 	}
 
 
@@ -450,7 +451,6 @@ public class WhiteStrategy {
 		}
 
 		return valutazione; 
-
 	}
 
 
@@ -474,7 +474,6 @@ public class WhiteStrategy {
 		}
 		
 		return valutazione; 
-
 	}
 
 
@@ -498,7 +497,6 @@ public class WhiteStrategy {
 		}
 
 		return valutazione; 
-
 	}
 
 	

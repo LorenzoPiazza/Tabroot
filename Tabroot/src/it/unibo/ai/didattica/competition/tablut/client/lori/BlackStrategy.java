@@ -339,4 +339,162 @@ public class BlackStrategy {
 		}
 		return 0;	
 	}
+	
+	//SCanc
+	
+	public double gabbiaStrettaDownLeft(State state, List<int[]> white) {
+		boolean bianchi=false;
+		int[] controlloPedine= {0,0};
+		int i=-1;
+		
+		do{
+			i++;
+			controlloPedine=white.get(i);
+			if(controlloPedine[0]==5 && controlloPedine[1]==1)
+				bianchi=true;
+			if(controlloPedine[0]==6 && controlloPedine[1]==0)
+				bianchi=true;
+			if(controlloPedine[0]==6 && controlloPedine[1]==1)
+				bianchi=true;
+			if(controlloPedine[0]==6 && controlloPedine[1]==2)
+				bianchi=true;
+			if(controlloPedine[0]==7 && controlloPedine[1]==0)
+				bianchi=true;
+			if(controlloPedine[0]==7 && controlloPedine[1]==1)
+				bianchi=true;
+			if(controlloPedine[0]==7 && controlloPedine[1]==2)
+				bianchi=true;
+			if(controlloPedine[0]==7 && controlloPedine[1]==3)
+				bianchi=true;
+			if(controlloPedine[0]==8 && controlloPedine[1]==0)
+				bianchi=true;
+			if(controlloPedine[0]==8 && controlloPedine[1]==1)
+				bianchi=true;
+			if(controlloPedine[0]==8 && controlloPedine[1]==2)
+				bianchi=true;
+		}while(!bianchi&&white.size()<i);
+		
+		if(!bianchi && state.getPawn(5,2).equalsPawn("W")&&
+				state.getPawn(6,3).equalsPawn("W"))
+			return 1;
+		
+		return 0;
+	}
+	
+	public double gabbiaStrettaDownRight(State state, List<int[]> white) {
+		boolean bianchi=false;
+		int[] controlloPedine= {0,0};
+		int i=-1;
+		
+		do{
+			i++;
+			controlloPedine=white.get(i);
+			if(controlloPedine[0]==5 && controlloPedine[1]==7)
+				bianchi=true;
+			if(controlloPedine[0]==6 && controlloPedine[1]==8)
+				bianchi=true;
+			if(controlloPedine[0]==6 && controlloPedine[1]==7)
+				bianchi=true;
+			if(controlloPedine[0]==6 && controlloPedine[1]==6)
+				bianchi=true;
+			if(controlloPedine[0]==7 && controlloPedine[1]==8)
+				bianchi=true;
+			if(controlloPedine[0]==7 && controlloPedine[1]==7)
+				bianchi=true;
+			if(controlloPedine[0]==7 && controlloPedine[1]==6)
+				bianchi=true;
+			if(controlloPedine[0]==7 && controlloPedine[1]==5)
+				bianchi=true;
+			if(controlloPedine[0]==8 && controlloPedine[1]==8)
+				bianchi=true;
+			if(controlloPedine[0]==8 && controlloPedine[1]==7)
+				bianchi=true;
+			if(controlloPedine[0]==8 && controlloPedine[1]==6)
+				bianchi=true;
+		}while(!bianchi&&white.size()<i);
+		
+		if(!bianchi && state.getPawn(5,6).equalsPawn("W")&&
+				state.getPawn(6,5).equalsPawn("W"))
+			return 1;
+		
+		return 0;
+	}
+	
+	public double gabbiaStrettaUpRight(State state, List<int[]> white) {
+		boolean bianchi=false;
+		int[] controlloPedine= {0,0};
+		int i=-1;
+		
+		do{
+			i++;
+			controlloPedine=white.get(i);
+			if(controlloPedine[0]==3 && controlloPedine[1]==7)
+				bianchi=true;
+			if(controlloPedine[0]==2 && controlloPedine[1]==8)
+				bianchi=true;
+			if(controlloPedine[0]==2 && controlloPedine[1]==7)
+				bianchi=true;
+			if(controlloPedine[0]==2 && controlloPedine[1]==6)
+				bianchi=true;
+			if(controlloPedine[0]==1 && controlloPedine[1]==8)
+				bianchi=true;
+			if(controlloPedine[0]==1 && controlloPedine[1]==7)
+				bianchi=true;
+			if(controlloPedine[0]==1 && controlloPedine[1]==6)
+				bianchi=true;
+			if(controlloPedine[0]==1 && controlloPedine[1]==5)
+				bianchi=true;
+			if(controlloPedine[0]==0 && controlloPedine[1]==8)
+				bianchi=true;
+			if(controlloPedine[0]==0 && controlloPedine[1]==7)
+				bianchi=true;
+			if(controlloPedine[0]==0 && controlloPedine[1]==6)
+				bianchi=true;
+		}while(!bianchi&&white.size()<i);
+		
+		if(!bianchi && state.getPawn(2,5).equalsPawn("W")&&
+				state.getPawn(3,6).equalsPawn("W"))
+			return 1;
+		
+		return 0;
+	}
+	
+	public double gabbiaStrettaUpLeft(State state, List<int[]> white) {
+		boolean bianchi=false;
+		int[] controlloPedine= {0,0};
+		int i=-1;
+		
+		do{
+			i++;
+			controlloPedine=white.get(i);
+			if(controlloPedine[0]==3 && controlloPedine[1]==1)
+				bianchi=true;
+			if(controlloPedine[0]==2 && controlloPedine[1]==0)
+				bianchi=true;
+			if(controlloPedine[0]==2 && controlloPedine[1]==1)
+				bianchi=true;
+			if(controlloPedine[0]==2 && controlloPedine[1]==2)
+				bianchi=true;
+			if(controlloPedine[0]==1 && controlloPedine[1]==0)
+				bianchi=true;
+			if(controlloPedine[0]==1 && controlloPedine[1]==1)
+				bianchi=true;
+			if(controlloPedine[0]==1 && controlloPedine[1]==2)
+				bianchi=true;
+			if(controlloPedine[0]==1 && controlloPedine[1]==3)
+				bianchi=true;
+			if(controlloPedine[0]==0 && controlloPedine[1]==0)
+				bianchi=true;
+			if(controlloPedine[0]==0 && controlloPedine[1]==1)
+				bianchi=true;
+			if(controlloPedine[0]==0 && controlloPedine[1]==2)
+				bianchi=true;
+		}while(!bianchi&&white.size()<i);
+		
+		if(!bianchi && state.getPawn(3,2).equalsPawn("W")&&
+				state.getPawn(2,3).equalsPawn("W"))
+			return 1;
+		
+		return 0;
+	}
 }
