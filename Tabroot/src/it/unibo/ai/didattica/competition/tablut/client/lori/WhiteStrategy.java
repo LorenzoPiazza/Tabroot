@@ -575,39 +575,36 @@ public class WhiteStrategy {
 		
 		//Re nel quadrante in alto a sinistra
 		if( (king[0]>=1 && king[0]<=3) && (king[1]>=1 && king[1]<=3) )
-			result="UL";
+			return "UL";
 		
 		//Re nel quadrante in basso a sinistra
 		if( (king[0]>=5 && king[0]<=7) && (king[1]>=1 && king[1]>=3) )
-			result="DL";
+			return "DL";
 		
 		//Re nel quadrante in alto a destra
 		if( (king[0]>=1 && king[0]<=3) && (king[1]>=5 && king[1]>=7) )
-			result="UR";
+			return"UR";
 		
 		//Re nel quadrante in basso a destra
 		if( (king[0]>=5 && king[0]<=7) && (king[1]>=5 && king[1]>=7) )
-			result="DR";
+			return "DR";
 		
 		//Re nella parte alta della croce
-		if((king[0]==2 || king[0]==3) && king[1]==4) {
-			result="CU";
-		}
+		if((king[0]==2 || king[0]==3) && king[1]==4)
+			return "CU";
 		
 		//Re nella parte bassa della croce
-		if((king[0]==5 || king[0]==6) && king[1]==4) {
-			result="CD";
-		}
+		if((king[0]==5 || king[0]==6) && king[1]==4)
+			return "CD";
 		
 		//Re nella parte destra della croce
-		if(king[0]==4 && (king[0]==5 || king[0]==6)) {
-			result="CR";
-		}
+		if(king[0]==4 && (king[0]==5 || king[0]==6))
+			return "CR";
 		
 		//Re nella parte sinistra della croce
-		if(king[0]==4 && (king[0]==2 || king[0]==3)) {
-			result="CR";
-		}
+		if(king[0]==4 && (king[0]==2 || king[0]==3))
+			return "CR";
+		
 		return result;
 	}
 	
