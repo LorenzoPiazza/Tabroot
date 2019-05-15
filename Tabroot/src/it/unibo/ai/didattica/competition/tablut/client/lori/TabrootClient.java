@@ -101,7 +101,7 @@ public class TabrootClient extends TablutClient {
 
 		
 		//Creo l'oggetto MyIterativeDeepeningAlphaBetaSearch che realizzerà la ricerca della mossa nello spazio degli stati
-		MyIterativeDeepeningAlphaBetaSearch myItDeepAlgorithm = new MyIterativeDeepeningAlphaBetaSearch(myGame, Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, 15);
+		MyIterativeDeepeningAlphaBetaSearch myItDeepAlgorithm = new MyIterativeDeepeningAlphaBetaSearch(myGame, Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, time);
 		myItDeepAlgorithm.setLogEnabled(true);
 		
 		
@@ -113,6 +113,7 @@ public class TabrootClient extends TablutClient {
 		 * AlphaBetaSearch<State, Action, Turn> alphaBetaAlgorithm = AlphaBetaSearch.createFor(myGame);
 		 */
 		
+		int turn=0;
 		System.out.println("You are player " + this.getPlayer().toString() + "!");
 
 		while (true) {
@@ -198,6 +199,24 @@ public class TabrootClient extends TablutClient {
 						e1.printStackTrace();
 					}
 					
+					//Se è il primo turno apro con una delle mosse d'apertura
+					if(turn==0) {
+						turn=1;
+						IOpening opener = new BlackOpening();
+						a=opener.openingMove(getCurrentState());
+						System.out.println("Mossa d'apertura scelta: " + a.toString());
+						
+						if(a!=null) {
+							try {
+								this.write(a);
+							} catch (ClassNotFoundException | IOException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+						continue;
+						}
+					}
+											
 					//Selezione azione con ALGORITMO
 					a = myItDeepAlgorithm.makeDecision(state);
 					
