@@ -458,7 +458,7 @@ public class MyGame extends GameAshtonTablut implements Game<State, Action, Turn
 
 		/*TODO:QUI VIENE FATTO IL TUNING E IL BILANCIAMENTO DEI VALORI! */
 		
-
+		//(FUSCO VERSION)
 		return 0.35*conteggioPedine + 0.10*scappaRe + 0.03*pedineInAngoli + 0.03*assettoTorre+0.25*mosseIntelligenti+0.45*valQuadranti;
 
 	}
@@ -502,7 +502,7 @@ public class MyGame extends GameAshtonTablut implements Game<State, Action, Turn
 		double valQuadranti=whiteStrategy.valQuadranti(state);
 
 		/* TODO:QUI VIENE FATTO IL TUNING E IL BILANCIAMENTO DEI VALORI! */
-		return 0.55*conteggioPedine + 0.05*posKing + 0.10*scappaRe + 0.05*pedineInAngoli + 0.05*assettoTorre+0.05*contrastaGabbia+0.10*mosseIntelligenti+0.25*valQuadranti;
+		return 0.60*conteggioPedine + 0.05*posKing + 0.10*scappaRe + 0.05*pedineInAngoli + 0.1*assettoTorre+0.20*contrastaGabbia+0.05*mosseIntelligenti+0.05*valQuadranti;
 	}
 	
 	
@@ -528,7 +528,7 @@ public class MyGame extends GameAshtonTablut implements Game<State, Action, Turn
 		double assettoGabbiaStrong=blackStrategy.valutaAssettoGabbiaStrong(state, king);
 		
 		/* TODO:QUI VIENE FATTO IL TUNING E IL BILANCIAMENTO DEI VALORI! */
-		return 0.45*conteggioPedine+0.15*assettoGabbiaLight+0.40*assettoGabbiaStrong;
+		return 0.4*conteggioPedine+0.30*assettoGabbiaLight+0.30*assettoGabbiaStrong;
 	}
 	
 	/**
@@ -553,7 +553,7 @@ public class MyGame extends GameAshtonTablut implements Game<State, Action, Turn
 		double assettoGabbiaStrong=blackStrategy.valutaAssettoGabbiaStrong(state, king);
 		
 		/* TODO:QUI VIENE FATTO IL TUNING E IL BILANCIAMENTO DEI VALORI! */
-		return 0.50*conteggioPedine+0.40*assettoGabbiaLight+0.10*assettoGabbiaStrong;
+		return 0.60*conteggioPedine+0.35*assettoGabbiaLight+0.05*assettoGabbiaStrong;
 	}
 
 

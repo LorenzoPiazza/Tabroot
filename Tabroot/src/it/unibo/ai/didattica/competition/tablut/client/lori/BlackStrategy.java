@@ -14,7 +14,154 @@ public class BlackStrategy {
 	public BlackStrategy() {
 	}
 
-	
+	//modifica per guardare le gabbie adiacenti al quadrante del rè dato un valore minore (Alan)
+		//inoltre guarda anche se si è messo nella croce in che parte di essa e da un valore un pò buono alla gabbia in quei due lati della croce
+		
+		public double valutaAssettoGabbiaLight(State state, int[] king) {
+			switch(quadranteKing(king)) { 
+				case "UL":
+					if(!pawnInBorderUpLeft(state, "W")) {
+						if(state.getPawn(1,2).equalsPawn("B") && state.getPawn(2,1).equalsPawn("B") ) {
+							return 1.0;
+						}
+						if(state.getPawn(1,2).equalsPawn("B") || state.getPawn(2,1).equalsPawn("B") ) {
+							return 0.5;
+						}
+					}
+					else if ((pawnInBorderUpRight(state, "W") == false && state.getPawn(1,6).equalsPawn("B") || state.getPawn(2,7).equalsPawn("B"))
+							|| (pawnInBorderDownLeft(state, "W") == false && state.getPawn(6,1).equalsPawn("B") || state.getPawn(7,2).equalsPawn("B")) ) {
+							return 0.2;
+					}
+					break;
+				case"UR":
+					if(pawnInBorderUpRight(state, "W")==false) {	
+						if(state.getPawn(1,6).equalsPawn("B") && state.getPawn(2,7).equalsPawn("B") ) {
+							return 1.0;
+						}
+						if(state.getPawn(1,6).equalsPawn("B") || state.getPawn(2,7).equalsPawn("B") ) {
+							return 0.5;
+						}
+					}else if((pawnInBorderUpLeft(state, "W") == false && state.getPawn(1,2).equalsPawn("B") || state.getPawn(2,1).equalsPawn("B"))
+							|| (pawnInBorderDownRight(state, "W") == false && state.getPawn(7,6).equalsPawn("B") || state.getPawn(6,7).equalsPawn("B"))) {
+						return 0.2;
+					}
+					break;
+				case"DL":
+					if(pawnInBorderDownLeft(state, "W")==false) {	
+						if(state.getPawn(6,1).equalsPawn("B") && state.getPawn(7,2).equalsPawn("B") ) {
+							return 1.0;
+						}
+						if(state.getPawn(6,1).equalsPawn("B") || state.getPawn(7,2).equalsPawn("B") ) {
+							return 0.5;
+						}
+					}else if ((pawnInBorderDownRight(state, "W") == false && state.getPawn(7,6).equalsPawn("B") || state.getPawn(6,7).equalsPawn("B"))
+							|| (pawnInBorderUpLeft(state, "W") == false && state.getPawn(1,2).equalsPawn("B") || state.getPawn(2,1).equalsPawn("B"))) {
+						return 0.2;
+					}
+					break;
+				case"DR":
+					if(pawnInBorderDownRight(state, "W")==false) {	
+						if(state.getPawn(7,6).equalsPawn("B") && state.getPawn(6,7).equalsPawn("B") ) {
+							return 1.0;
+						}
+						if(state.getPawn(7,6).equalsPawn("B") || state.getPawn(6,7).equalsPawn("B") ) {
+							return 0.5;
+						}
+					}else if((pawnInBorderDownLeft(state, "W") == false && state.getPawn(6,1).equalsPawn("B") || state.getPawn(7,2).equalsPawn("B"))
+							|| (pawnInBorderUpRight(state, "W") == false && state.getPawn(1,6).equalsPawn("B") || state.getPawn(2,7).equalsPawn("B"))) {
+						return 0.2;
+					}
+					break;
+				case"CU":
+					if(pawnInBorderUpRight(state, "W") == false && state.getPawn(1,6).equalsPawn("B") || state.getPawn(2,7).equalsPawn("B")
+					|| (pawnInBorderUpLeft(state, "W") == false && state.getPawn(1,2).equalsPawn("B") || state.getPawn(2,1).equalsPawn("B"))) {
+						return 0.5;
+					}
+					break;
+				case"CD":
+					if(pawnInBorderDownRight(state, "W") == false && state.getPawn(7,6).equalsPawn("B") || state.getPawn(6,7).equalsPawn("B")
+					|| (pawnInBorderDownLeft(state, "W") == false && state.getPawn(6,1).equalsPawn("B") || state.getPawn(7,2).equalsPawn("B"))) {
+						return 0.5;
+					}
+					break;
+				case"CR":
+					if(pawnInBorderDownRight(state, "W") == false && state.getPawn(7,6).equalsPawn("B") || state.getPawn(6,7).equalsPawn("B")
+					|| (pawnInBorderUpRight(state, "W") == false && state.getPawn(1,6).equalsPawn("B") || state.getPawn(2,7).equalsPawn("B"))) {
+						return 0.5;
+					}
+					break;
+				case"CL":
+					if(pawnInBorderDownLeft(state, "W") == false && state.getPawn(6,1).equalsPawn("B") || state.getPawn(7,2).equalsPawn("B")
+					|| (pawnInBorderUpLeft(state, "W") == false && state.getPawn(1,2).equalsPawn("B") || state.getPawn(2,1).equalsPawn("B"))) {
+						return 0.5;
+					}
+					break;
+				case "Throne":
+					return blackInAssettoGabbiaLight(state).size()/8.0;
+			default:
+					return 0;
+			}
+			return 0;	
+		}
+		
+		
+		public double valutaAssettoGabbiaStrong(State state, int[] king) {
+			switch(quadranteKing(king)) { 
+			case "UL":
+				if(!pawnInBorderUpLeft(state,"W") && !pawnInBoxUpLeft(state,"W") && !pawnInBorderUpLeft(state,"B") && !pawnInBoxUpLeft(state,"B")) 
+					return gabbiaStrettaUpLeft(state);
+				break;
+			case "UR":
+				if(!pawnInBorderUpRight(state, "W") && !pawnInBoxUpRight(state, "W") && !pawnInBorderUpRight(state, "B") && !pawnInBoxUpRight(state, "B")) 
+					return gabbiaStrettaUpRight(state);
+				break;
+			case"DL":
+				if(!pawnInBorderDownLeft(state, "W") && !pawnInBoxDownLeft(state, "W") && !pawnInBorderDownLeft(state, "B") && !pawnInBoxDownLeft(state, "B"))
+					return gabbiaStrettaDownLeft(state);
+				break;
+			case"DR":
+				if(!pawnInBorderDownRight(state, "W") && !pawnInBoxDownRight(state, "W") && !pawnInBorderDownRight(state, "B") && !pawnInBoxDownRight(state, "B"))	
+					return gabbiaStrettaDownRight(state);
+				break;
+			case"CU":
+				if( (!pawnInBorderUpLeft(state,"W") && !pawnInBoxUpLeft(state,"W") && !pawnInBorderUpLeft(state,"B") && !pawnInBoxUpLeft(state,"B"))
+				|| (!pawnInBorderUpRight(state, "W") && !pawnInBoxUpRight(state, "W") && !pawnInBorderUpRight(state, "B") && !pawnInBoxUpRight(state, "B")) ) {
+					return (gabbiaStrettaUpLeft(state)+gabbiaStrettaUpRight(state))/2;
+				}
+				break;
+			case"CD":
+				if( (!pawnInBorderDownLeft(state, "W") && !pawnInBoxDownLeft(state, "W") && !pawnInBorderDownLeft(state, "B") && !pawnInBoxDownLeft(state, "B"))
+				|| (!pawnInBorderDownRight(state, "W") && !pawnInBoxDownRight(state, "W") && !pawnInBorderDownRight(state, "B") && !pawnInBoxDownRight(state, "B")) ) {
+					return (gabbiaStrettaDownLeft(state)+gabbiaStrettaDownRight(state))/2;
+				}
+				break;
+			case"CR":
+				if( (!pawnInBorderDownRight(state, "W") && !pawnInBoxDownRight(state, "W") && !pawnInBorderDownRight(state, "B") && !pawnInBoxDownRight(state, "B"))
+				|| (!pawnInBorderUpRight(state, "W") && !pawnInBoxUpRight(state, "W") && !pawnInBorderUpRight(state, "B") && !pawnInBoxUpRight(state, "B")) ) {
+					return (gabbiaStrettaDownRight(state)+gabbiaStrettaUpRight(state))/2;
+				}
+				break;
+			case"CL":
+				if( (!pawnInBorderUpLeft(state,"W") && !pawnInBoxUpLeft(state,"W") && !pawnInBorderUpLeft(state,"B") && !pawnInBoxUpLeft(state,"B")) 
+				|| (!pawnInBorderDownLeft(state, "W") && !pawnInBoxDownLeft(state, "W") && !pawnInBorderDownLeft(state, "B") && !pawnInBoxDownLeft(state, "B")) ) {
+					return (gabbiaStrettaDownLeft(state)+gabbiaStrettaUpLeft(state))/2;
+				}
+				break;
+			case "Throne":
+				if(!pawnInBorderUpRight(state, "W") && !pawnInBoxUpRight(state, "W") && !pawnInBorderUpRight(state, "B") && !pawnInBoxUpRight(state, "B")) //Ci sono le condizioni per la gabbia stretta in alto a sx
+					return gabbiaStrettaUpRight(state);
+				else if(!pawnInBorderUpLeft(state,"W") && !pawnInBoxUpLeft(state,"W") && !pawnInBorderUpLeft(state,"B") && !pawnInBoxUpLeft(state,"B")) //Ci sono le condizioni per la gabbia stretta in alto a dx
+					return gabbiaStrettaUpLeft(state);
+				else if(!pawnInBorderDownLeft(state, "W") && !pawnInBoxDownLeft(state, "W") && !pawnInBorderDownLeft(state, "B") && !pawnInBoxDownLeft(state, "B")) //Ci sono le condizioni per la gabbia stretta in basso a sx
+					return gabbiaStrettaDownLeft(state);
+				else if(!pawnInBorderDownRight(state, "W") && !pawnInBoxDownRight(state, "W") && !pawnInBorderDownRight(state, "B") && !pawnInBoxDownRight(state, "B"))	 //Ci sono le condizioni per la gabbia stretta in basso a dx
+					return gabbiaStrettaDownRight(state);
+				break;
+			default:
+				return 0;
+		}
+			return 0;	
+		}
 	
 	/**
 	 * Metodo che controlla quante pedine Black sono in assetto per formare la gabbia.
@@ -23,6 +170,7 @@ public class BlackStrategy {
 	 * 
 	 * (Code by L.Piazza)
 	 */
+	
 	private ArrayList<int[]> blackInAssettoGabbiaLight(State state) {
 		int [] posizione = new int[2];
 		ArrayList<int[]> blackInAssetto = new ArrayList<int[]>();
@@ -90,20 +238,20 @@ public class BlackStrategy {
 	 * 
 	 * (Code by L.Piazza A.Dalmonte)
 	 */	
-	private boolean whiteInBorderUpLeft(State state) {
+	private boolean pawnInBorderUpLeft(State state, String color) {
 		boolean result=false;
 		
 		for(int i=0; i<3 && !result; i++) {
-			if(state.getPawn(i, 0).equalsPawn("W")) {
+			if(state.getPawn(i, 0).equalsPawn(color)) {
 				result=true;
 			}
 		}
 		for(int i=0; i<2 && !result; i++) {
-			if(state.getPawn(i, 1).equalsPawn("W")) {
+			if(state.getPawn(i, 1).equalsPawn(color)) {
 				result=true;
 			}
 		}
-		if(!result && state.getPawn(0, 2).equalsPawn("W")) {
+		if(!result && state.getPawn(0, 2).equalsPawn(color)) {
 			result=true;
 		}
 		return result;	
@@ -115,20 +263,20 @@ public class BlackStrategy {
 	 * 
 	 * (Code by L.Piazza A.Dalmonte)
 	 */
-	private boolean whiteInBorderDownLeft(State state) {
+	private boolean pawnInBorderDownLeft(State state, String color) {
 		boolean result=false;
 		
 		for(int i=6; i<9 && !result; i++) {
-			if(state.getPawn(i, 0).equalsPawn("W")) {
+			if(state.getPawn(i, 0).equalsPawn(color)) {
 				result=true;
 			}
 		}
 		for(int i=7; i<9 && !result; i++) {
-			if(state.getPawn(i, 1).equalsPawn("W")) {
+			if(state.getPawn(i, 1).equalsPawn(color)) {
 				result=true;
 			}
 		}
-		if(!result && state.getPawn(8, 2).equalsPawn("W")) {
+		if(!result && state.getPawn(8, 2).equalsPawn(color)) {
 			result=true;
 		}
 		return result;	
@@ -140,20 +288,20 @@ public class BlackStrategy {
 	 * 
 	 * (Code by L.Piazza A.Dalmonte)
 	 */
-	private boolean whiteInBorderUpRight(State state) {
+	private boolean pawnInBorderUpRight(State state, String color) {
 		boolean result=false;
 		
 		for(int i=0; i<3 && !result; i++) {
-			if(state.getPawn(i, 8).equalsPawn("W")) {
+			if(state.getPawn(i, 8).equalsPawn(color)) {
 				result=true;
 			}
 		}
 		for(int i=0; i<2 && !result; i++) {
-			if(state.getPawn(i, 7).equalsPawn("W")) {
+			if(state.getPawn(i, 7).equalsPawn(color)) {
 				result=true;
 			}
 		}
-		if(!result && state.getPawn(0, 6).equalsPawn("W")) {
+		if(!result && state.getPawn(0, 6).equalsPawn(color)) {
 			result=true;
 		}
 		return result;	
@@ -165,20 +313,20 @@ public class BlackStrategy {
 	 * 
 	 * (Code by L.Piazza A.Dalmonte)
 	 */
-	private boolean whiteInBorderDownRight(State state) {
+	private boolean pawnInBorderDownRight(State state, String color) {
 		boolean result=false;
 		
 		for(int i=6; i<9 && !result; i++) {
-			if(state.getPawn(i, 8).equalsPawn("W")) {
+			if(state.getPawn(i, 8).equalsPawn(color)) {
 				result=true;
 			}
 		}
 		for(int i=7; i<9 && !result; i++) {
-			if(state.getPawn(i, 7).equalsPawn("W")) {
+			if(state.getPawn(i, 7).equalsPawn(color)) {
 				result=true;
 			}
 		}
-		if(!result && state.getPawn(8, 6).equalsPawn("W")) {
+		if(!result && state.getPawn(8, 6).equalsPawn(color)) {
 			result=true;
 		}
 		return result;	
@@ -249,182 +397,6 @@ public class BlackStrategy {
 		
 		return puntiDiFugaRe;
 	}*/
-	
-	//modifica per guardare le gabbie adiacenti al quadrante del rè dato un valore minore (Alan)
-	//inoltre guarda anche se si è messo nella croce in che parte di essa e da un valore un pò buono alla gabbia in quei due lati della croce
-	
-	public double valutaAssettoGabbiaLight(State state, int[] king) {
-		switch(quadranteKing(king)) { 
-			case "UL":
-				if(!whiteInBorderUpLeft(state)) {
-					if(state.getPawn(1,2).equalsPawn("B") && state.getPawn(2,1).equalsPawn("B") ) {
-						return 1.0;
-					}
-					if(state.getPawn(1,2).equalsPawn("B") || state.getPawn(2,1).equalsPawn("B") ) {
-						return 0.5;
-					}
-				}
-				else if ((whiteInBorderUpRight(state) == false && state.getPawn(1,6).equalsPawn("B") || state.getPawn(2,7).equalsPawn("B"))
-						|| (whiteInBorderDownLeft(state) == false && state.getPawn(6,1).equalsPawn("B") || state.getPawn(7,2).equalsPawn("B")) ) {
-						return 0.2;
-				}
-				break;
-			case"UR":
-				if(whiteInBorderUpRight(state)==false) {	
-					if(state.getPawn(1,6).equalsPawn("B") && state.getPawn(2,7).equalsPawn("B") ) {
-						return 1.0;
-					}
-					if(state.getPawn(1,6).equalsPawn("B") || state.getPawn(2,7).equalsPawn("B") ) {
-						return 0.5;
-					}
-				}else if((whiteInBorderUpLeft(state) == false && state.getPawn(1,2).equalsPawn("B") || state.getPawn(2,1).equalsPawn("B"))
-						|| (whiteInBorderDownRight(state) == false && state.getPawn(7,6).equalsPawn("B") || state.getPawn(6,7).equalsPawn("B"))) {
-					return 0.2;
-				}
-				break;
-			case"DL":
-				if(whiteInBorderDownLeft(state)==false) {	
-					if(state.getPawn(6,1).equalsPawn("B") && state.getPawn(7,2).equalsPawn("B") ) {
-						return 1.0;
-					}
-					if(state.getPawn(6,1).equalsPawn("B") || state.getPawn(7,2).equalsPawn("B") ) {
-						return 0.5;
-					}
-				}else if ((whiteInBorderDownRight(state) == false && state.getPawn(7,6).equalsPawn("B") || state.getPawn(6,7).equalsPawn("B"))
-						|| (whiteInBorderUpLeft(state) == false && state.getPawn(1,2).equalsPawn("B") || state.getPawn(2,1).equalsPawn("B"))) {
-					return 0.2;
-				}
-				break;
-			case"DR":
-				if(whiteInBorderDownRight(state)==false) {	
-					if(state.getPawn(7,6).equalsPawn("B") && state.getPawn(6,7).equalsPawn("B") ) {
-						return 1.0;
-					}
-					if(state.getPawn(7,6).equalsPawn("B") || state.getPawn(6,7).equalsPawn("B") ) {
-						return 0.5;
-					}
-				}else if((whiteInBorderDownLeft(state) == false && state.getPawn(6,1).equalsPawn("B") || state.getPawn(7,2).equalsPawn("B"))
-						|| (whiteInBorderUpRight(state) == false && state.getPawn(1,6).equalsPawn("B") || state.getPawn(2,7).equalsPawn("B"))) {
-					return 0.2;
-				}
-				break;
-			case"CU":
-				if(whiteInBorderUpRight(state) == false && state.getPawn(1,6).equalsPawn("B") || state.getPawn(2,7).equalsPawn("B")
-				|| (whiteInBorderUpLeft(state) == false && state.getPawn(1,2).equalsPawn("B") || state.getPawn(2,1).equalsPawn("B"))) {
-					return 0.5;
-				}
-				break;
-			case"CD":
-				if(whiteInBorderDownRight(state) == false && state.getPawn(7,6).equalsPawn("B") || state.getPawn(6,7).equalsPawn("B")
-				|| (whiteInBorderDownLeft(state) == false && state.getPawn(6,1).equalsPawn("B") || state.getPawn(7,2).equalsPawn("B"))) {
-					return 0.5;
-				}
-				break;
-			case"CR":
-				if(whiteInBorderDownRight(state) == false && state.getPawn(7,6).equalsPawn("B") || state.getPawn(6,7).equalsPawn("B")
-				|| (whiteInBorderUpRight(state) == false && state.getPawn(1,6).equalsPawn("B") || state.getPawn(2,7).equalsPawn("B"))) {
-					return 0.5;
-				}
-				break;
-			case"CL":
-				if(whiteInBorderDownLeft(state) == false && state.getPawn(6,1).equalsPawn("B") || state.getPawn(7,2).equalsPawn("B")
-				|| (whiteInBorderUpLeft(state) == false && state.getPawn(1,2).equalsPawn("B") || state.getPawn(2,1).equalsPawn("B"))) {
-					return 0.5;
-				}
-				break;
-			case "Throne":
-				if(!whiteInBoxUpRight(state) && !whiteInBorderUpRight(state)) //Ci sono le condizioni per la gabbia stretta in alto a dx
-					return gabbiaStrettaUpRight(state);
-				else if(!whiteInBoxUpLeft(state) && !whiteInBorderUpLeft(state)) //Ci sono le condizioni per la gabbia stretta in alto a sx
-					return gabbiaStrettaUpLeft(state);
-				else if(!whiteInBoxDownLeft(state) && !whiteInBorderDownLeft(state)) //Ci sono le condizioni per la gabbia stretta in basso a sx
-					return gabbiaStrettaDownLeft(state);
-				else if(!whiteInBoxDownRight(state) && !whiteInBorderDownRight(state)) //Ci sono le condizioni per la gabbia stretta in basso a dx
-					return gabbiaStrettaDownRight(state);
-
-				return blackInAssettoGabbiaLight(state).size()/8.0;
-			default:
-				return 0;
-		}
-		return 0;	
-	}
-	
-	
-	public double valutaAssettoGabbiaStrong(State state, int[] king) {
-		ArrayList<int[]> blackInAssettoLight = blackInAssettoGabbiaLight(state);
-		switch(quadranteKing(king)) { 
-		case "UL":
-			if(!whiteInBorderUpLeft(state) && !whiteInBoxUpLeft(state) && !blackInAssettoLight.contains(new int [] {1,2}) && !blackInAssettoLight.contains(new int [] {1,2})) 
-				return gabbiaStrettaUpLeft(state);
-			break;
-		case "UR":
-			if(!whiteInBorderUpLeft(state) && !whiteInBoxUpLeft(state) && !blackInAssettoLight.contains(new int [] {1,6}) && !blackInAssettoLight.contains(new int [] {2,7})) 
-				return gabbiaStrettaUpLeft(state);
-			break;
-		case"DL":
-			if(whiteInBorderDownLeft(state)==false) {	
-				if(state.getPawn(6,1).equalsPawn("B") && state.getPawn(7,2).equalsPawn("B") ) {
-					return 1.0;
-				}
-				if(state.getPawn(6,1).equalsPawn("B") || state.getPawn(7,2).equalsPawn("B") ) {
-					return 0.5;
-				}
-			}else if ((whiteInBorderDownRight(state) == false && state.getPawn(7,6).equalsPawn("B") || state.getPawn(6,7).equalsPawn("B"))
-					|| (whiteInBorderUpLeft(state) == false && state.getPawn(1,2).equalsPawn("B") || state.getPawn(2,1).equalsPawn("B"))) {
-				return 0.2;
-			}
-			break;
-		case"DR":
-			if(whiteInBorderDownRight(state)==false) {	
-				if(state.getPawn(7,6).equalsPawn("B") && state.getPawn(6,7).equalsPawn("B") ) {
-					return 1.0;
-				}
-				if(state.getPawn(7,6).equalsPawn("B") || state.getPawn(6,7).equalsPawn("B") ) {
-					return 0.5;
-				}
-			}else if((whiteInBorderDownLeft(state) == false && state.getPawn(6,1).equalsPawn("B") || state.getPawn(7,2).equalsPawn("B"))
-					|| (whiteInBorderUpRight(state) == false && state.getPawn(1,6).equalsPawn("B") || state.getPawn(2,7).equalsPawn("B"))) {
-				return 0.2;
-			}
-			break;
-		case"CU":
-			if(whiteInBorderUpRight(state) == false && state.getPawn(1,6).equalsPawn("B") || state.getPawn(2,7).equalsPawn("B")
-			|| (whiteInBorderUpLeft(state) == false && state.getPawn(1,2).equalsPawn("B") || state.getPawn(2,1).equalsPawn("B"))) {
-				return 0.5;
-			}
-			break;
-		case"CD":
-			if(whiteInBorderDownRight(state) == false && state.getPawn(7,6).equalsPawn("B") || state.getPawn(6,7).equalsPawn("B")
-			|| (whiteInBorderDownLeft(state) == false && state.getPawn(6,1).equalsPawn("B") || state.getPawn(7,2).equalsPawn("B"))) {
-				return 0.5;
-			}
-			break;
-		case"CR":
-			if(whiteInBorderDownRight(state) == false && state.getPawn(7,6).equalsPawn("B") || state.getPawn(6,7).equalsPawn("B")
-			|| (whiteInBorderUpRight(state) == false && state.getPawn(1,6).equalsPawn("B") || state.getPawn(2,7).equalsPawn("B"))) {
-				return 0.5;
-			}
-			break;
-		case"CL":
-			if(whiteInBorderDownLeft(state) == false && state.getPawn(6,1).equalsPawn("B") || state.getPawn(7,2).equalsPawn("B")
-			|| (whiteInBorderUpLeft(state) == false && state.getPawn(1,2).equalsPawn("B") || state.getPawn(2,1).equalsPawn("B"))) {
-				return 0.5;
-			}
-			break;
-		case "Throne":
-			if(!whiteInBoxUpRight(state) && !whiteInBorderUpRight(state) && !blackInAssettoLight.contains(new int [] {1,6}) && !blackInAssettoLight.contains(new int [] {2,7})) //Ci sono le condizioni per la gabbia stretta in alto a dx
-				return gabbiaStrettaUpRight(state);
-			else if(!whiteInBoxUpLeft(state) && !whiteInBorderUpLeft(state) && !blackInAssettoLight.contains(new int [] {1,2}) && !blackInAssettoLight.contains(new int [] {1,2})) //Ci sono le condizioni per la gabbia stretta in alto a sx
-				return gabbiaStrettaUpLeft(state);
-			else if(!whiteInBoxDownLeft(state) && !whiteInBorderDownLeft(state)) //Ci sono le condizioni per la gabbia stretta in basso a sx
-				return gabbiaStrettaDownLeft(state);
-			else if(!whiteInBoxDownRight(state) && !whiteInBorderDownRight(state)) //Ci sono le condizioni per la gabbia stretta in basso a dx
-				return gabbiaStrettaDownRight(state);
-		default:
-			return 0;
-	}
-		return 0;	
-	}
 	
 	
 	//SCanc
@@ -593,15 +565,15 @@ public class BlackStrategy {
 	/**
 	 * Funzione ottimizzata rispetto a fare un ciclo di confronti.
 	 * Fa confronti singoli e, non appena trova una pedina bianca(cosa probabile) interrompe i controlli ritorna false
-	 * @param state Lo stato attuale della scacchiera.
+	 * @param state, color. Lo stato attuale della scacchiera e il colore di pedina da cercare.
 	 * @return false se non ci sono pedine bianche nelle posizioni interne critiche per fare la gabbia stretta in basso a sx. 
 	 *
 	 * (Code by L.Piazza) 
 	 */
-	private boolean whiteInBoxDownLeft(State state) {
-		if(!state.getPawn(5,1).equalsPawn("W") && !state.getPawn(6,1).equalsPawn("W") 
-				&& !state.getPawn(6,2).equalsPawn("W") && !state.getPawn(7,1).equalsPawn("W")
-				&& !state.getPawn(7,2).equalsPawn("W") && !state.getPawn(7,3).equalsPawn("W"))
+	private boolean pawnInBoxDownLeft(State state, String color) {
+		if(!state.getPawn(5,1).equalsPawn(color) && !state.getPawn(6,1).equalsPawn(color) 
+				&& !state.getPawn(6,2).equalsPawn(color) && !state.getPawn(7,1).equalsPawn(color)
+				&& !state.getPawn(7,2).equalsPawn(color) && !state.getPawn(7,3).equalsPawn(color))
 			return false;
 		return true;
 	}
@@ -609,15 +581,15 @@ public class BlackStrategy {
 	/**
 	 * Funzione ottimizzata rispetto a fare un ciclo di confronti.
 	 * Fa confronti singoli e, non appena trova una pedina bianca(cosa probabile) interrompe i controlli ritorna false
-	 * @param state Lo stato attuale della scacchiera.
+	 * @param state, color. Lo stato attuale della scacchiera e il colore di pedina da cercare.
 	 * @return false se non ci sono pedine bianche nelle posizioni interne critiche per fare la gabbia stretta in alto a sx. 
 	 *
 	 * (Code by L.Piazza) 
 	 */
-	private boolean whiteInBoxUpLeft(State state) {
-		if(!state.getPawn(1,1).equalsPawn("W") && !state.getPawn(1,2).equalsPawn("W") 
-				&& !state.getPawn(1,3).equalsPawn("W") && !state.getPawn(2,1).equalsPawn("W")
-				&& !state.getPawn(2,2).equalsPawn("W") && !state.getPawn(3,1).equalsPawn("W"))
+	private boolean pawnInBoxUpLeft(State state, String color) {
+		if(!state.getPawn(1,1).equalsPawn(color) && !state.getPawn(1,2).equalsPawn(color) 
+				&& !state.getPawn(1,3).equalsPawn(color) && !state.getPawn(2,1).equalsPawn(color)
+				&& !state.getPawn(2,2).equalsPawn(color) && !state.getPawn(3,1).equalsPawn(color))
 			return false;
 		return true;
 	}
@@ -625,15 +597,15 @@ public class BlackStrategy {
 	/**
 	 * Funzione ottimizzata rispetto a fare un ciclo di confronti.
 	 * Fa confronti singoli e, non appena trova una pedina bianca(cosa probabile) interrompe i controlli ritorna false
-	 * @param state Lo stato attuale della scacchiera.
+	 * @param state, color. Lo stato attuale della scacchiera e il colore di pedina da cercare.
 	 * @return false se non ci sono pedine bianche nelle posizioni interne critiche per fare la gabbia stretta in alto a dx. 
 	 *
 	 * (Code by L.Piazza) 
 	 */
-	private boolean whiteInBoxUpRight(State state) {
-		if(!state.getPawn(1,7).equalsPawn("W") && !state.getPawn(2,7).equalsPawn("W") 
-				&& !state.getPawn(3,7).equalsPawn("W") && !state.getPawn(1,6).equalsPawn("W")
-				&& !state.getPawn(2,6).equalsPawn("W") && !state.getPawn(1,5).equalsPawn("W"))
+	private boolean pawnInBoxUpRight(State state, String color) {
+		if(!state.getPawn(1,7).equalsPawn(color) && !state.getPawn(2,7).equalsPawn(color) 
+				&& !state.getPawn(3,7).equalsPawn(color) && !state.getPawn(1,6).equalsPawn(color)
+				&& !state.getPawn(2,6).equalsPawn(color) && !state.getPawn(1,5).equalsPawn(color))
 			return false;
 		return true;
 	}
@@ -641,15 +613,15 @@ public class BlackStrategy {
 	/**
 	 * Funzione ottimizzata rispetto a fare un ciclo di confronti.
 	 * Fa confronti singoli e, non appena trova una pedina bianca(cosa probabile) interrompe i controlli ritorna false
-	 * @param state Lo stato attuale della scacchiera.
+	 * @param state, color. Lo stato attuale della scacchiera e il colore di pedina da cercare.
 	 * @return false se non ci sono pedine bianche nelle posizioni interne critiche per fare la gabbia stretta in basso a dx. 
 	 *
 	 * (Code by L.Piazza) 
 	 */
-	private boolean whiteInBoxDownRight(State state) {
-		if(!state.getPawn(5,7).equalsPawn("W") && !state.getPawn(6,7).equalsPawn("W") 
-				&& !state.getPawn(7,7).equalsPawn("W") && !state.getPawn(6,6).equalsPawn("W")
-				&& !state.getPawn(7,6).equalsPawn("W") && !state.getPawn(7,5).equalsPawn("W"))
+	private boolean pawnInBoxDownRight(State state, String color) {
+		if(!state.getPawn(5,7).equalsPawn(color) && !state.getPawn(6,7).equalsPawn(color) 
+				&& !state.getPawn(7,7).equalsPawn(color) && !state.getPawn(6,6).equalsPawn(color)
+				&& !state.getPawn(7,6).equalsPawn(color) && !state.getPawn(7,5).equalsPawn(color))
 			return false;
 		return true;
 	}

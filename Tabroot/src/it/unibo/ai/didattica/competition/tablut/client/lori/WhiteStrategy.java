@@ -104,7 +104,7 @@ public class WhiteStrategy {
 					latiCopertiDalTronoDelRe+=neriVicinoAlRe;
 					//Se ho più di tre lati occupati devo scappare con il re.
 					if(latiCopertiDalTronoDelRe>=3)
-						scappaRe=-1;
+						scappaRe=-1.0;
 				}
 				else {/*non sono sul trono e neanche accanto ad esso,
 					quindi puo' essere mangiato normalmente.*/
@@ -465,7 +465,7 @@ public class WhiteStrategy {
 			if(state.getPawn(3, 5).equalsPawn("W") && !pedinaNeraSuRiga&&!pedinaNeraSuColonna) {
 				valutazione= 0.75;				
 				if(state.getPawn(3, 4).equalsPawn(("K")))
-					valutazione=1;
+					valutazione=1.0;
 					
 
 			}
@@ -523,7 +523,7 @@ public class WhiteStrategy {
 			if(state.getPawn(3, 3).equalsPawn("W") && !pedinaNeraSuRiga && !pedinaNeraSuColonna) {
 				valutazione= 0.75;				
 				if(state.getPawn(3, 4).equalsPawn(("K")))
-					valutazione=1;
+					valutazione=1.0;
 					
 			}
 
@@ -578,7 +578,7 @@ public class WhiteStrategy {
 			if(state.getPawn(5, 3).equalsPawn("W")&& !pedinaNeraSuRiga&&!pedinaNeraSuColonna) {
 				valutazione=0.8;				
 				if(state.getPawn(5, 4).equalsPawn(("K")))
-					valutazione= 1;
+					valutazione= 1.0;
 					
 			}
 
@@ -636,7 +636,7 @@ public class WhiteStrategy {
 			if(state.getPawn(5, 5).equalsPawn("W") && !pedinaNeraSuRiga&&!pedinaNeraSuColonna) {
 				valutazione=0.75;				
 				if(state.getPawn(5, 4).equalsPawn(("K")))
-					valutazione=1;
+					valutazione=1.0;
 					
 
 			}
