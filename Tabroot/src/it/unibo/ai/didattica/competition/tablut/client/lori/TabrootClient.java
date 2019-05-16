@@ -2,6 +2,7 @@ package it.unibo.ai.didattica.competition.tablut.client.lori;
 
 import java.io.IOException;
 import java.net.UnknownHostException;
+import java.time.LocalTime;
 
 import aima.core.search.adversarial.*;
 import aima.core.search.framework.Metrics;
@@ -137,7 +138,7 @@ public class TabrootClient extends TablutClient {
 				//sono il giocatore bianco
 				if (this.getCurrentState().getTurn().equals(StateTablut.Turn.WHITE)) {
 					//ed è il turno del bianco (tocca a me giocare)
-					
+					printStartTime();//controllo tempo
 					Action a = null;
 					try {
 						a = new Action("z0", "z0", State.Turn.WHITE);
@@ -154,13 +155,13 @@ public class TabrootClient extends TablutClient {
 					System.out.println("Mossa scelta: " + a.toString());
 					//printStatistics(itDeepAlgorithm);
 					printStatistics(myItDeepAlgorithm);
-					
+					printEndTime();//controllo tempo
 					/*GESTIONE MEMORIA: DA CONTROLLARE!!!*/
 					long memOccupata=Runtime.getRuntime().totalMemory()-Runtime.getRuntime().freeMemory();
 					/*Conversione da bytes a MB*/
 					double memOccupataMB=memOccupata*Math.pow(9.537, Math.pow(10, -7));
 					System.out.println("MEMORIA OCCUPATA: " + memOccupataMB+" MB");
-					
+					printEndTime();//controllo tempo
 					try {
 						this.write(a);
 					} catch (ClassNotFoundException | IOException e) {
@@ -191,7 +192,7 @@ public class TabrootClient extends TablutClient {
 				// sono il giocatore nero
 				if (this.getCurrentState().getTurn().equals(StateTablut.Turn.BLACK)) { 
 					// ed è il turno del nero (tocca a me giocare)
-						
+					printStartTime();//controllo tempo
 					Action a = null;
 					try {
 						a = new Action("z0", "z0", State.Turn.BLACK);
@@ -229,6 +230,7 @@ public class TabrootClient extends TablutClient {
 					/*Conversione da bytes a MB*/
 					double memOccupataMB=memOccupata*Math.pow(9.537, Math.pow(10, -7));
 					System.out.println("MEMORIA OCCUPATA: " + memOccupataMB+" MB");
+					printEndTime();//controllo tempo
 					
 					try {
 						this.write(a);
@@ -263,4 +265,14 @@ public class TabrootClient extends TablutClient {
 			System.out.println("["+key+"]:"+value);
 		}
 	}
+	
+	private void printStartTime() {
+		LocalTime t=LocalTime.now();
+		System.out.println("***Ora Inizio: "+t);
+	}
+	private void printEndTime() {
+		LocalTime t=LocalTime.now();
+		System.out.println("***Ora fine: "+t);
+	}
+	
 }
