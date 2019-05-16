@@ -457,8 +457,9 @@ public class MyGame extends GameAshtonTablut implements Game<State, Action, Turn
 		double valQuadranti=whiteStrategy.valQuadranti(state);
 
 		/*TODO:QUI VIENE FATTO IL TUNING E IL BILANCIAMENTO DEI VALORI! */
+		
 
-		return 0.35*conteggioPedine + 0.10*scappaRe + 0.03*pedineInAngoli + 0.03*assettoTorre+0.25*mosseIntelligenti+0.44*valQuadranti;
+		return 0.35*conteggioPedine + 0.10*scappaRe + 0.03*pedineInAngoli + 0.03*assettoTorre+0.25*mosseIntelligenti+0.45*valQuadranti;
 
 	}
 
