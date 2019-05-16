@@ -6,7 +6,7 @@ import java.util.List;
 import it.unibo.ai.didattica.competition.tablut.domain.State;
 
 /**
- * @author L.Piazza A.Dalmonte 
+ * @author L.Piazza A.Dalmonte, S.Cancello 
  *
  */
 public class BlackStrategy {
@@ -23,9 +23,9 @@ public class BlackStrategy {
 	 * 
 	 * (Code by L.Piazza)
 	 */
-	public int blackInAssettoGabbia(State state) {
+	private ArrayList<int[]> blackInAssettoGabbiaLight(State state) {
 		int [] posizione = new int[2];
-		List<int[]> blackInAssetto = new ArrayList<int[]>();
+		ArrayList<int[]> blackInAssetto = new ArrayList<int[]>();
 	
 		if(state.getPawn(1,2).equalsPawn("B")) {
 			posizione[0]=1;
@@ -68,7 +68,7 @@ public class BlackStrategy {
 			blackInAssetto.add(posizione);
 		}
 		
-		return blackInAssetto.size();
+		return blackInAssetto;
 	}
 	
 	/**
@@ -77,7 +77,7 @@ public class BlackStrategy {
 	 * 
 	 * (Code by L.Piazza)
 	 */
-	public boolean isGabbia(List<int[]> blackInAssetto) {
+	private boolean isGabbia(List<int[]> blackInAssetto) {
 		if(blackInAssetto.size()==8)
 			return true;
 		
@@ -90,7 +90,7 @@ public class BlackStrategy {
 	 * 
 	 * (Code by L.Piazza A.Dalmonte)
 	 */	
-	public boolean whiteInBorderUpLeft(State state) {
+	private boolean whiteInBorderUpLeft(State state) {
 		boolean result=false;
 		
 		for(int i=0; i<3 && !result; i++) {
@@ -115,7 +115,7 @@ public class BlackStrategy {
 	 * 
 	 * (Code by L.Piazza A.Dalmonte)
 	 */
-	public boolean whiteInBorderDownLeft(State state) {
+	private boolean whiteInBorderDownLeft(State state) {
 		boolean result=false;
 		
 		for(int i=6; i<9 && !result; i++) {
@@ -140,7 +140,7 @@ public class BlackStrategy {
 	 * 
 	 * (Code by L.Piazza A.Dalmonte)
 	 */
-	public boolean whiteInBorderUpRight(State state) {
+	private boolean whiteInBorderUpRight(State state) {
 		boolean result=false;
 		
 		for(int i=0; i<3 && !result; i++) {
@@ -165,7 +165,7 @@ public class BlackStrategy {
 	 * 
 	 * (Code by L.Piazza A.Dalmonte)
 	 */
-	public boolean whiteInBorderDownRight(State state) {
+	private boolean whiteInBorderDownRight(State state) {
 		boolean result=false;
 		
 		for(int i=6; i<9 && !result; i++) {
@@ -190,7 +190,7 @@ public class BlackStrategy {
 	 * 
 	 * (Code by L.Piazza A.Dalmonte)
 	 */
-	public String quadranteKing(int[] king) {
+	private String quadranteKing(int[] king) {
 		String result="Throne";
 		
 		//Re nel quadrante in alto a sinistra
@@ -253,10 +253,10 @@ public class BlackStrategy {
 	//modifica per guardare le gabbie adiacenti al quadrante del rè dato un valore minore (Alan)
 	//inoltre guarda anche se si è messo nella croce in che parte di essa e da un valore un pò buono alla gabbia in quei due lati della croce
 	
-	public double valutaAssettoGabbia(State state, int[] king) {
+	public double valutaAssettoGabbiaLight(State state, int[] king) {
 		switch(quadranteKing(king)) { 
 			case "UL":
-				if(whiteInBorderUpLeft(state)==false) {	
+				if(!whiteInBorderUpLeft(state)) {
 					if(state.getPawn(1,2).equalsPawn("B") && state.getPawn(2,1).equalsPawn("B") ) {
 						return 1.0;
 					}
@@ -333,18 +333,105 @@ public class BlackStrategy {
 				}
 				break;
 			case "Throne":
-				return blackInAssettoGabbia(state)/8.0;
+				if(!whiteInBoxUpRight(state) && !whiteInBorderUpRight(state)) //Ci sono le condizioni per la gabbia stretta in alto a dx
+					return gabbiaStrettaUpRight(state);
+				else if(!whiteInBoxUpLeft(state) && !whiteInBorderUpLeft(state)) //Ci sono le condizioni per la gabbia stretta in alto a sx
+					return gabbiaStrettaUpLeft(state);
+				else if(!whiteInBoxDownLeft(state) && !whiteInBorderDownLeft(state)) //Ci sono le condizioni per la gabbia stretta in basso a sx
+					return gabbiaStrettaDownLeft(state);
+				else if(!whiteInBoxDownRight(state) && !whiteInBorderDownRight(state)) //Ci sono le condizioni per la gabbia stretta in basso a dx
+					return gabbiaStrettaDownRight(state);
+
+				return blackInAssettoGabbiaLight(state).size()/8.0;
 			default:
 				return 0;
 		}
 		return 0;	
 	}
 	
+	
+	public double valutaAssettoGabbiaStrong(State state, int[] king) {
+		ArrayList<int[]> blackInAssettoLight = blackInAssettoGabbiaLight(state);
+		switch(quadranteKing(king)) { 
+		case "UL":
+			if(!whiteInBorderUpLeft(state) && !whiteInBoxUpLeft(state) && !blackInAssettoLight.contains(new int [] {1,2}) && !blackInAssettoLight.contains(new int [] {1,2})) 
+				return gabbiaStrettaUpLeft(state);
+			break;
+		case "UR":
+			if(!whiteInBorderUpLeft(state) && !whiteInBoxUpLeft(state) && !blackInAssettoLight.contains(new int [] {1,6}) && !blackInAssettoLight.contains(new int [] {2,7})) 
+				return gabbiaStrettaUpLeft(state);
+			break;
+		case"DL":
+			if(whiteInBorderDownLeft(state)==false) {	
+				if(state.getPawn(6,1).equalsPawn("B") && state.getPawn(7,2).equalsPawn("B") ) {
+					return 1.0;
+				}
+				if(state.getPawn(6,1).equalsPawn("B") || state.getPawn(7,2).equalsPawn("B") ) {
+					return 0.5;
+				}
+			}else if ((whiteInBorderDownRight(state) == false && state.getPawn(7,6).equalsPawn("B") || state.getPawn(6,7).equalsPawn("B"))
+					|| (whiteInBorderUpLeft(state) == false && state.getPawn(1,2).equalsPawn("B") || state.getPawn(2,1).equalsPawn("B"))) {
+				return 0.2;
+			}
+			break;
+		case"DR":
+			if(whiteInBorderDownRight(state)==false) {	
+				if(state.getPawn(7,6).equalsPawn("B") && state.getPawn(6,7).equalsPawn("B") ) {
+					return 1.0;
+				}
+				if(state.getPawn(7,6).equalsPawn("B") || state.getPawn(6,7).equalsPawn("B") ) {
+					return 0.5;
+				}
+			}else if((whiteInBorderDownLeft(state) == false && state.getPawn(6,1).equalsPawn("B") || state.getPawn(7,2).equalsPawn("B"))
+					|| (whiteInBorderUpRight(state) == false && state.getPawn(1,6).equalsPawn("B") || state.getPawn(2,7).equalsPawn("B"))) {
+				return 0.2;
+			}
+			break;
+		case"CU":
+			if(whiteInBorderUpRight(state) == false && state.getPawn(1,6).equalsPawn("B") || state.getPawn(2,7).equalsPawn("B")
+			|| (whiteInBorderUpLeft(state) == false && state.getPawn(1,2).equalsPawn("B") || state.getPawn(2,1).equalsPawn("B"))) {
+				return 0.5;
+			}
+			break;
+		case"CD":
+			if(whiteInBorderDownRight(state) == false && state.getPawn(7,6).equalsPawn("B") || state.getPawn(6,7).equalsPawn("B")
+			|| (whiteInBorderDownLeft(state) == false && state.getPawn(6,1).equalsPawn("B") || state.getPawn(7,2).equalsPawn("B"))) {
+				return 0.5;
+			}
+			break;
+		case"CR":
+			if(whiteInBorderDownRight(state) == false && state.getPawn(7,6).equalsPawn("B") || state.getPawn(6,7).equalsPawn("B")
+			|| (whiteInBorderUpRight(state) == false && state.getPawn(1,6).equalsPawn("B") || state.getPawn(2,7).equalsPawn("B"))) {
+				return 0.5;
+			}
+			break;
+		case"CL":
+			if(whiteInBorderDownLeft(state) == false && state.getPawn(6,1).equalsPawn("B") || state.getPawn(7,2).equalsPawn("B")
+			|| (whiteInBorderUpLeft(state) == false && state.getPawn(1,2).equalsPawn("B") || state.getPawn(2,1).equalsPawn("B"))) {
+				return 0.5;
+			}
+			break;
+		case "Throne":
+			if(!whiteInBoxUpRight(state) && !whiteInBorderUpRight(state) && !blackInAssettoLight.contains(new int [] {1,6}) && !blackInAssettoLight.contains(new int [] {2,7})) //Ci sono le condizioni per la gabbia stretta in alto a dx
+				return gabbiaStrettaUpRight(state);
+			else if(!whiteInBoxUpLeft(state) && !whiteInBorderUpLeft(state) && !blackInAssettoLight.contains(new int [] {1,2}) && !blackInAssettoLight.contains(new int [] {1,2})) //Ci sono le condizioni per la gabbia stretta in alto a sx
+				return gabbiaStrettaUpLeft(state);
+			else if(!whiteInBoxDownLeft(state) && !whiteInBorderDownLeft(state)) //Ci sono le condizioni per la gabbia stretta in basso a sx
+				return gabbiaStrettaDownLeft(state);
+			else if(!whiteInBoxDownRight(state) && !whiteInBorderDownRight(state)) //Ci sono le condizioni per la gabbia stretta in basso a dx
+				return gabbiaStrettaDownRight(state);
+		default:
+			return 0;
+	}
+		return 0;	
+	}
+	
+	
 	//SCanc
 	
-	public double gabbiaStrettaDownLeft(State state, List<int[]> white) {
-		boolean bianchi=false;
-		int[] controlloPedine= {0,0};
+	public double gabbiaStrettaDownLeft(State state) {
+		//CONTROLLI FATTI IN UN'ALTRA FUNZIONE
+		/*int[] controlloPedine= {0,0};
 		int i=-1;
 		
 		do{
@@ -373,16 +460,17 @@ public class BlackStrategy {
 			if(controlloPedine[0]==8 && controlloPedine[1]==2)
 				bianchi=true;
 		}while(!bianchi&&white.size()<i);
+		*/
+		if(state.getPawn(5,2).equalsPawn("B") && state.getPawn(6,3).equalsPawn("B"))
+			return 1.0;
+		if(state.getPawn(5,2).equalsPawn("B") || state.getPawn(6,3).equalsPawn("B"))
+			return 0.5;
 		
-		if(!bianchi && state.getPawn(5,2).equalsPawn("W")&&
-				state.getPawn(6,3).equalsPawn("W"))
-			return 1;
-		
-		return 0;
+		return 0;	
 	}
 	
-	public double gabbiaStrettaDownRight(State state, List<int[]> white) {
-		boolean bianchi=false;
+	public double gabbiaStrettaDownRight(State state) {
+		/*boolean bianchi=false;
 		int[] controlloPedine= {0,0};
 		int i=-1;
 		
@@ -411,17 +499,18 @@ public class BlackStrategy {
 				bianchi=true;
 			if(controlloPedine[0]==8 && controlloPedine[1]==6)
 				bianchi=true;
-		}while(!bianchi&&white.size()<i);
+		}while(!bianchi&&white.size()<i);*/
 		
-		if(!bianchi && state.getPawn(5,6).equalsPawn("W")&&
-				state.getPawn(6,5).equalsPawn("W"))
-			return 1;
+		if(state.getPawn(5,6).equalsPawn("B") && state.getPawn(6,5).equalsPawn("B"))
+			return 1.0;
+		if(state.getPawn(5,6).equalsPawn("B") || state.getPawn(6,5).equalsPawn("B"))
+			return 0.5;
 		
 		return 0;
 	}
 	
-	public double gabbiaStrettaUpRight(State state, List<int[]> white) {
-		boolean bianchi=false;
+	public double gabbiaStrettaUpRight(State state) {
+		/*boolean bianchi=false;
 		int[] controlloPedine= {0,0};
 		int i=-1;
 		
@@ -451,16 +540,17 @@ public class BlackStrategy {
 			if(controlloPedine[0]==0 && controlloPedine[1]==6)
 				bianchi=true;
 		}while(!bianchi&&white.size()<i);
+		*/
 		
-		if(!bianchi && state.getPawn(2,5).equalsPawn("W")&&
-				state.getPawn(3,6).equalsPawn("W"))
+		if(state.getPawn(2,5).equalsPawn("B") && state.getPawn(3,6).equalsPawn("B"))
 			return 1;
-		
+		if (state.getPawn(2,5).equalsPawn("B") || state.getPawn(3,6).equalsPawn("B"))
+			return 0.5;
 		return 0;
 	}
 	
-	public double gabbiaStrettaUpLeft(State state, List<int[]> white) {
-		boolean bianchi=false;
+	public double gabbiaStrettaUpLeft(State state) {
+		/*boolean bianchi=false;
 		int[] controlloPedine= {0,0};
 		int i=-1;
 		
@@ -490,11 +580,78 @@ public class BlackStrategy {
 			if(controlloPedine[0]==0 && controlloPedine[1]==2)
 				bianchi=true;
 		}while(!bianchi&&white.size()<i);
-		
-		if(!bianchi && state.getPawn(3,2).equalsPawn("W")&&
-				state.getPawn(2,3).equalsPawn("W"))
+		*/
+		if(state.getPawn(3,2).equalsPawn("B") && state.getPawn(2,3).equalsPawn("B"))
 			return 1;
+		if(state.getPawn(3,2).equalsPawn("B") && state.getPawn(2,3).equalsPawn("B"))
+			return 0.5;
 		
 		return 0;
 	}
+	
+	
+	/**
+	 * Funzione ottimizzata rispetto a fare un ciclo di confronti.
+	 * Fa confronti singoli e, non appena trova una pedina bianca(cosa probabile) interrompe i controlli ritorna false
+	 * @param state Lo stato attuale della scacchiera.
+	 * @return false se non ci sono pedine bianche nelle posizioni interne critiche per fare la gabbia stretta in basso a sx. 
+	 *
+	 * (Code by L.Piazza) 
+	 */
+	private boolean whiteInBoxDownLeft(State state) {
+		if(!state.getPawn(5,1).equalsPawn("W") && !state.getPawn(6,1).equalsPawn("W") 
+				&& !state.getPawn(6,2).equalsPawn("W") && !state.getPawn(7,1).equalsPawn("W")
+				&& !state.getPawn(7,2).equalsPawn("W") && !state.getPawn(7,3).equalsPawn("W"))
+			return false;
+		return true;
+	}
+	
+	/**
+	 * Funzione ottimizzata rispetto a fare un ciclo di confronti.
+	 * Fa confronti singoli e, non appena trova una pedina bianca(cosa probabile) interrompe i controlli ritorna false
+	 * @param state Lo stato attuale della scacchiera.
+	 * @return false se non ci sono pedine bianche nelle posizioni interne critiche per fare la gabbia stretta in alto a sx. 
+	 *
+	 * (Code by L.Piazza) 
+	 */
+	private boolean whiteInBoxUpLeft(State state) {
+		if(!state.getPawn(1,1).equalsPawn("W") && !state.getPawn(1,2).equalsPawn("W") 
+				&& !state.getPawn(1,3).equalsPawn("W") && !state.getPawn(2,1).equalsPawn("W")
+				&& !state.getPawn(2,2).equalsPawn("W") && !state.getPawn(3,1).equalsPawn("W"))
+			return false;
+		return true;
+	}
+	
+	/**
+	 * Funzione ottimizzata rispetto a fare un ciclo di confronti.
+	 * Fa confronti singoli e, non appena trova una pedina bianca(cosa probabile) interrompe i controlli ritorna false
+	 * @param state Lo stato attuale della scacchiera.
+	 * @return false se non ci sono pedine bianche nelle posizioni interne critiche per fare la gabbia stretta in alto a dx. 
+	 *
+	 * (Code by L.Piazza) 
+	 */
+	private boolean whiteInBoxUpRight(State state) {
+		if(!state.getPawn(1,7).equalsPawn("W") && !state.getPawn(2,7).equalsPawn("W") 
+				&& !state.getPawn(3,7).equalsPawn("W") && !state.getPawn(1,6).equalsPawn("W")
+				&& !state.getPawn(2,6).equalsPawn("W") && !state.getPawn(1,5).equalsPawn("W"))
+			return false;
+		return true;
+	}
+	
+	/**
+	 * Funzione ottimizzata rispetto a fare un ciclo di confronti.
+	 * Fa confronti singoli e, non appena trova una pedina bianca(cosa probabile) interrompe i controlli ritorna false
+	 * @param state Lo stato attuale della scacchiera.
+	 * @return false se non ci sono pedine bianche nelle posizioni interne critiche per fare la gabbia stretta in basso a dx. 
+	 *
+	 * (Code by L.Piazza) 
+	 */
+	private boolean whiteInBoxDownRight(State state) {
+		if(!state.getPawn(5,7).equalsPawn("W") && !state.getPawn(6,7).equalsPawn("W") 
+				&& !state.getPawn(7,7).equalsPawn("W") && !state.getPawn(6,6).equalsPawn("W")
+				&& !state.getPawn(7,6).equalsPawn("W") && !state.getPawn(7,5).equalsPawn("W"))
+			return false;
+		return true;
+	}
+
 }

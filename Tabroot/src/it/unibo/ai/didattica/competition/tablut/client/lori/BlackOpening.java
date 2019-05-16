@@ -51,14 +51,14 @@ public class BlackOpening implements IOpening {
 		
 		/*Guardo ora se invece il bianco ha aperto muovendo una delle pedine più esterne*/
 		else if(currentState.getPawn(2,4).equalsPawn("O")) {
-			if(!whiteInBorderUpLeft(currentState)){
+			/*if(!whiteInBorderUpLeft(currentState)){
 				try {
 					return new Action("e2", "c2", Turn.BLACK);
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
 			}
-			else
+			else*/
 				try {
 					return new Action("e2", "g2", Turn.BLACK);
 				} catch (IOException e) {
@@ -66,14 +66,14 @@ public class BlackOpening implements IOpening {
 				}
 		}
 		else if(currentState.getPawn(4,6).equalsPawn("O")) {
-			if(!whiteInBorderUpRight(currentState)){
+			/*if(!whiteInBorderUpRight(currentState)){
 				try {
 					return new Action("h5", "h3", Turn.BLACK);
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
 			}
-			else
+			else*/
 				try {
 					return new Action("h5", "h7", Turn.BLACK);
 				} catch (IOException e) {
@@ -81,14 +81,14 @@ public class BlackOpening implements IOpening {
 				}
 		}
 		else if(currentState.getPawn(6,4).equalsPawn("O")) {
-			if(!whiteInBorderDownRight(currentState)){
+			/*if(!whiteInBorderDownRight(currentState)){
 				try {
 					return new Action("e8", "g8", Turn.BLACK);
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
 			}
-			else
+			else*/
 				try {
 					return new Action("e8", "c8", Turn.BLACK);
 				} catch (IOException e) {
@@ -96,14 +96,14 @@ public class BlackOpening implements IOpening {
 				}
 		}
 		else if(currentState.getPawn(4,2).equalsPawn("O")) {
-			if(!whiteInBorderDownLeft(currentState)){
+			/*if(!whiteInBorderDownLeft(currentState)){
 				try {
 					return new Action("e2", "c2", Turn.BLACK);
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
 			}
-			else
+			else*/
 				try {
 					return new Action("e2", "g2", Turn.BLACK);
 				} catch (IOException e) {
