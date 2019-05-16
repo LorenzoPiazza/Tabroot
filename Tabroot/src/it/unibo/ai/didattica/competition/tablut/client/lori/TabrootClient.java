@@ -127,6 +127,7 @@ public class TabrootClient extends TablutClient {
 			System.out.println("Current state:");
 			state = this.getCurrentState();
 			System.out.println(state.toString());
+			
 			try {
 				Thread.sleep(1000);
 			} catch (InterruptedException e) {
