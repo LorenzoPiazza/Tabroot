@@ -105,7 +105,7 @@ public class BlackOpening implements IOpening {
 			}
 			else*/
 				try {
-					return new Action("e2", "g2", Turn.BLACK);
+					return new Action("b5", "b7", Turn.BLACK);
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
