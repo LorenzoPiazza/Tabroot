@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Random;
 
 import aima.core.search.adversarial.Game;
 import it.unibo.ai.didattica.competition.tablut.domain.*;
@@ -463,7 +464,7 @@ public class MyGame extends GameAshtonTablut implements Game<State, Action, Turn
 		  migliore: return 0.50*conteggioPedine + 0.10*scappaRe + 0.05*pedineInAngoli + 0.10*vicinanzaBordiAngoli + 0.02*assettoTorre+0.15*mosseIntelligenti+0.20*valutaQuadrantiKing;
 		 */
 
-		return 0.53*conteggioPedine + 0.10*scappaRe + 0.03*pedineInAngoli + 0.05*vicinanzaBordiAngoli + 0.02*assettoTorre+0.18*mosseIntelligenti+0.20*valutaQuadrantiKing;
+		return 0.53*conteggioPedine + 0.10*scappaRe + 0.03*pedineInAngoli + 0.05*vicinanzaBordiAngoli + 0.02*assettoTorre+0.17*mosseIntelligenti+0.20*valutaQuadrantiKing+0.01*(new Random().nextDouble());
 		
 	}
 
@@ -487,28 +488,36 @@ public class MyGame extends GameAshtonTablut implements Game<State, Action, Turn
 
 		//Controlli per far scappare il Re. Attenzione che il range è negativo! Range: [-1,0]
 		double scappaRe = whiteStrategy.scappaRe(state, white, black, king);
-		
+
 		//Guardo se ho delle pedine bianche negli angoli. Range [0,1]
 		double pedineInAngoli = whiteStrategy.pedineInAngoli(state, king);
 
 		//Guardo se ho delle pedine bianche nei bordi. Da TOGLIERE **
 		//double valutazionePedinaBordiAngoli = whiteStrategy.vicinanzaBordiAngoli(white);
+
+		//Guardo l'assetto Fusco. Range: da NORMALIZZARE tra 0 e 1!! **
+		//double assettoFusco = whiteStrategy.valutazioneAssettoFusco(state, white, king);
 		
 		/*Guardo l'assetto torre (Per torre si intende che nella scacchiera ho 4 pedine, di cui una è il re,
 		 in posizione tale che non si fanno mangiare. Le pedine saranno disposte in due righe una sopra l'altra. 
 		Range [0,1]
 		*/
 		double assettoTorre=whiteStrategy.valutazioneAssettoTorre(state, white, king);
-		
-		//new
-		double contrastaGabbia=whiteStrategy.contrastaGabbia(state, white, king);
+		double vicinanzaBordiAngoli=whiteStrategy.vicinanzaBordiAngoli(white);
 		double mosseIntelligenti=whiteStrategy.mosseIntelligenti(state, white, king);
-		double valQuadrantiKing=whiteStrategy.valutaQuadrantiKing(state,king);
+		double valutaQuadrantiKing=whiteStrategy.valutaQuadrantiKing(state, king);
 
-		/* TODO:QUI VIENE FATTO IL TUNING E IL BILANCIAMENTO DEI VALORI! */
+		/*TODO:QUI VIENE FATTO IL TUNING E IL BILANCIAMENTO DEI VALORI! */
 
-		return 0.60*conteggioPedine + 0.05*posKing + 0.10*scappaRe + 0.05*pedineInAngoli + 0.1*assettoTorre+0.20*contrastaGabbia+0.05*mosseIntelligenti+0.05*valQuadrantiKing;
+		//(FUSCO VERSION)
 
+		/*tuning in cui (in teoria) vince il bianco
+		  return 0.42*conteggioPedine + 0.10*scappaRe + 0.03*pedineInAngoli + 0.05*vicinanzaBordiAngoli + 0.02*assettoTorre+0.25*mosseIntelligenti+0.30*valutaQuadrantiKing;
+		  migliore: return 0.50*conteggioPedine + 0.10*scappaRe + 0.05*pedineInAngoli + 0.10*vicinanzaBordiAngoli + 0.02*assettoTorre+0.15*mosseIntelligenti+0.20*valutaQuadrantiKing;
+		 */
+
+		return 0.58*conteggioPedine + 0.10*scappaRe + 0.05*pedineInAngoli + 0.05*vicinanzaBordiAngoli + 0.03*assettoTorre+0.10*mosseIntelligenti+0.20*valutaQuadrantiKing;
+		
 	}
 	
 	
@@ -534,7 +543,7 @@ public class MyGame extends GameAshtonTablut implements Game<State, Action, Turn
 		double assettoGabbiaStrong=blackStrategy.valutaAssettoGabbiaStrong(state, king);
 		
 		/* TODO:QUI VIENE FATTO IL TUNING E IL BILANCIAMENTO DEI VALORI! */
-		return 0.4*conteggioPedine+0.30*assettoGabbiaLight+0.30*assettoGabbiaStrong;
+		return 0.40*conteggioPedine+0.30*assettoGabbiaLight+0.29*assettoGabbiaStrong+0.01*(new Random().nextDouble());
 	}
 	
 	/**
