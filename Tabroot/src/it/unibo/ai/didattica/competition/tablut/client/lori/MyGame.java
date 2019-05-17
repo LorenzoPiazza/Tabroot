@@ -456,6 +456,7 @@ public class MyGame extends GameAshtonTablut implements Game<State, Action, Turn
 
 		/*TODO:QUI VIENE FATTO IL TUNING E IL BILANCIAMENTO DEI VALORI! */
 
+		//(FUSCO VERSION)
 
 		/*tuning in cui (in teoria) vince il bianco
 		  return 0.42*conteggioPedine + 0.10*scappaRe + 0.03*pedineInAngoli + 0.05*vicinanzaBordiAngoli + 0.02*assettoTorre+0.25*mosseIntelligenti+0.30*valutaQuadrantiKing;
@@ -505,7 +506,9 @@ public class MyGame extends GameAshtonTablut implements Game<State, Action, Turn
 		double valQuadrantiKing=whiteStrategy.valutaQuadrantiKing(state,king);
 
 		/* TODO:QUI VIENE FATTO IL TUNING E IL BILANCIAMENTO DEI VALORI! */
-		return 0.55*conteggioPedine + 0.05*posKing + 0.1*scappaRe + 0.1*pedineInAngoli + 0.05*assettoTorre+0.05*contrastaGabbia+0.10*mosseIntelligenti+0.20*valQuadrantiKing;
+
+		return 0.60*conteggioPedine + 0.05*posKing + 0.10*scappaRe + 0.05*pedineInAngoli + 0.1*assettoTorre+0.20*contrastaGabbia+0.05*mosseIntelligenti+0.05*valQuadrantiKing;
+
 	}
 	
 	
@@ -524,11 +527,14 @@ public class MyGame extends GameAshtonTablut implements Game<State, Action, Turn
 		//Conteggio delle pedine nere. Range [0,1]
 		double conteggioPedine = black.size() / 16.0;
 		
-		//Valutazione dell'assetto gabbia. Range [0,1]
-		double assettoGabbia=blackStrategy.valutaAssettoGabbia(state, king);
+		//Valutazione dell'assetto gabbia light. Range [0,1]
+		double assettoGabbiaLight=blackStrategy.valutaAssettoGabbiaLight(state, king);
+		
+		//Valutazione dell'assetto gabbia Strong. Range [0,1]
+		double assettoGabbiaStrong=blackStrategy.valutaAssettoGabbiaStrong(state, king);
 		
 		/* TODO:QUI VIENE FATTO IL TUNING E IL BILANCIAMENTO DEI VALORI! */
-		return 0.45*conteggioPedine+0.55*assettoGabbia;
+		return 0.4*conteggioPedine+0.30*assettoGabbiaLight+0.30*assettoGabbiaStrong;
 	}
 	
 	/**
@@ -546,11 +552,14 @@ public class MyGame extends GameAshtonTablut implements Game<State, Action, Turn
 		//Conteggio delle pedine nere. Range [0,1]
 		double conteggioPedine = nBlack / 16.0;
 		
-		//Valutazione dell'assetto gabbia. Range [0,1]
-		double assettoGabbia=blackStrategy.valutaAssettoGabbia(state, king);
-
+		//Valutazione dell'assetto gabbia light. Range [0,1]
+		double assettoGabbiaLight=blackStrategy.valutaAssettoGabbiaLight(state, king);
+		
+		//Valutazione dell'assetto gabbia Strong. Range [0,1]
+		double assettoGabbiaStrong=blackStrategy.valutaAssettoGabbiaStrong(state, king);
+		
 		/* TODO:QUI VIENE FATTO IL TUNING E IL BILANCIAMENTO DEI VALORI! */
-		return 0.55*conteggioPedine+0.45*assettoGabbia;
+		return 0.60*conteggioPedine+0.35*assettoGabbiaLight+0.05*assettoGabbiaStrong;
 	}
 
 

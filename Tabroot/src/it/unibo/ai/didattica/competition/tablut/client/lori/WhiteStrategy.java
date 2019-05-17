@@ -104,7 +104,7 @@ public class WhiteStrategy {
 					latiCopertiDalTronoDelRe+=neriVicinoAlRe;
 					//Se ho più di tre lati occupati devo scappare con il re.
 					if(latiCopertiDalTronoDelRe>=3)
-						scappaRe=-1;
+						scappaRe=-1.0;
 				}
 				else {/*non sono sul trono e neanche accanto ad esso,
 					quindi puo' essere mangiato normalmente.*/
@@ -462,6 +462,7 @@ public class WhiteStrategy {
 			*/
 		
 		return countBianchi;
+
 	
 	}
 
@@ -496,6 +497,7 @@ public class WhiteStrategy {
 		}
 		
 		
+
 		/*
 		if(!pedinaNeraSuRiga&&!pedinaNeraSuColonna) 
 			return countBianchi;
@@ -504,7 +506,12 @@ public class WhiteStrategy {
 			*/
 		return countBianchi;
 
-	}
+
+
+		}
+
+
+	
 
 
 	public double valQuadranteBassoDX(State state) {
@@ -537,6 +544,7 @@ public class WhiteStrategy {
 
 
 
+
 		/*
 		if(!pedinaNeraSuRiga&&!pedinaNeraSuColonna) 
 			return countBianchi;
@@ -544,7 +552,11 @@ public class WhiteStrategy {
 			return 0;
 			*/
 		return countBianchi;
-	}
+
+
+
+		}
+
 
 
 	public double valQuadranteBassoSX(State state) {
@@ -603,7 +615,7 @@ public class WhiteStrategy {
 			if(valQuadranteAltoSX(state) == 1) {
 				valutazione=0.60;
 			}else if(valQuadranteAltoSX(state)>1) {
-				valutazione=1;
+				valutazione=1.0;
 			}
 
 			break;
@@ -615,7 +627,7 @@ public class WhiteStrategy {
 			if(valQuadranteAltoDX(state) == 1) {
 				valutazione=0.60;
 			}else if(valQuadranteAltoDX(state)>1) {
-				valutazione=1;
+				valutazione=1.0;
 			}
 
 			break;
@@ -627,7 +639,7 @@ public class WhiteStrategy {
 			if(valQuadranteBassoSX(state) == 1) {
 				valutazione=0.60;
 			}else if(valQuadranteBassoSX(state)>1) {
-				valutazione=1;
+				valutazione=1.0;
 			}
 
 			break;
@@ -639,7 +651,7 @@ public class WhiteStrategy {
 			if(valQuadranteBassoDX(state) == 1) {
 				valutazione=0.60;
 			}else if(valQuadranteBassoDX(state)>1) {
-				valutazione=1;
+				valutazione=1.0;
 			}
 
 			break;
@@ -691,6 +703,7 @@ public class WhiteStrategy {
 
 				if(state.getPawn(5, 5).equalsPawn(("W"))||state.getPawn(5, 6).equalsPawn(("W")))
 					valutazione+=0.2;
+
 
 				if(state.getPawn(6, 5).equalsPawn(("W"))||state.getPawn(6, 6).equalsPawn(("W")))
 					valutazione+=0.2;
@@ -873,15 +886,7 @@ public class WhiteStrategy {
 		return result;
 	}
 	
-	
-	public double angoli(State state){
-		
-		if(whiteInAngoli(state)==1)
-			return 1;
-		else
-			return 0;
-	}
-	
+
 	
 	private int whiteInAngoli(State state) {
 		int [] posizione = new int[2];
