@@ -450,17 +450,20 @@ public class MyGame extends GameAshtonTablut implements Game<State, Action, Turn
 		Range [0,1]
 		*/
 		double assettoTorre=whiteStrategy.valutazioneAssettoTorre(state, white, king);
-		
-		//new
-		double contrastaGabbia=whiteStrategy.contrastaGabbia(state, white, king);
+		double vicinanzaBordiAngoli=whiteStrategy.vicinanzaBordiAngoli(white);
 		double mosseIntelligenti=whiteStrategy.mosseIntelligenti(state, white, king);
-		double valQuadranti=whiteStrategy.valQuadranti(state);
+		double valutaQuadrantiKing=whiteStrategy.valutaQuadrantiKing(state, king);
 
 		/*TODO:QUI VIENE FATTO IL TUNING E IL BILANCIAMENTO DEI VALORI! */
+
+
+		/*tuning in cui (in teoria) vince il bianco
+		  return 0.42*conteggioPedine + 0.10*scappaRe + 0.03*pedineInAngoli + 0.05*vicinanzaBordiAngoli + 0.02*assettoTorre+0.25*mosseIntelligenti+0.30*valutaQuadrantiKing;
+		  migliore: return 0.50*conteggioPedine + 0.10*scappaRe + 0.05*pedineInAngoli + 0.10*vicinanzaBordiAngoli + 0.02*assettoTorre+0.15*mosseIntelligenti+0.20*valutaQuadrantiKing;
+		 */
+
+		return 0.53*conteggioPedine + 0.10*scappaRe + 0.03*pedineInAngoli + 0.05*vicinanzaBordiAngoli + 0.02*assettoTorre+0.18*mosseIntelligenti+0.20*valutaQuadrantiKing;
 		
-
-		return 0.35*conteggioPedine + 0.10*scappaRe + 0.03*pedineInAngoli + 0.03*assettoTorre+0.25*mosseIntelligenti+0.45*valQuadranti;
-
 	}
 
 	/**
@@ -499,10 +502,10 @@ public class MyGame extends GameAshtonTablut implements Game<State, Action, Turn
 		//new
 		double contrastaGabbia=whiteStrategy.contrastaGabbia(state, white, king);
 		double mosseIntelligenti=whiteStrategy.mosseIntelligenti(state, white, king);
-		double valQuadranti=whiteStrategy.valQuadranti(state);
+		double valQuadrantiKing=whiteStrategy.valutaQuadrantiKing(state,king);
 
 		/* TODO:QUI VIENE FATTO IL TUNING E IL BILANCIAMENTO DEI VALORI! */
-		return 0.55*conteggioPedine + 0.05*posKing + 0.1*scappaRe + 0.1*pedineInAngoli + 0.05*assettoTorre+0.05*contrastaGabbia+0.10*mosseIntelligenti+0.20*valQuadranti;
+		return 0.55*conteggioPedine + 0.05*posKing + 0.1*scappaRe + 0.1*pedineInAngoli + 0.05*assettoTorre+0.05*contrastaGabbia+0.10*mosseIntelligenti+0.20*valQuadrantiKing;
 	}
 	
 	
