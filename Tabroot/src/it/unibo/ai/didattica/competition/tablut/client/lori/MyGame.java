@@ -462,9 +462,18 @@ public class MyGame extends GameAshtonTablut implements Game<State, Action, Turn
 		  return 0.42*conteggioPedine + 0.10*scappaRe + 0.03*pedineInAngoli + 0.05*vicinanzaBordiAngoli + 0.02*assettoTorre+0.25*mosseIntelligenti+0.30*valutaQuadrantiKing;
 		  migliore: return 0.50*conteggioPedine + 0.10*scappaRe + 0.05*pedineInAngoli + 0.10*vicinanzaBordiAngoli + 0.02*assettoTorre+0.15*mosseIntelligenti+0.20*valutaQuadrantiKing;
 		 */
-
-		return 0.53*conteggioPedine + 0.10*scappaRe + 0.03*pedineInAngoli + 0.05*vicinanzaBordiAngoli + 0.02*assettoTorre+0.18*mosseIntelligenti+0.20*valutaQuadrantiKing;
 		
+		
+		//assetti validi, sopratutto il 2
+		
+		return 0.53*conteggioPedine + 0.10*scappaRe + 0.03*pedineInAngoli + 0.05*vicinanzaBordiAngoli + 0.02*assettoTorre+0.18*mosseIntelligenti+0.20*valutaQuadrantiKing;
+		//return 0.40*conteggioPedine + 0.10*scappaRe + 0.03*pedineInAngoli + 0.05*vicinanzaBordiAngoli + 0.02*assettoTorre+0.25*mosseIntelligenti+0.30*valutaQuadrantiKing;
+		//return 0.45*conteggioPedine + 0.10*scappaRe + 0.03*pedineInAngoli + 0.05*vicinanzaBordiAngoli + 0.02*assettoTorre+0.35*mosseIntelligenti+0.20*valutaQuadrantiKing;
+
+		//return 0.45*conteggioPedine + 0.10*scappaRe + 0.03*pedineInAngoli + 0.05*vicinanzaBordiAngoli + 0.02*assettoTorre+0.25*mosseIntelligenti+0.25*valutaQuadrantiKing;
+
+	
+	
 	}
 
 	/**
