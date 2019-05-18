@@ -14,9 +14,9 @@ public class WhiteStrategy {
 		double posKing=0;	
 		/*indice 0: riga, indice 1: colonna*/
 		if((king[0]==2)&&( king[1]==2 ||king[1]==6))
-			posKing=1;
+			posKing=1.0;
 		if((king[0]==6)&&( king[1]==2 ||king[1]==6))
-			posKing=1;
+			posKing=1.0;
 		
 		return posKing;
 	}
@@ -136,7 +136,7 @@ public class WhiteStrategy {
 							neriVicinoAlRe++;
 					}
 					if(neriVicinoAlRe>=1 || adiacenteAccampamento)
-						scappaRe=-0.5;
+						scappaRe=-1.0;
 				}
 				return scappaRe;
 	}
@@ -177,15 +177,15 @@ public class WhiteStrategy {
 				valutazionePedinaBordiAngoli+=0.05;
 				continue;
 			}
-			if(controlloPedine[0]==2 && controlloPedine[1]==0){
-				valutazionePedinaBordiAngoli+=0.05;
-				continue;
-			}
-			if(controlloPedine[0]==0 && controlloPedine[1]==7 ){
-				valutazionePedinaBordiAngoli+=0.05;
-				continue;
-			}
 			if(controlloPedine[0]==2 && controlloPedine[1]==8){
+				valutazionePedinaBordiAngoli+=0.05;
+				continue;
+			}
+			if(controlloPedine[0]==0 && controlloPedine[1]==6 ){
+				valutazionePedinaBordiAngoli+=0.05;
+				continue;
+			}
+			if(controlloPedine[0]==0 && controlloPedine[1]==7){
 				valutazionePedinaBordiAngoli+=0.05;
 				continue;
 			}
@@ -227,86 +227,14 @@ public class WhiteStrategy {
 			}
 		}
 		return valutazionePedinaBordiAngoli;
-		
+
 	}
 	
-
-	/*A.Fuschino
-	 * controllo se i bianchi sono nella formazione buona per poter iniziare a muovere il re (quella che piace a me)
-	 * variabile: valutazioneAssettoFusco
-	 * note: per ora ho considerato il quadrante in basso a destra bisogna fare la stessa cosa con gli altri 3 quadranti a seconda se i neri hanno mosso una o due pedine critiche
-	 *(LORI: Ho aggiunto il continue per evitare dei controlli if superflui. Va bene??)*/
-	/*
-	public double valutazioneAssettoFusco(State state, List<int[]> white, int[] king){
-		
-		double valutazioneAssettoFusco=0;
-				
-		//assetto base inziale
-
-		int assettoIniziale=0;
-
-		if(state.getPawn(4,5).equalsPawn("W") && state.getPawn(3,5).equalsPawn("W")){
-			valutazioneAssettoFusco+=1;
-			assettoIniziale++;
-		}
-
-		if(state.getPawn(5,4).equalsPawn("W") && state.getPawn(5,3).equalsPawn("W")){
-			valutazioneAssettoFusco+=1;		
-			assettoIniziale++;
-		}
-
-		if(state.getPawn(4,6).equalsPawn("W")) {
-			valutazioneAssettoFusco+=0.2;		
-			assettoIniziale++;
-		}
-
-		if(state.getPawn(6,4).equalsPawn("W")) {
-			valutazioneAssettoFusco+=0.2;	
-			assettoIniziale++;
-		}
-
-		//cerca di contrastare la gabbia 
-
-		if(state.getPawn(7,6).equalsPawn("B"))
-			if(state.getPawn(6,7).equalsPawn("W"))
-				valutazioneAssettoFusco+=0.35;
-
-		if(state.getPawn(6,7).equalsPawn("B"))
-			if(state.getPawn(7,6).equalsPawn("W"))
-				valutazioneAssettoFusco+=0.35;
-		
-		//mosse dopo l'assetto inziale	
-
-		if(state.getPawn(7,5).equalsPawn("W") && state.getPawn(3,5).equalsPawn("W"))
-			valutazioneAssettoFusco+=0.7;
-		if(state.getPawn(5,7).equalsPawn("W") && state.getPawn(5,3).equalsPawn("W"))
-			valutazioneAssettoFusco+=0.7;
-
-		if(!state.getPawn(6,0).equalsPawn("B") && !state.getPawn(6,1).equalsPawn("B") && 
-				!state.getPawn(6,2).equalsPawn("B") && !state.getPawn(6,3).equalsPawn("B") && assettoIniziale==4)  
-			if(state.getPawn(6,8).equalsPawn("W"))
-				valutazioneAssettoFusco+=0.35;	
-		if(!state.getPawn(0,6).equalsPawn("B") && !state.getPawn(1,6).equalsPawn("B") && 
-				!state.getPawn(2,6).equalsPawn("B") && !state.getPawn(3,6).equalsPawn("B") && assettoIniziale==4)  
-			if(state.getPawn(6,8).equalsPawn("W"))
-				valutazioneAssettoFusco+=0.35;
-
-		if(state.getPawn(6,2).equalsPawn("W") && state.getPawn(6,3).equalsPawn("W") && assettoIniziale==4)  
-			valutazioneAssettoFusco+=0.25;
-		if(state.getPawn(2,6).equalsPawn("W") && state.getPawn(3,6).equalsPawn("W") && assettoIniziale==4)  
-			valutazioneAssettoFusco+=0.25;
-
-		//incomincio a muovere il re 
-		if(state.getPawn(5,3).equalsPawn("W") && (king[0]==5 && king[1]==4) && assettoIniziale==4)
-			valutazioneAssettoFusco+=0.35;
-
-		return valutazioneAssettoFusco;
-	}
-	*/
 	
 	/*A.Fuschino
 	 * controlla se nero sta facendo la gabbia e cerca di dargli fastidio mettendo pedine bianche in mezzoz al suo assetto
 		ritorna: contrastaGabbiaNero
+	Non usata
 	 */
 	public double contrastaGabbia(State state, List<int[]> white, int[] king){
 		
@@ -361,13 +289,12 @@ public class WhiteStrategy {
 				&& !state.getPawn(7,7).equalsPawn("B")
 				&& !state.getPawn(8,7).equalsPawn("B")
 				&& state.getPawn(8,6).equalsPawn("W")
-				&& !state.getPawn(8,8).equalsPawn("B") 
-				&& !state.getPawn(8,5).equalsPawn("O")
-				&& !state.getPawn(8,4).equalsPawn("O")
-				&& !state.getPawn(8,3).equalsPawn("O"))
-			valutazioneMosseIntelligenti+=0.125;	
-		
-		
+				&& !state.getPawn(8,8).equalsPawn("B")
+				&& (state.getPawn(8,5).equalsPawn("B")
+				|| state.getPawn(8,4).equalsPawn("B")
+				|| state.getPawn(8,3).equalsPawn("B")))
+			valutazioneMosseIntelligenti+=0.150;	
+				
 		//quadrante dx in basso: destra  
 		if(state.getPawn(7,4).equalsPawn("O") 
 				&& state.getPawn(6,8).equalsPawn("W")
@@ -376,12 +303,10 @@ public class WhiteStrategy {
 				&& !state.getPawn(7,7).equalsPawn("B")
 				&& !state.getPawn(7,8).equalsPawn("B")
 				&& !state.getPawn(8,8).equalsPawn("B")
-				&& !state.getPawn(3,8).equalsPawn("O")
-				&& !state.getPawn(4,8).equalsPawn("O")
-				&& !state.getPawn(5,8).equalsPawn("O"))
-			valutazioneMosseIntelligenti+=0.125;
-
-
+				&& (state.getPawn(3,8).equalsPawn("B")
+				|| state.getPawn(4,8).equalsPawn("B")
+				|| state.getPawn(5,8).equalsPawn("B")))
+			valutazioneMosseIntelligenti+=0.15;
 		//quadrante dx in alto: destra
 		if(state.getPawn(1,4).equalsPawn("O") 
 				&& state.getPawn(2,8).equalsPawn("W") 
@@ -390,10 +315,10 @@ public class WhiteStrategy {
 				&& !state.getPawn(1,7).equalsPawn("B")
 				&& !state.getPawn(1,8).equalsPawn("B") 
 				&& !state.getPawn(0,8).equalsPawn("B")
-				&& !state.getPawn(3,8).equalsPawn("O")
-				&& !state.getPawn(4,8).equalsPawn("O")
-				&& !state.getPawn(5,8).equalsPawn("O"))
-			valutazioneMosseIntelligenti+=0.125;
+				&&( state.getPawn(3,8).equalsPawn("B")
+				||state.getPawn(4,8).equalsPawn("B")
+				|| state.getPawn(5,8).equalsPawn("B")))
+			valutazioneMosseIntelligenti+=0.15;
 		//quadrante dx in alto: sinistra 
 		if(state.getPawn(4,7).equalsPawn("O") 
 				&& state.getPawn(0,6).equalsPawn("W") 
@@ -402,10 +327,10 @@ public class WhiteStrategy {
 				&& !state.getPawn(1,7).equalsPawn("B")
 				&& !state.getPawn(0,7).equalsPawn("B")
 				&& !state.getPawn(0,8).equalsPawn("B")
-				&& !state.getPawn(0,3).equalsPawn("O")
-				&& !state.getPawn(0,4).equalsPawn("O")
-				&& !state.getPawn(0,5).equalsPawn("O"))
-			valutazioneMosseIntelligenti+=0.125;
+				&&(state.getPawn(0,3).equalsPawn("B")
+				|| state.getPawn(0,4).equalsPawn("B")
+				|| state.getPawn(0,5).equalsPawn("B")))
+			valutazioneMosseIntelligenti+=0.15;
 
 		//quadrante sx in alto: destra
 		if(state.getPawn(1,4).equalsPawn("O") 
@@ -415,10 +340,10 @@ public class WhiteStrategy {
 				&& !state.getPawn(1,1).equalsPawn("B")
 				&& !state.getPawn(1,0).equalsPawn("B")
 				&& !state.getPawn(0,0).equalsPawn("B")
-				&& !state.getPawn(3,0).equalsPawn("O")
-				&& !state.getPawn(4,0).equalsPawn("O")
-				&& !state.getPawn(5,0).equalsPawn("O"))
-			valutazioneMosseIntelligenti+=0.125;
+				&&(state.getPawn(3,0).equalsPawn("B")
+				||state.getPawn(4,0).equalsPawn("B")
+				||state.getPawn(5,0).equalsPawn("B")))
+			valutazioneMosseIntelligenti+=0.15;
 
 		//quadrante sx in alto: sinistra 
 		if(state.getPawn(4,1).equalsPawn("O") 
@@ -428,10 +353,10 @@ public class WhiteStrategy {
 			&& !state.getPawn(1,1).equalsPawn("B")
 			&& !state.getPawn(0,1).equalsPawn("B")
 			&& !state.getPawn(0,0).equalsPawn("B")
-			&& !state.getPawn(0,3).equalsPawn("O")
-			&& !state.getPawn(0,4).equalsPawn("O")
-			&& !state.getPawn(0,5).equalsPawn("O"))
-			valutazioneMosseIntelligenti+=0.125;
+			&&( state.getPawn(0,3).equalsPawn("B")
+			|| state.getPawn(0,4).equalsPawn("B")
+			||state.getPawn(0,5).equalsPawn("B")))
+			valutazioneMosseIntelligenti+=0.15;
 
 		//quadrante sx in basso: destra
 		if(state.getPawn(7,4).equalsPawn("O") 
@@ -441,10 +366,10 @@ public class WhiteStrategy {
 				&& !state.getPawn(7,1).equalsPawn("B")
 				&& !state.getPawn(7,0).equalsPawn("B")
 				&& !state.getPawn(8,0).equalsPawn("B")
-				&& !state.getPawn(3,0).equalsPawn("O")
-				&& !state.getPawn(4,0).equalsPawn("O")
-				&& !state.getPawn(5,0).equalsPawn("O"))
-			valutazioneMosseIntelligenti+=0.125;
+				&&(state.getPawn(3,0).equalsPawn("B")
+				|| state.getPawn(4,0).equalsPawn("B")
+				|| state.getPawn(5,0).equalsPawn("B")))
+			valutazioneMosseIntelligenti+=0.15;
 		
 		//quadrante sx in basso: sinistra 
 		if(state.getPawn(4,1).equalsPawn("O") 
@@ -454,31 +379,30 @@ public class WhiteStrategy {
 		   && !state.getPawn(7,1).equalsPawn("B")
 		   && !state.getPawn(8,1).equalsPawn("B")
 		   && !state.getPawn(8,0).equalsPawn("B")
-		   && !state.getPawn(8,3).equalsPawn("O")
-		   && !state.getPawn(8,4).equalsPawn("O")
-		   && !state.getPawn(8,5).equalsPawn("O"))
-			valutazioneMosseIntelligenti+=0.125;
+		   && (state.getPawn(8,3).equalsPawn("B")
+		   || state.getPawn(8,4).equalsPawn("B")
+		   || state.getPawn(8,5).equalsPawn("B")))
+			valutazioneMosseIntelligenti+=0.15;
 		
-		
-		if(valutazioneMosseIntelligenti>0.4)
+		if(valutazioneMosseIntelligenti>0.5)
 			return 0;
 		
+		if(valutazioneMosseIntelligenti > 0.15 && state.getPawn(8,2).equalsPawn("W")&&
+				state.getPawn(6,0).equalsPawn("W"))
+			valutazioneMosseIntelligenti*=2.0;	
 		
+		if(valutazioneMosseIntelligenti > 0.15 && state.getPawn(0,2).equalsPawn("W")&&
+				state.getPawn(2,0).equalsPawn("W"))
+			valutazioneMosseIntelligenti*=2.0;
 		
-		if(valutazioneMosseIntelligenti > 0.125 && state.getPawn(8,2).equalsPawn("W")&&state.getPawn(6,0).equalsPawn("W"))
-			valutazioneMosseIntelligenti*=2;	
+		if(valutazioneMosseIntelligenti > 0.15 && state.getPawn(8,6).equalsPawn("W")&&
+				state.getPawn(6,8).equalsPawn("W"))
+			valutazioneMosseIntelligenti*=2.0;
 		
-		if(valutazioneMosseIntelligenti > 0.125 && state.getPawn(0,2).equalsPawn("W")&& state.getPawn(2,0).equalsPawn("W"))
-			valutazioneMosseIntelligenti*=2;
+		if(valutazioneMosseIntelligenti > 0.15 && state.getPawn(2,8).equalsPawn("W")&&
+				state.getPawn(0,6).equalsPawn("W") )
+			valutazioneMosseIntelligenti*=2.0;
 		
-		if(valutazioneMosseIntelligenti > 0.125 && state.getPawn(8,6).equalsPawn("W")&&state.getPawn(6,8).equalsPawn("W"))
-			valutazioneMosseIntelligenti*=2;
-		
-		if(valutazioneMosseIntelligenti > 0.125 && state.getPawn(2,8).equalsPawn("W")&&state.getPawn(0,6).equalsPawn("W") )
-			valutazioneMosseIntelligenti*=2;
-		
-		
-
 		return valutazioneMosseIntelligenti;	
 	}
 	
@@ -503,20 +427,7 @@ public class WhiteStrategy {
 	
 	public double valQuadranteAltoSX(State state) {
 
-		boolean pedinaNeraSuRiga=false;
-		boolean pedinaNeraSuColonna=false;
 		int countBianchi=0;
-		
-		
-		double valutazione=0;
-
-		for(int i=0; i<=4;i++) {
-			if(state.getPawn(1, i).equalsPawn(("B")))
-				pedinaNeraSuRiga=true;
-			if(state.getPawn(i, 1).equalsPawn(("B")))
-				pedinaNeraSuColonna=true;
-		}
-		
 		
 		if(state.getPawn(0, 0).equalsPawn(("W")))
 				countBianchi++;
@@ -528,37 +439,16 @@ public class WhiteStrategy {
 			
 			if(state.getPawn(j, 0).equalsPawn(("W")))
 				countBianchi++;	
-			
 		}
 		
-		/*
-		if(!pedinaNeraSuRiga&&!pedinaNeraSuColonna) 
-			return countBianchi;
-		else
-			return 0;
-			*/
-		
 		return countBianchi;
-
-	
 	}
 
 
 	public double valQuadranteAltoDX(State state) {
 
-		boolean pedinaNeraSuRiga=false;
-		boolean pedinaNeraSuColonna=false;
 		int countBianchi=0;
-		double valutazione=0;
-
-		for(int i=0; i<=4;i++) {
-			if(state.getPawn(1,4+i).equalsPawn(("B")))
-				pedinaNeraSuRiga=true;
-			if(state.getPawn(i, 7).equalsPawn(("B")))
-				pedinaNeraSuColonna=true;
-		}
-		
-		
+			
 		if(state.getPawn(0, 8).equalsPawn(("W")))
 			countBianchi++;
 
@@ -570,42 +460,15 @@ public class WhiteStrategy {
 
 			if(state.getPawn(j, 8).equalsPawn(("W")))
 				countBianchi++;	
-
 		}
-		
-		
 
-		/*
-		if(!pedinaNeraSuRiga&&!pedinaNeraSuColonna) 
-			return countBianchi;
-		else
-			return 0;
-			*/
 		return countBianchi;
-
-
-
-		}
-
-
-	
-
+	}
 
 	public double valQuadranteBassoDX(State state) {
 
-		boolean pedinaNeraSuRiga=false;
-		boolean pedinaNeraSuColonna=false;
 		int countBianchi=0;
-		double valutazione=0;
 
-		for(int i=0; i<=4;i++) {
-			if(state.getPawn(7,4+i).equalsPawn(("B")))
-				pedinaNeraSuRiga=true;
-			if(state.getPawn(i+4, 7).equalsPawn(("B")))
-				pedinaNeraSuColonna=true;
-		}
-		
-		
 		if(state.getPawn(8, 8).equalsPawn(("W")))
 			countBianchi++;
 
@@ -615,42 +478,17 @@ public class WhiteStrategy {
 				countBianchi++;
 
 			if(state.getPawn(5+j, 8).equalsPawn(("W")))
-				countBianchi++;	
-
+				countBianchi++;
 		}
 
-
-
-
-		/*
-		if(!pedinaNeraSuRiga&&!pedinaNeraSuColonna) 
-			return countBianchi;
-		else
-			return 0;
-			*/
 		return countBianchi;
-
-
-
-		}
+	}
 
 
 
 	public double valQuadranteBassoSX(State state) {
 
-		boolean pedinaNeraSuRiga=false;
-		boolean pedinaNeraSuColonna=false;
 		int countBianchi=0;
-		double valutazione=0;
-
-		for(int i=0; i<=4;i++) {
-			if(state.getPawn(7,i).equalsPawn(("B")))
-				pedinaNeraSuRiga=true;
-			if(state.getPawn(i+4, 1).equalsPawn(("B")))
-				pedinaNeraSuColonna=true;
-		}
-		
-		
 
 		if(state.getPawn(8, 0).equalsPawn(("W")))
 			countBianchi++;
@@ -664,28 +502,16 @@ public class WhiteStrategy {
 				countBianchi++;	
 
 		}
-		
-		/*
-		if(!pedinaNeraSuRiga&&!pedinaNeraSuColonna) 
-			return countBianchi;
-		else
-			return 0;
-			*/
-		return countBianchi;
 
+		return countBianchi;
 	}
 	
-	
-	
-	
-	
+
 	public double valutaQuadrantiKing(State state, int[] king) {
 		
 		double valutazione=0;
 
-		
 		switch(quadranteKing(king)) { 
-
 
 		case "UL":
 
@@ -697,16 +523,16 @@ public class WhiteStrategy {
 
 
 			if(state.getPawn(2, 5).equalsPawn(("W"))||state.getPawn(2, 6).equalsPawn(("W")))
-				valutazione+=0.2;
+				valutazione+=0.15;
 
 			if(state.getPawn(3, 5).equalsPawn(("W"))||state.getPawn(3, 6).equalsPawn(("W")))
-				valutazione+=0.2;
+				valutazione+=0.15;
 
 			if(state.getPawn(5, 2).equalsPawn(("W"))||state.getPawn(6, 2).equalsPawn(("W")))
-				valutazione+=0.1;
+				valutazione+=0.15;
 
 			if(state.getPawn(5, 3).equalsPawn(("W"))||state.getPawn(6, 3).equalsPawn(("W")))
-				valutazione+=0.1;
+				valutazione+=0.15;
 
 			break;
 			
@@ -722,21 +548,18 @@ public class WhiteStrategy {
 			
 			
 			if(state.getPawn(2, 3).equalsPawn(("W"))||state.getPawn(2, 2).equalsPawn(("W")))
-				valutazione+=0.2;
+				valutazione+=0.15;
 
 			if(state.getPawn(3, 3).equalsPawn(("W"))||state.getPawn(3, 2).equalsPawn(("W")))
-				valutazione+=0.2;
+				valutazione+=0.15;
 
 			if(state.getPawn(5, 5).equalsPawn(("W"))||state.getPawn(5, 6).equalsPawn(("W")))
-				valutazione+=0.1;
+				valutazione+=0.15;
 
 			if(state.getPawn(6, 5).equalsPawn(("W"))||state.getPawn(6, 6).equalsPawn(("W")))
-				valutazione+=0.1;
-
+				valutazione+=0.15;
 			break;
 
-			
-			
 			
 		case"DL":
 
@@ -747,17 +570,17 @@ public class WhiteStrategy {
 			}
 		
 			
-			if(state.getPawn(3, 2).equalsPawn(("W"))||state.getPawn(2, 3).equalsPawn(("W")))
-				valutazione+=0.2;
+			if(state.getPawn(3, 2).equalsPawn(("W"))||state.getPawn(2, 2).equalsPawn(("W")))
+				valutazione+=0.15;
 
-			if(state.getPawn(3, 3).equalsPawn(("W"))||state.getPawn(2, 2).equalsPawn(("W")))
-				valutazione+=0.2;
+			if(state.getPawn(3, 3).equalsPawn(("W"))||state.getPawn(2, 3).equalsPawn(("W")))
+				valutazione+=0.15;
 
 			if(state.getPawn(5, 5).equalsPawn(("W"))||state.getPawn(5, 6).equalsPawn(("W")))
-				valutazione+=0.1;
+				valutazione+=0.15;
 
 			if(state.getPawn(6, 5).equalsPawn(("W"))||state.getPawn(6, 6).equalsPawn(("W")))
-				valutazione+=0.1;
+				valutazione+=0.15;
 
 			break;
 	
@@ -771,146 +594,182 @@ public class WhiteStrategy {
 			}
 
 			if(state.getPawn(3, 5).equalsPawn(("W"))||state.getPawn(2, 5).equalsPawn(("W")))
-				valutazione+=0.2;
+				valutazione+=0.15;
 
 			if(state.getPawn(3, 6).equalsPawn(("W"))||state.getPawn(2, 6).equalsPawn(("W")))
-				valutazione+=0.2;
+				valutazione+=0.15;
 
 			if(state.getPawn(5, 3).equalsPawn(("W"))||state.getPawn(5, 2).equalsPawn(("W")))
-				valutazione+=0.1;
+				valutazione+=0.15;
 
 			if(state.getPawn(6, 3).equalsPawn(("W"))||state.getPawn(6, 2).equalsPawn(("W")))
-				valutazione+=0.1;
-
+				valutazione+=0.15;
 			break;
-
-
 
 		case"CU":
+			if(valQuadranteAltoDX(state)>0 || valQuadranteAltoSX(state)>0)
+			{
+				if(valQuadranteAltoDX(state)>=valQuadranteAltoSX(state)){
 
-			if(valQuadranteAltoDX(state)>valQuadranteAltoSX(state)){
+					if(state.getPawn(3, 3).equalsPawn(("W"))||state.getPawn(3, 2).equalsPawn(("W")))
+						valutazione+=0.15;
 
-				if(state.getPawn(3, 3).equalsPawn(("W"))||state.getPawn(3, 2).equalsPawn(("W")))
-					valutazione+=0.2;
+					if(state.getPawn(2, 3).equalsPawn(("W"))||state.getPawn(2, 2).equalsPawn(("W")))
+						valutazione+=0.15;
+					
+					if(state.getPawn(5, 5).equalsPawn(("W"))||state.getPawn(5, 6).equalsPawn(("W")))
+						valutazione+=0.15;
 
-				if(state.getPawn(2, 3).equalsPawn(("W"))||state.getPawn(2, 2).equalsPawn(("W")))
-					valutazione+=0.2;
+					if(state.getPawn(6, 5).equalsPawn(("W"))||state.getPawn(6, 6).equalsPawn(("W")))
+						valutazione+=0.15;
 
-				return valutazione+=0.3*valQuadranteAltoDX(state);
+					return valutazione+=0.2*valQuadranteAltoDX(state);
 
-			}else if(valQuadranteAltoDX(state)<valQuadranteAltoSX(state)){
+				}else if(valQuadranteAltoDX(state)<valQuadranteAltoSX(state)){
 
 
-				if(state.getPawn(2, 5).equalsPawn(("W"))||state.getPawn(2, 6).equalsPawn(("W")))
-					valutazione+=0.2;
+					if(state.getPawn(2, 5).equalsPawn(("W"))||state.getPawn(2, 6).equalsPawn(("W")))
+						valutazione+=0.15;
 
-				if(state.getPawn(3, 5).equalsPawn(("W"))||state.getPawn(3, 6).equalsPawn(("W")))
-					valutazione+=0.2;
-				
-				if(state.getPawn(5, 2).equalsPawn(("W"))||state.getPawn(6, 2).equalsPawn(("W")))
-					valutazione+=0.1;
-				
-				if(state.getPawn(5, 3).equalsPawn(("W"))||state.getPawn(6, 3).equalsPawn(("W")))
-					valutazione+=0.1;
+					if(state.getPawn(3, 5).equalsPawn(("W"))||state.getPawn(3, 6).equalsPawn(("W")))
+						valutazione+=0.15;
+					
+					if(state.getPawn(5, 2).equalsPawn(("W"))||state.getPawn(6, 2).equalsPawn(("W")))
+						valutazione+=0.15;
+					
+					if(state.getPawn(5, 3).equalsPawn(("W"))||state.getPawn(6, 3).equalsPawn(("W")))
+						valutazione+=0.15;
 
-				return valutazione+=0.3*valQuadranteAltoSX(state);
-
+					return valutazione+=0.2*valQuadranteAltoSX(state);
+				}
 			}
+			
 
 			break;
 			
-
 		case"CD":
-			
-			if(valQuadranteBassoDX(state)>valQuadranteBassoSX(state)){
+			if(valQuadranteBassoDX(state)>0 || valQuadranteBassoSX(state)>0)
+			{
+				if(valQuadranteBassoDX(state)>=valQuadranteBassoSX(state)){
 
-				if(state.getPawn(5, 3).equalsPawn(("W"))||state.getPawn(5, 2).equalsPawn(("W")))
-					valutazione+=0.2;
+					if(state.getPawn(3, 5).equalsPawn(("W"))||state.getPawn(2, 5).equalsPawn(("W")))
+						valutazione+=0.15;
 
-				if(state.getPawn(6, 3).equalsPawn(("W"))||state.getPawn(6, 2).equalsPawn(("W")))
-					valutazione+=0.2;
+					if(state.getPawn(3, 6).equalsPawn(("W"))||state.getPawn(2, 6).equalsPawn(("W")))
+						valutazione+=0.15;
 
-				return valutazione+=0.3*valQuadranteBassoDX(state);
+					if(state.getPawn(5, 3).equalsPawn(("W"))||state.getPawn(5, 2).equalsPawn(("W")))
+						valutazione+=0.15;
 
-			}else if(valQuadranteBassoDX(state)<valQuadranteBassoSX(state)){
+					if(state.getPawn(6, 3).equalsPawn(("W"))||state.getPawn(6, 2).equalsPawn(("W")))
+						valutazione+=0.15;
+					return valutazione+=0.2*valQuadranteBassoDX(state);
+
+				}else if(valQuadranteBassoDX(state)<valQuadranteBassoSX(state)){
 
 
-				if(state.getPawn(5, 5).equalsPawn(("W"))||state.getPawn(5, 6).equalsPawn(("W")))
-					valutazione+=0.2;
+					if(state.getPawn(3, 2).equalsPawn(("W"))||state.getPawn(2, 2).equalsPawn(("W")))
+						valutazione+=0.15;
 
+					if(state.getPawn(3, 3).equalsPawn(("W"))||state.getPawn(2, 3).equalsPawn(("W")))
+						valutazione+=0.15;
 
-				if(state.getPawn(6, 5).equalsPawn(("W"))||state.getPawn(6, 6).equalsPawn(("W")))
-					valutazione+=0.2;
+					if(state.getPawn(5, 5).equalsPawn(("W"))||state.getPawn(5, 6).equalsPawn(("W")))
+						valutazione+=0.15;
 
-				return valutazione+=0.3*valQuadranteBassoSX(state);
+					if(state.getPawn(6, 5).equalsPawn(("W"))||state.getPawn(6, 6).equalsPawn(("W")))
+						valutazione+=0.15;
+					return valutazione+=0.2*valQuadranteBassoSX(state);
 
+				}
 			}
+			
 
 			break;
 
 		case"CR":
+			if(valQuadranteAltoDX(state)>0||valQuadranteBassoDX(state)>0){
+				if(valQuadranteAltoDX(state)>=valQuadranteBassoDX(state)){
 
-			if(valQuadranteAltoDX(state)>valQuadranteBassoDX(state)){
+					if(state.getPawn(2, 3).equalsPawn(("W"))||state.getPawn(2, 2).equalsPawn(("W")))
+						valutazione+=0.15;
 
-				if(state.getPawn(5, 5).equalsPawn(("W"))||state.getPawn(6, 5).equalsPawn(("W")))
-					valutazione+=0.2;
+					if(state.getPawn(3, 3).equalsPawn(("W"))||state.getPawn(3, 2).equalsPawn(("W")))
+						valutazione+=0.15;
 
-				if(state.getPawn(5, 6).equalsPawn(("W"))||state.getPawn(6, 6).equalsPawn(("W")))
-					valutazione+=0.2;
+					if(state.getPawn(5, 5).equalsPawn(("W"))||state.getPawn(5, 6).equalsPawn(("W")))
+						valutazione+=0.15;
 
-				return valutazione+=0.3*valQuadranteAltoDX(state);
+					if(state.getPawn(6, 5).equalsPawn(("W"))||state.getPawn(6, 6).equalsPawn(("W")))
+						valutazione+=0.15;
 
-			}else if(valQuadranteAltoDX(state)<valQuadranteBassoDX(state)){
+					return valutazione+=0.2*valQuadranteAltoDX(state);
+
+				}else if(valQuadranteAltoDX(state)<valQuadranteBassoDX(state)){
 
 
-				if(state.getPawn(3, 5).equalsPawn(("W"))||state.getPawn(2, 5).equalsPawn(("W")))
-					valutazione+=0.2;
+					if(state.getPawn(3, 5).equalsPawn(("W"))||state.getPawn(2, 5).equalsPawn(("W")))
+						valutazione+=0.15;
 
-				if(state.getPawn(3, 6).equalsPawn(("W"))||state.getPawn(2, 6).equalsPawn(("W")))
-					valutazione+=0.2;
+					if(state.getPawn(3, 6).equalsPawn(("W"))||state.getPawn(2, 6).equalsPawn(("W")))
+						valutazione+=0.15;
 
-				return valutazione+=0.3*valQuadranteBassoDX(state);
+					if(state.getPawn(5, 3).equalsPawn(("W"))||state.getPawn(5, 2).equalsPawn(("W")))
+						valutazione+=0.15;
 
+					if(state.getPawn(6, 3).equalsPawn(("W"))||state.getPawn(6, 2).equalsPawn(("W")))
+						valutazione+=0.15;
+
+					return valutazione+=0.2*valQuadranteBassoDX(state);
+
+				}
 			}
 			
 			break;
 
 		case"CL":
+			if(valQuadranteAltoSX(state)>0||valQuadranteBassoSX(state)>0){
+				if(valQuadranteAltoSX(state)>=valQuadranteBassoSX(state)){
 
-			if(valQuadranteAltoSX(state)>valQuadranteBassoSX(state)){
+					if(state.getPawn(2, 5).equalsPawn(("W"))||state.getPawn(2, 6).equalsPawn(("W")))
+						valutazione+=0.15;
 
-				if(state.getPawn(5, 2).equalsPawn(("W"))||state.getPawn(6, 2).equalsPawn(("W")))
-					valutazione+=0.2;
+					if(state.getPawn(3, 5).equalsPawn(("W"))||state.getPawn(3, 6).equalsPawn(("W")))
+						valutazione+=0.15;
 
-				if(state.getPawn(5, 3).equalsPawn(("W"))||state.getPawn(6, 3).equalsPawn(("W")))
-					valutazione+=0.2;
+					if(state.getPawn(5, 2).equalsPawn(("W"))||state.getPawn(6, 2).equalsPawn(("W")))
+						valutazione+=0.15;
 
-				return valutazione+=0.3*valQuadranteAltoSX(state);
+					if(state.getPawn(5, 3).equalsPawn(("W"))||state.getPawn(6, 3).equalsPawn(("W")))
+						valutazione+=0.15;
 
-			}else if(valQuadranteAltoSX(state)<valQuadranteBassoSX(state)){
+					return valutazione+=0.2*valQuadranteAltoSX(state);
 
+				}else if(valQuadranteAltoSX(state)<valQuadranteBassoSX(state)){
 
-				if(state.getPawn(3, 2).equalsPawn(("W"))||state.getPawn(2, 2).equalsPawn(("W")))
-					valutazione+=0.2;
+					if(state.getPawn(3, 2).equalsPawn(("W"))||state.getPawn(2, 2).equalsPawn(("W")))
+						valutazione+=0.15;
 
-				if(state.getPawn(3, 3).equalsPawn(("W"))||state.getPawn(2, 3).equalsPawn(("W")))
-					valutazione+=0.2;
+					if(state.getPawn(3, 3).equalsPawn(("W"))||state.getPawn(2, 3).equalsPawn(("W")))
+						valutazione+=0.15;
 
-				return valutazione+=0.3*valQuadranteBassoSX(state);
+					if(state.getPawn(5, 5).equalsPawn(("W"))||state.getPawn(5, 6).equalsPawn(("W")))
+						valutazione+=0.15;
 
+					if(state.getPawn(6, 5).equalsPawn(("W"))||state.getPawn(6, 6).equalsPawn(("W")))
+						valutazione+=0.15;
+
+					return valutazione+=0.2*valQuadranteBassoSX(state);
+
+				}
 			}
-
+			
 			break;
 
 		default:
 			return 0;
-			
-
 		}
-		
 		return valutazione;
-
-
 	}
 
 
@@ -1015,7 +874,7 @@ public class WhiteStrategy {
 		
 		//Re nella parte sinistra della croce
 		if(king[0]==4 && (king[0]==2 || king[0]==3))
-			return "CR";
+			return "CL";
 		
 		return result;
 	}

@@ -163,54 +163,54 @@ public class BlackStrategy {
 		public double valutaAssettoGabbiaStrong(State state, int[] king) {
 			switch(quadranteKing(king)) { 
 			case "UL":
-				if(!pawnInBorderUpLeft(state,"W") && !pawnInBoxUpLeft(state,"W") && !pawnInBorderUpLeft(state,"B") && !pawnInBoxUpLeft(state,"B")) 
+				if(!pawnInBorderUpLeft(state,"W") && !pawnInBoxUpLeft(state) && !pawnInBorderUpLeft(state,"B")) 
 					return gabbiaStrettaUpLeft(state);
 				break;
 			case "UR":
-				if(!pawnInBorderUpRight(state, "W") && !pawnInBoxUpRight(state, "W") && !pawnInBorderUpRight(state, "B") && !pawnInBoxUpRight(state, "B")) 
+				if(!pawnInBorderUpRight(state, "W") && !pawnInBoxUpRight(state) && !pawnInBorderUpRight(state, "B")) 
 					return gabbiaStrettaUpRight(state);
 				break;
 			case"DL":
-				if(!pawnInBorderDownLeft(state, "W") && !pawnInBoxDownLeft(state, "W") && !pawnInBorderDownLeft(state, "B") && !pawnInBoxDownLeft(state, "B"))
+				if(!pawnInBorderDownLeft(state, "W") && !pawnInBoxDownLeft(state) && !pawnInBorderDownLeft(state, "B"))
 					return gabbiaStrettaDownLeft(state);
 				break;
 			case"DR":
-				if(!pawnInBorderDownRight(state, "W") && !pawnInBoxDownRight(state, "W") && !pawnInBorderDownRight(state, "B") && !pawnInBoxDownRight(state, "B"))	
+				if(!pawnInBorderDownRight(state, "W") && !pawnInBoxDownRight(state) && !pawnInBorderDownRight(state, "B"))	
 					return gabbiaStrettaDownRight(state);
 				break;
 			case"CU":
-				if( (!pawnInBorderUpLeft(state,"W") && !pawnInBoxUpLeft(state,"W") && !pawnInBorderUpLeft(state,"B") && !pawnInBoxUpLeft(state,"B"))
-				|| (!pawnInBorderUpRight(state, "W") && !pawnInBoxUpRight(state, "W") && !pawnInBorderUpRight(state, "B") && !pawnInBoxUpRight(state, "B")) ) {
-					return (gabbiaStrettaUpLeft(state)+gabbiaStrettaUpRight(state))/2;
+				if( (!pawnInBorderUpLeft(state,"W") && !pawnInBoxUpLeft(state) && !pawnInBorderUpLeft(state,"B"))
+				|| (!pawnInBorderUpRight(state, "W") && !pawnInBoxUpRight(state) && !pawnInBorderUpRight(state, "B"))) {
+					return (gabbiaStrettaUpLeft(state)+gabbiaStrettaUpRight(state))/2.0;
 				}
 				break;
 			case"CD":
-				if( (!pawnInBorderDownLeft(state, "W") && !pawnInBoxDownLeft(state, "W") && !pawnInBorderDownLeft(state, "B") && !pawnInBoxDownLeft(state, "B"))
-				|| (!pawnInBorderDownRight(state, "W") && !pawnInBoxDownRight(state, "W") && !pawnInBorderDownRight(state, "B") && !pawnInBoxDownRight(state, "B")) ) {
-					return (gabbiaStrettaDownLeft(state)+gabbiaStrettaDownRight(state))/2;
+				if( (!pawnInBorderDownLeft(state, "W") && !pawnInBoxDownLeft(state) && !pawnInBorderDownLeft(state, "B"))
+				|| (!pawnInBorderDownRight(state, "W") && !pawnInBoxDownRight(state) && !pawnInBorderDownRight(state, "B")) ) {
+					return (gabbiaStrettaDownLeft(state)+gabbiaStrettaDownRight(state))/2.0;
 				}
 				break;
 			case"CR":
-				if( (!pawnInBorderDownRight(state, "W") && !pawnInBoxDownRight(state, "W") && !pawnInBorderDownRight(state, "B") && !pawnInBoxDownRight(state, "B"))
-				|| (!pawnInBorderUpRight(state, "W") && !pawnInBoxUpRight(state, "W") && !pawnInBorderUpRight(state, "B") && !pawnInBoxUpRight(state, "B")) ) {
-					return (gabbiaStrettaDownRight(state)+gabbiaStrettaUpRight(state))/2;
+				if( (!pawnInBorderDownRight(state, "W") && !pawnInBoxDownRight(state) && !pawnInBorderDownRight(state, "B"))
+				|| (!pawnInBorderUpRight(state, "W") && !pawnInBoxUpRight(state) && !pawnInBorderUpRight(state, "B") ) ) {
+					return (gabbiaStrettaDownRight(state)+gabbiaStrettaUpRight(state))/2.0;
 				}
 				break;
 			case"CL":
-				if( (!pawnInBorderUpLeft(state,"W") && !pawnInBoxUpLeft(state,"W") && !pawnInBorderUpLeft(state,"B") && !pawnInBoxUpLeft(state,"B")) 
-				|| (!pawnInBorderDownLeft(state, "W") && !pawnInBoxDownLeft(state, "W") && !pawnInBorderDownLeft(state, "B") && !pawnInBoxDownLeft(state, "B")) ) {
-					return (gabbiaStrettaDownLeft(state)+gabbiaStrettaUpLeft(state))/2;
+				if( (!pawnInBorderUpLeft(state,"W") && !pawnInBoxUpLeft(state) && !pawnInBorderUpLeft(state,"B")) 
+				|| (!pawnInBorderDownLeft(state, "W") && !pawnInBoxDownLeft(state) && !pawnInBorderDownLeft(state, "B"))) {
+					return (gabbiaStrettaDownLeft(state)+gabbiaStrettaUpLeft(state))/2.0;
 				}
 				break;
 			case "Throne":
 				double valutazione=0;
-				if(!pawnInBorderUpRight(state, "W") && !pawnInBoxUpRight(state, "W") && !pawnInBorderUpRight(state, "B") && !pawnInBoxUpRight(state, "B")) //Ci sono le condizioni per la gabbia stretta in alto a sx
+				if(!pawnInBorderUpRight(state, "W") && !pawnInBoxUpRight(state) && !pawnInBorderUpRight(state, "B")) //Ci sono le condizioni per la gabbia stretta in alto a sx
 					valutazione+= gabbiaStrettaUpRight(state);
-				if(!pawnInBorderUpLeft(state,"W") && !pawnInBoxUpLeft(state,"W") && !pawnInBorderUpLeft(state,"B") && !pawnInBoxUpLeft(state,"B")) //Ci sono le condizioni per la gabbia stretta in alto a dx
+				if(!pawnInBorderUpLeft(state,"W") && !pawnInBoxUpLeft(state) && !pawnInBorderUpLeft(state,"B")) //Ci sono le condizioni per la gabbia stretta in alto a dx
 					valutazione+= gabbiaStrettaUpLeft(state);
-				if(!pawnInBorderDownLeft(state, "W") && !pawnInBoxDownLeft(state, "W") && !pawnInBorderDownLeft(state, "B") && !pawnInBoxDownLeft(state, "B")) //Ci sono le condizioni per la gabbia stretta in basso a sx
+				if(!pawnInBorderDownLeft(state, "W") && !pawnInBoxDownLeft(state) && !pawnInBorderDownLeft(state, "B")) //Ci sono le condizioni per la gabbia stretta in basso a sx
 					valutazione+= gabbiaStrettaDownLeft(state);
-				if(!pawnInBorderDownRight(state, "W") && !pawnInBoxDownRight(state, "W") && !pawnInBorderDownRight(state, "B") && !pawnInBoxDownRight(state, "B"))	 //Ci sono le condizioni per la gabbia stretta in basso a dx
+				if(!pawnInBorderDownRight(state, "W") && !pawnInBoxDownRight(state) && !pawnInBorderDownRight(state, "B"))	 //Ci sono le condizioni per la gabbia stretta in basso a dx
 					valutazione+= gabbiaStrettaDownRight(state);
 				return valutazione/4.0;
 			default:
@@ -430,7 +430,7 @@ public class BlackStrategy {
 		
 		//Re nella parte sinistra della croce
 		if(king[0]==4 && (king[0]==2 || king[0]==3)) {
-			result="CR";
+			result="CL";
 		}
 		return result;
 	}
@@ -626,10 +626,10 @@ public class BlackStrategy {
 	 *
 	 * (Code by L.Piazza) 
 	 */
-	private boolean pawnInBoxDownLeft(State state, String color) {
-		if(!state.getPawn(5,1).equalsPawn(color) && !state.getPawn(6,1).equalsPawn(color) 
-				&& !state.getPawn(6,2).equalsPawn(color) && !state.getPawn(7,1).equalsPawn(color)
-				&& !state.getPawn(7,2).equalsPawn(color) && !state.getPawn(7,3).equalsPawn(color))
+	private boolean pawnInBoxDownLeft(State state) {
+		if(state.getPawn(5,1).equalsPawn("O") && state.getPawn(6,1).equalsPawn("O") 
+				&& state.getPawn(6,2).equalsPawn("O") && state.getPawn(7,1).equalsPawn("O")
+				&& state.getPawn(7,2).equalsPawn("O") && state.getPawn(7,3).equalsPawn("O"))
 			return false;
 		return true;
 	}
@@ -642,10 +642,10 @@ public class BlackStrategy {
 	 *
 	 * (Code by L.Piazza) 
 	 */
-	private boolean pawnInBoxUpLeft(State state, String color) {
-		if(!state.getPawn(1,1).equalsPawn(color) && !state.getPawn(1,2).equalsPawn(color) 
-				&& !state.getPawn(1,3).equalsPawn(color) && !state.getPawn(2,1).equalsPawn(color)
-				&& !state.getPawn(2,2).equalsPawn(color) && !state.getPawn(3,1).equalsPawn(color))
+	private boolean pawnInBoxUpLeft(State state) {
+		if(state.getPawn(1,1).equalsPawn("O") && state.getPawn(1,2).equalsPawn("O") 
+				&& state.getPawn(1,3).equalsPawn("O") && state.getPawn(2,1).equalsPawn("O")
+				&& state.getPawn(2,2).equalsPawn("O") && state.getPawn(3,1).equalsPawn("O"))
 			return false;
 		return true;
 	}
@@ -658,10 +658,10 @@ public class BlackStrategy {
 	 *
 	 * (Code by L.Piazza) 
 	 */
-	private boolean pawnInBoxUpRight(State state, String color) {
-		if(!state.getPawn(1,7).equalsPawn(color) && !state.getPawn(2,7).equalsPawn(color) 
-				&& !state.getPawn(3,7).equalsPawn(color) && !state.getPawn(1,6).equalsPawn(color)
-				&& !state.getPawn(2,6).equalsPawn(color) && !state.getPawn(1,5).equalsPawn(color))
+	private boolean pawnInBoxUpRight(State state) {
+		if(state.getPawn(1,7).equalsPawn("O") && state.getPawn(2,7).equalsPawn("O") 
+				&& state.getPawn(3,7).equalsPawn("O") && state.getPawn(1,6).equalsPawn("O")
+				&& state.getPawn(2,6).equalsPawn("O") && state.getPawn(1,5).equalsPawn("O"))
 			return false;
 		return true;
 	}
@@ -674,10 +674,10 @@ public class BlackStrategy {
 	 *
 	 * (Code by L.Piazza) 
 	 */
-	private boolean pawnInBoxDownRight(State state, String color) {
-		if(!state.getPawn(5,7).equalsPawn(color) && !state.getPawn(6,7).equalsPawn(color) 
-				&& !state.getPawn(7,7).equalsPawn(color) && !state.getPawn(6,6).equalsPawn(color)
-				&& !state.getPawn(7,6).equalsPawn(color) && !state.getPawn(7,5).equalsPawn(color))
+	private boolean pawnInBoxDownRight(State state) {
+		if(state.getPawn(5,7).equalsPawn("O") && state.getPawn(6,7).equalsPawn("O") 
+				&& state.getPawn(7,7).equalsPawn("O") && state.getPawn(6,6).equalsPawn("O")
+				&& state.getPawn(7,6).equalsPawn("O") && state.getPawn(7,5).equalsPawn("O"))
 			return false;
 		return true;
 	}
