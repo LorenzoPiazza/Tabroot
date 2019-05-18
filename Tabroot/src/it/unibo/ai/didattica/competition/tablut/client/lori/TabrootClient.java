@@ -9,11 +9,13 @@ import aima.core.search.framework.Metrics;
 import it.unibo.ai.didattica.competition.tablut.domain.*;
 import it.unibo.ai.didattica.competition.tablut.domain.Game;
 import it.unibo.ai.didattica.competition.tablut.domain.State.Turn;
+import it.unibo.ai.didattica.competition.tablut.optimization.TablutTranspositionTable;
 
 
 public class TabrootClient extends TablutClient {
 
 	private int time;
+	private TablutTranspositionTable transpositionTable;
 
 	public TabrootClient(String player, String name, int time) throws UnknownHostException, IOException {
 		super(player, name);
@@ -100,11 +102,13 @@ public class TabrootClient extends TablutClient {
 		myGame = new MyGame(state, (GameAshtonTablut) rules, "fake", "fake");
 		System.out.println("Ashton Tablut game");
 
+		//this.transpositionTable=new TablutTranspositionTable();
 		
 		//Creo l'oggetto MyIterativeDeepeningAlphaBetaSearch che realizzerà la ricerca della mossa nello spazio degli stati
 		MyIterativeDeepeningAlphaBetaSearch myItDeepAlgorithm = new MyIterativeDeepeningAlphaBetaSearch(myGame, Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, time);
 		myItDeepAlgorithm.setLogEnabled(true);
-		
+		MyTTIterativeDeepeningAlphaBetaSearch ttAlgorithm = new MyTTIterativeDeepeningAlphaBetaSearch(myGame, Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, time, transpositionTable);
+		ttAlgorithm.setLogEnabled(true);
 		
 		//Eventuali altri algoritmi:
 		/*
@@ -151,6 +155,7 @@ public class TabrootClient extends TablutClient {
 					//a=miniMaxAlgorithm.makeDecision(state);
 					//a=alphaBetaAlgorithm.makeDecision(state);
 					a=myItDeepAlgorithm.makeDecision(state);
+					//a=ttAlgorithm.makeDecision(state);
 					
 					System.out.println("Mossa scelta: " + a.toString());
 					//printStatistics(itDeepAlgorithm);
