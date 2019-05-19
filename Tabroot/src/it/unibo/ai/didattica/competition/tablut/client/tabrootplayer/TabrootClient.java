@@ -141,7 +141,7 @@ public class TabrootClient extends TablutClient {
 			if (this.getPlayer().equals(Turn.WHITE)) {
 				//sono il giocatore bianco
 				if (this.getCurrentState().getTurn().equals(StateTablut.Turn.WHITE)) {
-					//ed � il turno del bianco (tocca a me giocare)
+					//ed e' il turno del bianco (tocca a me giocare)
 					printStartTime();//controllo tempo
 					Action a = null;
 					try {
@@ -151,7 +151,7 @@ public class TabrootClient extends TablutClient {
 					}
 					
 					
-					if(turn==0) {
+					/*if(turn==0) {
 						turn=1;
 						a.setFrom("f5");
 						a.setTo("f2");
@@ -166,7 +166,7 @@ public class TabrootClient extends TablutClient {
 							}
 						continue;
 						}
-					}
+					}*/
 
 					//Selezione azione con ALGORITMO
 					//a=itDeepAlgorithm.makeDecision(state);
