@@ -1,4 +1,4 @@
-package it.unibo.ai.didattica.competition.tablut.client.tabrootplayer;
+package it.unibo.ai.didattica.competition.tablut.client.search;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,6 +10,7 @@ import it.unibo.ai.didattica.competition.tablut.domain.*;
 import it.unibo.ai.didattica.competition.tablut.domain.State.Turn;
 import it.unibo.ai.didattica.competition.tablut.optimization.TablutTranspositionTable;
 import it.unibo.ai.didattica.competition.tablut.optimization.ValuedAction;
+
 
 public class MyTTIterativeDeepeningAlphaBetaSearch extends IterativeDeepeningAlphaBetaSearch<State, Action, Turn> {
 

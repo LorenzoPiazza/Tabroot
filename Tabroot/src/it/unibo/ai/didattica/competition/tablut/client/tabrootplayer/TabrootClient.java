@@ -6,6 +6,10 @@ import java.time.LocalTime;
 
 import aima.core.search.adversarial.*;
 import aima.core.search.framework.Metrics;
+import it.unibo.ai.didattica.competition.tablut.client.search.BlackOpening;
+import it.unibo.ai.didattica.competition.tablut.client.search.IOpening;
+import it.unibo.ai.didattica.competition.tablut.client.search.MyGame;
+import it.unibo.ai.didattica.competition.tablut.client.search.MyIterativeDeepeningAlphaBetaSearch;
 import it.unibo.ai.didattica.competition.tablut.domain.*;
 import it.unibo.ai.didattica.competition.tablut.domain.Game;
 import it.unibo.ai.didattica.competition.tablut.domain.State.Turn;
@@ -98,17 +102,20 @@ public class TabrootClient extends TablutClient {
 		state = new StateTablut();
 		state.setTurn(State.Turn.WHITE);
 		rules = new GameAshtonTablut(99, 0, "garbage", "fake", "fake");
-		//Creo l'oggetto MyGame che servir� alla classe di ricerca
+		//Creo l'oggetto MyGame che servira' alla classe di ricerca
 		myGame = new MyGame(state, (GameAshtonTablut) rules, "fake", "fake");
 		System.out.println("Ashton Tablut game");
 
 		//this.transpositionTable=new TablutTranspositionTable();
 		
-		//Creo l'oggetto MyIterativeDeepeningAlphaBetaSearch che realizzer� la ricerca della mossa nello spazio degli stati
+		//Creo l'oggetto MyIterativeDeepeningAlphaBetaSearch che realizzera' la ricerca della mossa nello spazio degli stati
 		MyIterativeDeepeningAlphaBetaSearch myItDeepAlgorithm = new MyIterativeDeepeningAlphaBetaSearch(myGame, Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, time);
 		myItDeepAlgorithm.setLogEnabled(true);
-		MyTTIterativeDeepeningAlphaBetaSearch ttAlgorithm = new MyTTIterativeDeepeningAlphaBetaSearch(myGame, Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, time, transpositionTable);
-		ttAlgorithm.setLogEnabled(true);
+		
+		
+		/*TODO: Algoritmo ottimizzato con Transposition Table*/
+		//MyTTIterativeDeepeningAlphaBetaSearch ttAlgorithm = new MyTTIterativeDeepeningAlphaBetaSearch(myGame, Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, time, transpositionTable);
+		//ttAlgorithm.setLogEnabled(true);
 		
 		//Eventuali altri algoritmi:
 		/*
@@ -141,7 +148,7 @@ public class TabrootClient extends TablutClient {
 			if (this.getPlayer().equals(Turn.WHITE)) {
 				//sono il giocatore bianco
 				if (this.getCurrentState().getTurn().equals(StateTablut.Turn.WHITE)) {
-					//ed � il turno del bianco (tocca a me giocare)
+					//ed e' il turno del bianco (tocca a me giocare)
 					printStartTime();//controllo tempo
 					Action a = null;
 					try {
@@ -180,10 +187,10 @@ public class TabrootClient extends TablutClient {
 					printStatistics(myItDeepAlgorithm);
 					printEndTime();//controllo tempo
 					/*GESTIONE MEMORIA: DA CONTROLLARE!!!*/
-					long memOccupata=Runtime.getRuntime().totalMemory()-Runtime.getRuntime().freeMemory();
+//					long memOccupata=Runtime.getRuntime().totalMemory()-Runtime.getRuntime().freeMemory();
 					/*Conversione da bytes a MB*/
-					double memOccupataMB=memOccupata*Math.pow(9.537, Math.pow(10, -7));
-					System.out.println("MEMORIA OCCUPATA: " + memOccupataMB+" MB");
+//					double memOccupataMB=memOccupata*Math.pow(9.537, Math.pow(10, -7));
+//					System.out.println("MEMORIA OCCUPATA: " + memOccupataMB+" MB");
 					printEndTime();//controllo tempo
 					try {
 						this.write(a);
@@ -191,7 +198,7 @@ public class TabrootClient extends TablutClient {
 						e.printStackTrace();
 					}
 				}
-				// � il turno dell'avversario
+				// e' il turno dell'avversario
 				else if (state.getTurn().equals(StateTablut.Turn.BLACK)) {
 					System.out.println("Waiting for your opponent move... ");
 				}
@@ -214,7 +221,7 @@ public class TabrootClient extends TablutClient {
 			} else {
 				// sono il giocatore nero
 				if (this.getCurrentState().getTurn().equals(StateTablut.Turn.BLACK)) { 
-					// ed � il turno del nero (tocca a me giocare)
+					// ed e' il turno del nero (tocca a me giocare)
 					printStartTime();//controllo tempo
 					Action a = null;
 					try {
@@ -224,7 +231,7 @@ public class TabrootClient extends TablutClient {
 						e1.printStackTrace();
 					}
 					
-					//Se � il primo turno apro con una delle mosse d'apertura
+					//Se e' il primo turno apro con una delle mosse d'apertura
 					if(turn==0) {
 						turn=1;
 						IOpening opener = new BlackOpening();
@@ -249,10 +256,10 @@ public class TabrootClient extends TablutClient {
 					printStatistics(myItDeepAlgorithm);
 					
 					/*GESTIONE MEMORIA: DA CONTROLLARE!!!*/
-					long memOccupata=Runtime.getRuntime().totalMemory()-Runtime.getRuntime().freeMemory();
+//					long memOccupata=Runtime.getRuntime().totalMemory()-Runtime.getRuntime().freeMemory();
 					/*Conversione da bytes a MB*/
-					double memOccupataMB=memOccupata*Math.pow(9.537, Math.pow(10, -7));
-					System.out.println("MEMORIA OCCUPATA: " + memOccupataMB+" MB");
+//					double memOccupataMB=memOccupata*Math.pow(9.537, Math.pow(10, -7));
+//					System.out.println("MEMORIA OCCUPATA: " + memOccupataMB+" MB");
 					printEndTime();//controllo tempo
 					
 					try {

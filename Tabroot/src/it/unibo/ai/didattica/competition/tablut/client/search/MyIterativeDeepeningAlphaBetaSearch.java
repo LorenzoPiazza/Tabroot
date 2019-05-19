@@ -1,4 +1,4 @@
-package it.unibo.ai.didattica.competition.tablut.client.tabrootplayer;
+package it.unibo.ai.didattica.competition.tablut.client.search;
 
 import aima.core.search.adversarial.Game;
 import aima.core.search.adversarial.IterativeDeepeningAlphaBetaSearch;
@@ -10,7 +10,6 @@ public class MyIterativeDeepeningAlphaBetaSearch extends IterativeDeepeningAlpha
 	public MyIterativeDeepeningAlphaBetaSearch(Game<State, Action, Turn> game, double utilMin, double utilMax,
 			int time) {
 		super(game, utilMin, utilMax, time);
-		// TODO Auto-generated constructor stub
 	}
 	
 	

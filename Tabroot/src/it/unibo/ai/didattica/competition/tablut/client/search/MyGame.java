@@ -1,4 +1,4 @@
-package it.unibo.ai.didattica.competition.tablut.client.tabrootplayer;
+package it.unibo.ai.didattica.competition.tablut.client.search;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -10,8 +10,9 @@ import aima.core.search.adversarial.Game;
 import it.unibo.ai.didattica.competition.tablut.domain.*;
 import it.unibo.ai.didattica.competition.tablut.domain.State.Turn;
 
-/* Questa classe estende la classe GameAshtonTablut del progetto del prof.
- * Inoltre implementa l'interfaccia Game della libreria aima e i rispettivi metodi:
+/* 
+ * Questa classe estende la classe GameAshtonTablut del progetto del prof.
+ * Inoltre implementa l'interfaccia Game della libreria aima e i rispettivi metodi.
  */
 
 /**
@@ -20,8 +21,7 @@ import it.unibo.ai.didattica.competition.tablut.domain.State.Turn;
  */
 public class MyGame extends GameAshtonTablut implements Game<State, Action, Turn> {
 
-	// Costruttori che semplicemente richiamano i costruttori della classe
-	// GameAshtonTablut
+	//Costruttori che semplicemente richiamano i costruttori della classe GameAshtonTablut
 	public MyGame(int repeated_moves_allowed, int cache_size, String logs_folder, String whiteName, String blackName) {
 		super(repeated_moves_allowed, cache_size, logs_folder, whiteName, blackName);
 	}
@@ -32,21 +32,20 @@ public class MyGame extends GameAshtonTablut implements Game<State, Action, Turn
 
 	}
 
-	// Costruttore in cui passo uno stato, un GameAshton Tablut, il whiteName e il
-	// blackName
+	//Costruttore in cui passo uno stato, un GameAshton Tablut, il whiteName e il blackName
 	public MyGame(State state, GameAshtonTablut game, String whiteName, String blackName) {
 		super(state, game.getRepeated_moves_allowed(), game.getCache_size(), game.getGameLog().getName(), whiteName,
 				blackName);
 
 	}
 
-	/*
-	 * Questa funzione a differenza della checkMove gi� fornita salta alcuni
-	 * controlli inutili per come vengono fornite le mosse da valutare (es:
-	 * impossibile valutare una mossa in diagonale quindi non controllo). Un'altra
-	 * differenza � che non muove la pedina nel caso la mossa sia possibile.
-	 * Resituisce 0 se la mossa � possibile, 1 altrimenti. Viene chiamata in seguito
-	 * all'interno di getActions().
+	/**
+	 * Questa funzione, a differenza della checkMove già fornita, salta alcuni
+	 * controlli inutili per come vengono fornite le mosse da valutare
+	 * (es: impossibile valutare una mossa in diagonale quindi non lo controllo).
+	 * Un'altra differenza e' che non muove la pedina nel caso la mossa sia possibile.
+	 * @return 0 se la mossa e' possibile, 1 altrimenti.
+	 * Viene chiamata in seguito all'interno di getActions().
 	 */
 	public int myCheckMove(int columnFrom, int columnTo, int rowFrom, int rowTo, int ctrl, State state) {
 
@@ -136,14 +135,13 @@ public class MyGame extends GameAshtonTablut implements Game<State, Action, Turn
 		return ctrl;
 	}
 
-	// Da qui in poi implemento i metodi richiesti dall'interfaccia
-	// aima.core.search.adversarial.Game:
+	// Da qui in poi implemento i metodi richiesti dall'interfaccia aima.core.search.adversarial.Game:
 
-	/*
+	/**
 	 * getActions(State state): Restituisce una lista di tutte le azioni possibili
 	 * del giocatore a cui tocca muovere. Capisce a chi tocca muovere controllando
 	 * il turno insito nello stato che gli viene passato). Se il turno dello stato
-	 * passato � WHITEWIN, BALCKWIN o DRAW restituisce la lista di azioni vuota.
+	 * passato e' WHITEWIN, BALCKWIN o DRAW restituisce la lista di azioni vuota.
 	 * 
 	 * Codice by A.Fuschino (alcune modifiche by L.Piazza)
 	 */
@@ -190,10 +188,10 @@ public class MyGame extends GameAshtonTablut implements Game<State, Action, Turn
 			break;
 		default:
 			return actions; // Nel caso in cui il turno sia BLACKWIN, WHITEWIN o DRAW restituisco la lista
-							// di azioni vuote (la partita non pu� proseguire dallo stato corrente)
+							// di azioni vuote (la partita non puo' proseguire dallo stato corrente)
 		}
 
-		// Arrivati qui � impossibile che l'Iterator it sia ancora null
+		// Arrivati qui e' impossibile che l'Iterator it sia ancora null
 		int colonna = 0;
 		int riga = 0;
 
@@ -201,7 +199,6 @@ public class MyGame extends GameAshtonTablut implements Game<State, Action, Turn
 		try {
 			action = new Action("z0", "z0", state.getTurn());
 		} catch (IOException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 
@@ -308,6 +305,12 @@ public class MyGame extends GameAshtonTablut implements Game<State, Action, Turn
 		return myMovePawn(state.clone(), a);
 	}
 
+	/**
+	 * 
+	 * @param state lo stato attuale
+	 * @param a l'azione da eseguire
+	 * @return lo stato ottenuto dopo la mossa eseguita.
+	 */
 	private State myMovePawn(State state, Action a) {
 		// funzione di aggiornamento di uno stato data una azione
 		State.Pawn[][] newBoard = state.getBoard();
@@ -354,13 +357,16 @@ public class MyGame extends GameAshtonTablut implements Game<State, Action, Turn
 		return false;
 	}
 
-	// TODO: � la funzione euristica
+	/**
+	 * Funzione che ritorna la vlutazione euristica dello stato.
+	 * (Code by L.Piazza).
+	 */
 	@Override
 	public double getUtility(State state, Turn turn) {
 		/*
-		 * Primi controlli per tentare vincere/evitare di perdere: 1.Se sono il nero o
-		 * sono il bianco e sto per vincere ritorno +infinito 2.Altrimenti se sono il
-		 * bianco o sono il nero e sto per perdere ritorno -infinito Codice by L.Piazza
+		 * Primi controlli per tentare vincere/evitare di perdere:
+		 * 1.Se sono il nero o sono il bianco e sto per vincere ritorno +infinito
+		 * 2.Altrimenti se sono il bianco o sono il nero e sto per perdere ritorno -infinito.
 		 */
 		if ((turn.equalsTurn("B") && state.getTurn().equalsTurn("BW"))
 				|| (turn.equalsTurn("W") && state.getTurn().equalsTurn("WW")))
@@ -403,10 +409,10 @@ public class MyGame extends GameAshtonTablut implements Game<State, Action, Turn
 		
 
 		/*
-		 * Se � il turno del bianco ritorno la valutazione della strategia del nostro
+		 * Se e' il turno del bianco ritorno la valutazione della strategia del nostro
 		 * White player(Euristica generale+Euristica specifica) a cui sottraggo solo
-		 * l'euristica generale di un Black Player per evitare che si focalizzi troppo
-		 * su un tipo di avversario
+		 * l'euristica generale di un Black Player per evitare che si focalizzi su un tipo
+		 * troppo specifico di avversario.
 		 */
 		if (turn.equalsTurn("W"))
 			return euristicaSpecificaWhite - euristicaGeneraleBlack;
@@ -431,10 +437,10 @@ public class MyGame extends GameAshtonTablut implements Game<State, Action, Turn
 		//Conteggio delle pedine bianche. Range [0,1]
 		double conteggioPedine = white.size() / 9.0;
 
-		//Guardo se il Re � in una casella favorevole (le 4 caselle sulla scacchiera con pi� sbocchi verso la vittoria). Range [0,1]
+		//Guardo se il Re e' in una casella favorevole (le 4 caselle sulla scacchiera con piu' sbocchi verso la vittoria). Range [0,1]
 		double posKing = whiteStrategy.posKing(king);
 
-		//Controlli per far scappare il Re. Attenzione che il range � negativo! Range: [-1,0]
+		//Controlli per far scappare il Re. Attenzione che il range e' negativo! Range: [-1,0]
 		double scappaRe = whiteStrategy.scappaRe(state, white, black, king);
 
 		//Guardo se ho delle pedine bianche negli angoli. Range [0,1]
@@ -451,11 +457,13 @@ public class MyGame extends GameAshtonTablut implements Game<State, Action, Turn
 		Range [0,1]
 		*/
 		double assettoTorre=whiteStrategy.valutazioneAssettoTorre(state, white, king);
+		
+		/*Altre valutazioni:*/
 		double vicinanzaBordiAngoli=whiteStrategy.vicinanzaBordiAngoli(white);
 		double mosseIntelligenti=whiteStrategy.mosseIntelligenti(state, white, king);
 		double valutaQuadrantiKing=whiteStrategy.valutaQuadrantiKing(state, king);
 
-		/*TODO:QUI VIENE FATTO IL TUNING E IL BILANCIAMENTO DEI VALORI! */
+		/*QUI VIENE FATTO IL TUNING E IL BILANCIAMENTO DEI VALORI! */
 
 		//(FUSCO VERSION)
 
@@ -464,7 +472,7 @@ public class MyGame extends GameAshtonTablut implements Game<State, Action, Turn
 		  migliore: return 0.50*conteggioPedine + 0.10*scappaRe + 0.05*pedineInAngoli + 0.10*vicinanzaBordiAngoli + 0.02*assettoTorre+0.15*mosseIntelligenti+0.20*valutaQuadrantiKing;
 		 */
 		
-		   //return 0.70*conteggioPedine + 0.10*scappaRe + 0.08*pedineInAngoli + 0.03*vicinanzaBordiAngoli + 0.02*assettoTorre+0.19*mosseIntelligenti+0.10*valutaQuadrantiKing;
+		//return 0.70*conteggioPedine + 0.10*scappaRe + 0.08*pedineInAngoli + 0.03*vicinanzaBordiAngoli + 0.02*assettoTorre+0.19*mosseIntelligenti+0.10*valutaQuadrantiKing;
 
 
 
@@ -524,7 +532,7 @@ public class MyGame extends GameAshtonTablut implements Game<State, Action, Turn
 		//Conteggio delle pedine bianche. Range [0,1]
 		double conteggioPedine = white.size() / 9.0;
 
-		//Guardo se il Re � in una casella favorevole (le 4 caselle sulla scacchiera con pi� sbocchi verso la vittoria). Range [0,1]
+		//Guardo se il Re è in una casella favorevole (le 4 caselle sulla scacchiera con pi� sbocchi verso la vittoria). Range [0,1]
 		double posKing = whiteStrategy.posKing(king);
 
 		//Controlli per far scappare il Re. Attenzione che il range � negativo! Range: [-1,0]
@@ -544,11 +552,13 @@ public class MyGame extends GameAshtonTablut implements Game<State, Action, Turn
 		Range [0,1]
 		*/
 		double assettoTorre=whiteStrategy.valutazioneAssettoTorre(state, white, king);
+		
+		/*Altri controlli*/
 		double vicinanzaBordiAngoli=whiteStrategy.vicinanzaBordiAngoli(white);
 		double mosseIntelligenti=whiteStrategy.mosseIntelligenti(state, white, king);
 		double valutaQuadrantiKing=whiteStrategy.valutaQuadrantiKing(state, king);
 
-		/*TODO:QUI VIENE FATTO IL TUNING E IL BILANCIAMENTO DEI VALORI! */
+		/*QUI VIENE FATTO IL TUNING E IL BILANCIAMENTO DEI VALORI! */
 
 		//(FUSCO VERSION)
 
@@ -561,9 +571,7 @@ public class MyGame extends GameAshtonTablut implements Game<State, Action, Turn
 		return 0.40*conteggioPedine + 0.05*scappaRe + 0.03*pedineInAngoli + 0.05*vicinanzaBordiAngoli + 0.02*assettoTorre+0.35*mosseIntelligenti+0.25*valutaQuadrantiKing;
 		
 	}
-	
-	
-	
+
 	/**
 	 * Euristica specifica del giocatore nero
 	 * @param state
@@ -584,7 +592,7 @@ public class MyGame extends GameAshtonTablut implements Game<State, Action, Turn
 		//Valutazione dell'assetto gabbia Strong. Range [0,1]
 		double assettoGabbiaStrong=blackStrategy.valutaAssettoGabbiaStrong(state, king);
 		
-		/* TODO:QUI VIENE FATTO IL TUNING E IL BILANCIAMENTO DEI VALORI! */
+		/*QUI VIENE FATTO IL TUNING E IL BILANCIAMENTO DEI VALORI! */
 		
 		//return 0.40*conteggioPedine+0.30*assettoGabbiaLight+0.29*assettoGabbiaStrong+0.01*(new Random().nextDouble());
 		return 0.45*conteggioPedine+0.34*assettoGabbiaLight+0.20*assettoGabbiaStrong+0.01*(new Random().nextDouble());
@@ -611,148 +619,9 @@ public class MyGame extends GameAshtonTablut implements Game<State, Action, Turn
 		//Valutazione dell'assetto gabbia Strong. Range [0,1]
 		double assettoGabbiaStrong=blackStrategy.valutaAssettoGabbiaStrong(state, king);
 		
-		/* TODO:QUI VIENE FATTO IL TUNING E IL BILANCIAMENTO DEI VALORI! */
+		/*QUI VIENE FATTO IL TUNING E IL BILANCIAMENTO DEI VALORI! */
 		return 0.65*conteggioPedine+0.20*assettoGabbiaLight+0.15*assettoGabbiaStrong;
 	}
-
-
-	
-	//VECCHIA VERSIONE DELLA FUNZIONE DI VALUTAZIONE
-	/*
-	 * private double getHeuristicValueWhite(State state,List<int[]> white,
-	 * List<int[]> black, int[] king ) { int nWhite=white.size(); double
-	 * conteggioPedine=nWhite/9.0; double posKing=0; double pedineInAngolo=0; double
-	 * scappaRe=0; int[] controlloPedine= {0,0};
-	 * 
-	 * indice 0 riga, indice 1 colonna if((king[0]==2)&&( king[1]==2 ||king[1]==6))
-	 * posKing=0.5; if((king[0]==6)&&( king[1]==2 ||king[1]==6)) posKing=0.5;
-	 * 
-	 * Pedine negli angoli for(int i=0;i<nWhite;i++){ controlloPedine=white.get(i);
-	 * if(controlloPedine[0]==0 && controlloPedine[1]==0) pedineInAngolo+=0.2;
-	 * 
-	 * if(controlloPedine[0]==8 && controlloPedine[1]==8) pedineInAngolo+=0.2;
-	 * 
-	 * if(controlloPedine[0]==8 && controlloPedine[1]==0 ) pedineInAngolo+=0.2;
-	 * 
-	 * if(controlloPedine[0]==0 && controlloPedine[1]==8) pedineInAngolo+=0.2; }
-	 * 
-	 * 
-	 * Controllo che il re sia circondato da pedine nere int
-	 * latiCopertiDalTronoDelRe=0; int neriVicinoAlRe=0;
-	 * 
-	 * //controllo se il re � vicino al trono if((king[0]== 3 &&
-	 * king[1]==4)||(king[0]== 5 && king[1]==4) ||(king[0]== 4 &&
-	 * king[1]==3)||(king[0]== 4 && king[1]==5)) latiCopertiDalTronoDelRe++; //se
-	 * sono sul trono o sono vicino al trono il re deve essere circondato
-	 * if((king[0]== 4 && king[1]==4)||(latiCopertiDalTronoDelRe==1)) { //conto i
-	 * neri vicino al re for(int i=0;i<black.size();i++) {
-	 * controlloPedine=black.get(i); //controllo a sinistra del re
-	 * if(controlloPedine[0]==(king[0]) &&controlloPedine[1]==(king[1]-1))
-	 * neriVicinoAlRe++; //controllo a destra del re
-	 * if(controlloPedine[0]==(king[0]) &&controlloPedine[1]==(king[1]+1))
-	 * neriVicinoAlRe++; //controllo a sopra del re
-	 * if(controlloPedine[0]==(king[0]-1) &&controlloPedine[1]==(king[1]))
-	 * neriVicinoAlRe++; //controllo a sotto del re
-	 * if(controlloPedine[0]==(king[0]+1) &&controlloPedine[1]==(king[1]))
-	 * neriVicinoAlRe++; } latiCopertiDalTronoDelRe+=neriVicinoAlRe; //Se ho pi� di
-	 * tre lati occupati devo scappare con il re. if(latiCopertiDalTronoDelRe>=3)
-	 * scappaRe=-10; } else {non sono sul trono e neanche accanto ad esso, quindi
-	 * puo' essere mangiato normalmente. //controllo le intersezioni doppie
-	 * D2/F2/H4/H6/F8/D8/B6/B4 boolean adiacenteAccampamento=false; if((king[0]== 3
-	 * && king[1]==1)||(king[0]== 5 && king[1]==1) ||(king[0]== 1 &&
-	 * king[1]==3)||(king[0]== 1 && king[1]==5) ||(king[0]== 7 &&
-	 * king[1]==3)||(king[0]== 7 && king[1]==5) ||(king[0]== 3 &&
-	 * king[1]==7)||(king[0]== 5 && king[1]==7)) adiacenteAccampamento=true;
-	 * //controllo gli accampamenti E3/C5/H5/E5 if((king[0]== 2 &&
-	 * king[1]==4)||(king[0]== 6 && king[1]==4) ||(king[0]== 4 &&
-	 * king[1]==2)||(king[0]== 4 && king[1]==6)) adiacenteAccampamento=true; //conto
-	 * i neri vicino al re for(int i=0;i<black.size();i++) {
-	 * controlloPedine=black.get(i); //controllo a sinistra del re
-	 * if(controlloPedine[0]==(king[0]) &&controlloPedine[1]==(king[1]-1))
-	 * neriVicinoAlRe++; //controllo a destra del re
-	 * if(controlloPedine[0]==(king[0]) &&controlloPedine[1]==(king[1]+1))
-	 * neriVicinoAlRe++; //controllo a sopra del re
-	 * if(controlloPedine[0]==(king[0]-1) &&controlloPedine[1]==(king[1]))
-	 * neriVicinoAlRe++; //controllo a sotto del re
-	 * if(controlloPedine[0]==(king[0]+1) &&controlloPedine[1]==(king[1]))
-	 * neriVicinoAlRe++; } if(neriVicinoAlRe>=1 || adiacenteAccampamento)
-	 * scappaRe=-10;
-	 * 
-	 * }
-	 * 
-	 * 
-	 * A.Fuschino valuto positivamente(ma meno rispetto a una pedina nell'angolo)
-	 * una pedina vicina a gli angoli e ai bordi della tavola da gioco variabile:
-	 * valutazionePedinaBordiAngoli valutazione: 0.01 ???
-	 * 
-	 * 
-	 * double valutazionePedinaBordiAngoli=0;
-	 * 
-	 * for(int i=0;i<nWhite;i++){ controlloPedine=white.get(i);
-	 * 
-	 * //in alto a sinistra if(controlloPedine[0]==1 && controlloPedine[1]==0)
-	 * valutazionePedinaBordiAngoli+=0.01; if(controlloPedine[0]==2 &&
-	 * controlloPedine[1]==0) valutazionePedinaBordiAngoli+=0.01;
-	 * if(controlloPedine[0]==0 && controlloPedine[1]==1 )
-	 * valutazionePedinaBordiAngoli+=0.01; if(controlloPedine[0]==0 &&
-	 * controlloPedine[1]==2) valutazionePedinaBordiAngoli+=0.01;
-	 * 
-	 * //in alto a destra if(controlloPedine[0]==1 && controlloPedine[1]==8)
-	 * valutazionePedinaBordiAngoli+=0.01; if(controlloPedine[0]==2 &&
-	 * controlloPedine[1]==0) valutazionePedinaBordiAngoli+=0.01;
-	 * if(controlloPedine[0]==0 && controlloPedine[1]==7 )
-	 * valutazionePedinaBordiAngoli+=0.01; if(controlloPedine[0]==2 &&
-	 * controlloPedine[1]==8) valutazionePedinaBordiAngoli+=0.01;
-	 * 
-	 * //in basso a sinistra if(controlloPedine[0]==6 && controlloPedine[1]==0)
-	 * valutazionePedinaBordiAngoli+=0.01; if(controlloPedine[0]==7 &&
-	 * controlloPedine[1]==0) valutazionePedinaBordiAngoli+=0.01;;
-	 * if(controlloPedine[0]==8 && controlloPedine[1]==1 )
-	 * valutazionePedinaBordiAngoli+=0.01; if(controlloPedine[0]==8 &&
-	 * controlloPedine[1]==2) valutazionePedinaBordiAngoli+=0.01;
-	 * 
-	 * //in basso a destra if(controlloPedine[0]==7 && controlloPedine[1]==8)
-	 * valutazionePedinaBordiAngoli+=0.01; if(controlloPedine[0]==6 &&
-	 * controlloPedine[1]==8) valutazionePedinaBordiAngoli+=0.01;
-	 * if(controlloPedine[0]==8 && controlloPedine[1]==7 )
-	 * valutazionePedinaBordiAngoli+=0.01; if(controlloPedine[0]==8 &&
-	 * controlloPedine[1]==6) valutazionePedinaBordiAngoli+=0.01; }
-	 * 
-	 * 
-	 * A.Fuschino controllo se i bianchi sono nella formazione buona per poter
-	 * iniziare a muovere il re (quella che piace a me) variabile:
-	 * valutazioneAssettoFusco note: per ora ho considerato il quadrante in basso a
-	 * destra bisogna fare la stessa cosa con gli altri 3 quadranti a seconda se i
-	 * neri hanno mosso una o due pedine critiche
-	 * 
-	 * 
-	 * double valutazioneAssettoFusco=0;
-	 * 
-	 * for(int i=0;i<nWhite;i++){ controlloPedine=white.get(i);
-	 * 
-	 * //in basso a destra if(controlloPedine[0]==3 && controlloPedine[1]==5 &&
-	 * (king[0]==5 && king[1]==4) && (state.getPawn(7,4).equalsPawn("O") ||
-	 * state.getPawn(4,7).equalsPawn("O"))) valutazioneAssettoFusco+=5;
-	 * if(controlloPedine[0]==4 && controlloPedine[1]==6 && (king[0]==5 &&
-	 * king[1]==4) && (state.getPawn(7,4).equalsPawn("O") ||
-	 * state.getPawn(4,7).equalsPawn("O"))) valutazioneAssettoFusco+=5;
-	 * if(controlloPedine[0]==6 && controlloPedine[1]==4 && (king[0]==5 &&
-	 * king[1]==4) && (state.getPawn(7,4).equalsPawn("O") ||
-	 * state.getPawn(4,7).equalsPawn("O"))) valutazioneAssettoFusco+=5;
-	 * if(controlloPedine[0]==5 && controlloPedine[1]==3 && (king[0]==5 &&
-	 * king[1]==4) && (state.getPawn(7,4).equalsPawn("O") ||
-	 * state.getPawn(4,7).equalsPawn("O"))) valutazioneAssettoFusco+=5; }
-	 * 
-	 * double result=
-	 * conteggioPedine+posKing+pedineInAngolo+scappaRe+valutazioneAssettoFusco+
-	 * valutazionePedinaBordiAngoli; return result; }
-	 */
-	/*
-	 * Funzioni di valutazione Euristica del giocatore nero. Sono divise in due
-	 * funzioni: In una vengono fatte valutazioni riguardo ad una strategia generale
-	 * di un giocatore Black. Nell'altra invece vengono fatte considerazioni
-	 * riguardo alla specifica strategia che adotta il nostro giocatore.
-	 */
 
 
 	/**

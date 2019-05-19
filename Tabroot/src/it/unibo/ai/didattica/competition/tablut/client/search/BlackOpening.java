@@ -1,7 +1,7 @@
 /**
  * 
  */
-package it.unibo.ai.didattica.competition.tablut.client.tabrootplayer;
+package it.unibo.ai.didattica.competition.tablut.client.search;
 
 import java.io.IOException;
 
@@ -18,12 +18,12 @@ public class BlackOpening implements IOpening {
 
 	@Override
 	public Action openingMove(State currentState) {
-		/*Se in apertura ho possibilit� di mangiare ai bordi lo faccio*/
+		/*Se in apertura ho possibilita' di mangiare ai bordi lo faccio*/
 		Action a=controllaMangiata(currentState);
 		if(a!=null)
 			return a;
 
-		/*Altrimenti guardo prima se il bianco ha aperto muovendo le pedine interne pi� vicine al Re*/
+		/*Altrimenti guardo prima se il bianco ha aperto muovendo le pedine interne piu' vicine al Re*/
 		if(currentState.getPawn(3,4).equalsPawn("O") )
 			try {
 				return new Action("e2", "g2", Turn.BLACK);
@@ -49,16 +49,8 @@ public class BlackOpening implements IOpening {
 				e.printStackTrace();
 			}
 		
-		/*Guardo ora se invece il bianco ha aperto muovendo una delle pedine pi� esterne*/
+		/*Guardo ora se invece il bianco ha aperto muovendo una delle pedine più esterne*/
 		else if(currentState.getPawn(2,4).equalsPawn("O")) {
-			/*if(!whiteInBorderUpLeft(currentState)){
-				try {
-					return new Action("e2", "c2", Turn.BLACK);
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			}
-			else*/
 				try {
 					return new Action("e2", "g2", Turn.BLACK);
 				} catch (IOException e) {
@@ -66,14 +58,6 @@ public class BlackOpening implements IOpening {
 				}
 		}
 		else if(currentState.getPawn(4,6).equalsPawn("O")) {
-			/*if(!whiteInBorderUpRight(currentState)){
-				try {
-					return new Action("h5", "h3", Turn.BLACK);
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			}
-			else*/
 				try {
 					return new Action("h5", "h7", Turn.BLACK);
 				} catch (IOException e) {
@@ -81,14 +65,6 @@ public class BlackOpening implements IOpening {
 				}
 		}
 		else if(currentState.getPawn(6,4).equalsPawn("O")) {
-			/*if(!whiteInBorderDownRight(currentState)){
-				try {
-					return new Action("e8", "g8", Turn.BLACK);
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			}
-			else*/
 				try {
 					return new Action("e8", "c8", Turn.BLACK);
 				} catch (IOException e) {
@@ -96,14 +72,6 @@ public class BlackOpening implements IOpening {
 				}
 		}
 		else if(currentState.getPawn(4,2).equalsPawn("O")) {
-			/*if(!whiteInBorderDownLeft(currentState)){
-				try {
-					return new Action("e2", "c2", Turn.BLACK);
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			}
-			else*/
 				try {
 					return new Action("b5", "b7", Turn.BLACK);
 				} catch (IOException e) {
