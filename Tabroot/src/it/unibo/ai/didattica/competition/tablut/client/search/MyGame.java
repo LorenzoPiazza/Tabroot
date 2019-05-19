@@ -1,5 +1,5 @@
 
-package it.unibo.ai.didattica.competition.tablut.client.tabrootplayer;
+package it.unibo.ai.didattica.competition.tablut.client.search;
 
 import java.io.IOException;
 import java.util.ArrayList;
