@@ -19,6 +19,7 @@ import it.unibo.ai.didattica.competition.tablut.optimization.TablutTransposition
 public class TabrootClient extends TablutClient {
 
 	private int time;
+	@SuppressWarnings("unused")
 	private TablutTranspositionTable transpositionTable;
 
 	public TabrootClient(String player, String name, int time) throws UnknownHostException, IOException {
