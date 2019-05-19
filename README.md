@@ -55,7 +55,15 @@ java -jar TabrootClient.jar white|black [-t <timeToMove>] [-n <nameOfTheTeam>]
 - -n parameter let you to specified the name of the player. (Default is Tabroot)
 
 
-AUTHORS:
+
+
+
+
+
+
+
+
+#### Authors:
 
 Lorenzo Piazza
 
