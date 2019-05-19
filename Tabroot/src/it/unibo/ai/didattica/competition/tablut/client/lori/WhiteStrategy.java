@@ -292,8 +292,10 @@ public class WhiteStrategy {
 				&& !state.getPawn(8,8).equalsPawn("B")
 				&& (state.getPawn(8,5).equalsPawn("B")
 				|| state.getPawn(8,4).equalsPawn("B")
-				|| state.getPawn(8,3).equalsPawn("B")))
-			valutazioneMosseIntelligenti+=0.150;	
+				|| state.getPawn(8,3).equalsPawn("B"))) {
+			valutazioneMosseIntelligenti+=0.15;	
+		}
+			
 				
 		//quadrante dx in basso: destra  
 		if(state.getPawn(7,4).equalsPawn("O") 
@@ -305,8 +307,10 @@ public class WhiteStrategy {
 				&& !state.getPawn(8,8).equalsPawn("B")
 				&& (state.getPawn(3,8).equalsPawn("B")
 				|| state.getPawn(4,8).equalsPawn("B")
-				|| state.getPawn(5,8).equalsPawn("B")))
+				|| state.getPawn(5,8).equalsPawn("B"))){
 			valutazioneMosseIntelligenti+=0.15;
+		}
+			
 		//quadrante dx in alto: destra
 		if(state.getPawn(1,4).equalsPawn("O") 
 				&& state.getPawn(2,8).equalsPawn("W") 
@@ -317,8 +321,10 @@ public class WhiteStrategy {
 				&& !state.getPawn(0,8).equalsPawn("B")
 				&&( state.getPawn(3,8).equalsPawn("B")
 				||state.getPawn(4,8).equalsPawn("B")
-				|| state.getPawn(5,8).equalsPawn("B")))
+				|| state.getPawn(5,8).equalsPawn("B"))) {
 			valutazioneMosseIntelligenti+=0.15;
+		}
+			
 		//quadrante dx in alto: sinistra 
 		if(state.getPawn(4,7).equalsPawn("O") 
 				&& state.getPawn(0,6).equalsPawn("W") 
@@ -329,8 +335,10 @@ public class WhiteStrategy {
 				&& !state.getPawn(0,8).equalsPawn("B")
 				&&(state.getPawn(0,3).equalsPawn("B")
 				|| state.getPawn(0,4).equalsPawn("B")
-				|| state.getPawn(0,5).equalsPawn("B")))
+				|| state.getPawn(0,5).equalsPawn("B"))) {
 			valutazioneMosseIntelligenti+=0.15;
+		}
+			
 
 		//quadrante sx in alto: destra
 		if(state.getPawn(1,4).equalsPawn("O") 
@@ -342,8 +350,10 @@ public class WhiteStrategy {
 				&& !state.getPawn(0,0).equalsPawn("B")
 				&&(state.getPawn(3,0).equalsPawn("B")
 				||state.getPawn(4,0).equalsPawn("B")
-				||state.getPawn(5,0).equalsPawn("B")))
+				||state.getPawn(5,0).equalsPawn("B"))) {
 			valutazioneMosseIntelligenti+=0.15;
+		}
+			
 
 		//quadrante sx in alto: sinistra 
 		if(state.getPawn(4,1).equalsPawn("O") 
@@ -355,8 +365,10 @@ public class WhiteStrategy {
 			&& !state.getPawn(0,0).equalsPawn("B")
 			&&( state.getPawn(0,3).equalsPawn("B")
 			|| state.getPawn(0,4).equalsPawn("B")
-			||state.getPawn(0,5).equalsPawn("B")))
+			||state.getPawn(0,5).equalsPawn("B"))) {
 			valutazioneMosseIntelligenti+=0.15;
+		}
+			
 
 		//quadrante sx in basso: destra
 		if(state.getPawn(7,4).equalsPawn("O") 
@@ -368,8 +380,10 @@ public class WhiteStrategy {
 				&& !state.getPawn(8,0).equalsPawn("B")
 				&&(state.getPawn(3,0).equalsPawn("B")
 				|| state.getPawn(4,0).equalsPawn("B")
-				|| state.getPawn(5,0).equalsPawn("B")))
+				|| state.getPawn(5,0).equalsPawn("B"))) {
 			valutazioneMosseIntelligenti+=0.15;
+		}
+			
 		
 		//quadrante sx in basso: sinistra 
 		if(state.getPawn(4,1).equalsPawn("O") 
@@ -381,8 +395,10 @@ public class WhiteStrategy {
 		   && !state.getPawn(8,0).equalsPawn("B")
 		   && (state.getPawn(8,3).equalsPawn("B")
 		   || state.getPawn(8,4).equalsPawn("B")
-		   || state.getPawn(8,5).equalsPawn("B")))
+		   || state.getPawn(8,5).equalsPawn("B"))) {
 			valutazioneMosseIntelligenti+=0.15;
+		}
+			
 		
 		if(valutazioneMosseIntelligenti>0.5)
 			return 0;

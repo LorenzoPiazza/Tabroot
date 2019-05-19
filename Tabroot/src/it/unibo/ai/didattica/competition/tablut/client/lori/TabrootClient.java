@@ -145,6 +145,24 @@ public class TabrootClient extends TablutClient {
 					} catch (IOException e1) {
 						e1.printStackTrace();
 					}
+					
+					
+					if(turn==0) {
+						turn=1;
+						a.setFrom("f5");
+						a.setTo("f2");
+						System.out.println("Mossa d'apertura scelta: " + a.toString());
+						
+						if(a!=null) {
+							try {
+								this.write(a);
+							} catch (ClassNotFoundException | IOException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+						continue;
+						}
+					}
 
 					//Selezione azione con ALGORITMO
 					//a=itDeepAlgorithm.makeDecision(state);
@@ -218,7 +236,7 @@ public class TabrootClient extends TablutClient {
 						continue;
 						}
 					}
-											
+										
 					//Selezione azione con ALGORITMO
 					a = myItDeepAlgorithm.makeDecision(state);
 					
