@@ -81,10 +81,10 @@ public class TabrootClient extends TablutClient {
 		}
 		
 		System.out.println("Selected client: " + role);
-		System.out.println("Time choose for evaluate the action: " + time+". (1 second is subtracted to not exceed the turn time)." );
+		System.out.println("Time choose for evaluate the action: " + time+" - 3 seconds that are subtracted to be sure not exceed the turn time)." );
 		System.out.println("Team name: " + name);
 		
-		TabrootClient client = new TabrootClient(role, name, time-1);
+		TabrootClient client = new TabrootClient(role, name, time-3);
 		client.run();
 	}
 
@@ -192,12 +192,13 @@ public class TabrootClient extends TablutClient {
 					/*Conversione da bytes a MB*/
 //					double memOccupataMB=memOccupata*Math.pow(9.537, Math.pow(10, -7));
 //					System.out.println("MEMORIA OCCUPATA: " + memOccupataMB+" MB");
-					printEndTime();//controllo tempo
+					
 					try {
 						this.write(a);
 					} catch (ClassNotFoundException | IOException e) {
 						e.printStackTrace();
 					}
+					printEndTime();//controllo tempo
 				}
 				// e' il turno dell'avversario
 				else if (state.getTurn().equals(StateTablut.Turn.BLACK)) {
@@ -261,7 +262,7 @@ public class TabrootClient extends TablutClient {
 					/*Conversione da bytes a MB*/
 //					double memOccupataMB=memOccupata*Math.pow(9.537, Math.pow(10, -7));
 //					System.out.println("MEMORIA OCCUPATA: " + memOccupataMB+" MB");
-					printEndTime();//controllo tempo
+					
 					
 					try {
 						this.write(a);
@@ -269,6 +270,7 @@ public class TabrootClient extends TablutClient {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
+					printEndTime();//controllo tempo
 
 				}
 				else if (state.getTurn().equals(StateTablut.Turn.WHITE)) {
