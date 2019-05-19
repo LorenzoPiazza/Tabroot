@@ -1,5 +1,6 @@
 # Tabroot Project
 #### Hi! We're Team Tabroot and this is an AI software capable of playing to the Tablut board game.
+#### This Player will join the competition proposed by the AI course in the Master's degree of Software Engineer in UNIBO.
 
 
 
@@ -7,7 +8,7 @@
 
 The project is structured in package as follows:
 
-it.unibo.ai.didattica.competition.tablut.client:
+- it.unibo.ai.didattica.competition.tablut.client:
 
 This package contains some basic player as the HumanPlayer or the Random Player.
 
@@ -23,23 +24,24 @@ This package contains the strategy used for the Black and White Player and the i
 
 This package contains some optimizations to our current algorithm (e.g with the Transposition Table technique) but actually we haven't finished yet (it has some unresolved problem) and so they aren't used for the competition. However we're going to finish it in the near future.
 
-it.unibo.ai.didattica.competition.tablut.server:
+- it.unibo.ai.didattica.competition.tablut.server:
 This package contains the server to whom connect with the client players to play.
 
 
 
 # How to use:
 
-In the project are available two executable (jar) files. One launch the server and other launches the TabrootClient.
+In the folder "Executable files" are available two executable (jar) files.
+TabrootClient.jar launches our Tabroot player.
+Server.jar launches the Server.
 
 #### **REQUIRED LIBRARIES: The TabrootClient.jar need the following library to be executed:**
-- /Tabroot/lib/aima-core-3.0.0.jar
-- /Tabroot/lib/gson-2.2.2.jar
+- aima-core-3.0.0.jar (/Tabroot/lib/aima-core-3.0.0.jar)
+- gson-2.2.2.jar (/Tabroot/lib/gson-2.2.2.jar)
 
 
-Firstly run the server.
-
-Then run the client you want to use.
+1 Firstly run the server.
+2 Then run the client you want to use.
 Our player is the TabrootClient and these following are the command to launch it.
 
 ```
