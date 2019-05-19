@@ -187,6 +187,22 @@ public abstract class State {
 		result = prime * result + ((this.turn == null) ? 0 : this.turn.hashCode());
 		return result;
 	}
+	
+	public long ttHashCode() {
+		    String s = this.toLinearString();
+		    int p = 31;
+		    double m = 1e9 + 9;
+		    long hash_value = 0;
+		    long p_pow = 1;
+		    char c;
+		    for (int i=0; i<s.length(); i++) {
+		    	c = s.charAt(i); 
+		        hash_value = (long) ((hash_value + (c - 'a' + 1) * p_pow) % m);
+		        p_pow = (long) ((p_pow * p) % m);
+		    }
+		    return hash_value;
+	}
+	
 
 	public String getBox(int row, int column) {
 		String ret;

@@ -1,4 +1,4 @@
-package it.unibo.ai.didattica.competition.tablut.client.lori;
+package it.unibo.ai.didattica.competition.tablut.client.tabrootplayer;
 
 import java.io.IOException;
 import java.net.UnknownHostException;
@@ -9,11 +9,13 @@ import aima.core.search.framework.Metrics;
 import it.unibo.ai.didattica.competition.tablut.domain.*;
 import it.unibo.ai.didattica.competition.tablut.domain.Game;
 import it.unibo.ai.didattica.competition.tablut.domain.State.Turn;
+import it.unibo.ai.didattica.competition.tablut.optimization.TablutTranspositionTable;
 
 
 public class TabrootClient extends TablutClient {
 
 	private int time;
+	private TablutTranspositionTable transpositionTable;
 
 	public TabrootClient(String player, String name, int time) throws UnknownHostException, IOException {
 		super(player, name);
@@ -96,15 +98,17 @@ public class TabrootClient extends TablutClient {
 		state = new StateTablut();
 		state.setTurn(State.Turn.WHITE);
 		rules = new GameAshtonTablut(99, 0, "garbage", "fake", "fake");
-		//Creo l'oggetto MyGame che servirà alla classe di ricerca
+		//Creo l'oggetto MyGame che servirï¿½ alla classe di ricerca
 		myGame = new MyGame(state, (GameAshtonTablut) rules, "fake", "fake");
 		System.out.println("Ashton Tablut game");
 
+		//this.transpositionTable=new TablutTranspositionTable();
 		
-		//Creo l'oggetto MyIterativeDeepeningAlphaBetaSearch che realizzerà la ricerca della mossa nello spazio degli stati
+		//Creo l'oggetto MyIterativeDeepeningAlphaBetaSearch che realizzerï¿½ la ricerca della mossa nello spazio degli stati
 		MyIterativeDeepeningAlphaBetaSearch myItDeepAlgorithm = new MyIterativeDeepeningAlphaBetaSearch(myGame, Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, time);
 		myItDeepAlgorithm.setLogEnabled(true);
-		
+		MyTTIterativeDeepeningAlphaBetaSearch ttAlgorithm = new MyTTIterativeDeepeningAlphaBetaSearch(myGame, Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, time, transpositionTable);
+		ttAlgorithm.setLogEnabled(true);
 		
 		//Eventuali altri algoritmi:
 		/*
@@ -137,7 +141,7 @@ public class TabrootClient extends TablutClient {
 			if (this.getPlayer().equals(Turn.WHITE)) {
 				//sono il giocatore bianco
 				if (this.getCurrentState().getTurn().equals(StateTablut.Turn.WHITE)) {
-					//ed è il turno del bianco (tocca a me giocare)
+					//ed ï¿½ il turno del bianco (tocca a me giocare)
 					printStartTime();//controllo tempo
 					Action a = null;
 					try {
@@ -169,6 +173,7 @@ public class TabrootClient extends TablutClient {
 					//a=miniMaxAlgorithm.makeDecision(state);
 					//a=alphaBetaAlgorithm.makeDecision(state);
 					a=myItDeepAlgorithm.makeDecision(state);
+					//a=ttAlgorithm.makeDecision(state);
 					
 					System.out.println("Mossa scelta: " + a.toString());
 					//printStatistics(itDeepAlgorithm);
@@ -186,7 +191,7 @@ public class TabrootClient extends TablutClient {
 						e.printStackTrace();
 					}
 				}
-				// è il turno dell'avversario
+				// ï¿½ il turno dell'avversario
 				else if (state.getTurn().equals(StateTablut.Turn.BLACK)) {
 					System.out.println("Waiting for your opponent move... ");
 				}
@@ -209,7 +214,7 @@ public class TabrootClient extends TablutClient {
 			} else {
 				// sono il giocatore nero
 				if (this.getCurrentState().getTurn().equals(StateTablut.Turn.BLACK)) { 
-					// ed è il turno del nero (tocca a me giocare)
+					// ed ï¿½ il turno del nero (tocca a me giocare)
 					printStartTime();//controllo tempo
 					Action a = null;
 					try {
@@ -219,7 +224,7 @@ public class TabrootClient extends TablutClient {
 						e1.printStackTrace();
 					}
 					
-					//Se è il primo turno apro con una delle mosse d'apertura
+					//Se ï¿½ il primo turno apro con una delle mosse d'apertura
 					if(turn==0) {
 						turn=1;
 						IOpening opener = new BlackOpening();

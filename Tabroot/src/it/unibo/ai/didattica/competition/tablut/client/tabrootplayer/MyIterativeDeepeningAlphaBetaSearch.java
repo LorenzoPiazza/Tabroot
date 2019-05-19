@@ -1,4 +1,4 @@
-package it.unibo.ai.didattica.competition.tablut.client.lori;
+package it.unibo.ai.didattica.competition.tablut.client.tabrootplayer;
 
 import aima.core.search.adversarial.Game;
 import aima.core.search.adversarial.IterativeDeepeningAlphaBetaSearch;

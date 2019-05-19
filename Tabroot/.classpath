@@ -4,5 +4,6 @@
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="lib" path="lib/gson-2.2.2.jar"/>
 	<classpathentry kind="lib" path="lib/aima-core-3.0.0.jar" sourcepath="/aima-core"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/5"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
