@@ -32,9 +32,9 @@ The project is structured in package as follows:
 
 # How to use:
 
-In the folder "Executable files" are available two executable (jar) files.
-TabrootClient.jar launches our Tabroot player.
-Server.jar launches the Server.
+In the folder "Executable files" are available two executable (jar) files:
+- TabrootClient.jar launches our Tabroot player.
+- Server.jar launches the Server.
 
 #### **REQUIRED LIBRARIES: The TabrootClient.jar need the following library to be executed:**
 - aima-core-3.0.0.jar (/Tabroot/lib/aima-core-3.0.0.jar)
