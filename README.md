@@ -56,6 +56,7 @@ java -jar TabrootClient.jar white|black [-t <timeToMove>] [-n <nameOfTheTeam>]
 
 
 AUTHORS:
+
 Lorenzo Piazza
 
 Simone Cancello
