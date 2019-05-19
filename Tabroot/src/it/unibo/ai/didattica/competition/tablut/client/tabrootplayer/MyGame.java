@@ -1,4 +1,4 @@
-package it.unibo.ai.didattica.competition.tablut.client.lori;
+package it.unibo.ai.didattica.competition.tablut.client.tabrootplayer;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -41,11 +41,11 @@ public class MyGame extends GameAshtonTablut implements Game<State, Action, Turn
 	}
 
 	/*
-	 * Questa funzione a differenza della checkMove già fornita salta alcuni
+	 * Questa funzione a differenza della checkMove giï¿½ fornita salta alcuni
 	 * controlli inutili per come vengono fornite le mosse da valutare (es:
 	 * impossibile valutare una mossa in diagonale quindi non controllo). Un'altra
-	 * differenza è che non muove la pedina nel caso la mossa sia possibile.
-	 * Resituisce 0 se la mossa è possibile, 1 altrimenti. Viene chiamata in seguito
+	 * differenza ï¿½ che non muove la pedina nel caso la mossa sia possibile.
+	 * Resituisce 0 se la mossa ï¿½ possibile, 1 altrimenti. Viene chiamata in seguito
 	 * all'interno di getActions().
 	 */
 	public int myCheckMove(int columnFrom, int columnTo, int rowFrom, int rowTo, int ctrl, State state) {
@@ -143,7 +143,7 @@ public class MyGame extends GameAshtonTablut implements Game<State, Action, Turn
 	 * getActions(State state): Restituisce una lista di tutte le azioni possibili
 	 * del giocatore a cui tocca muovere. Capisce a chi tocca muovere controllando
 	 * il turno insito nello stato che gli viene passato). Se il turno dello stato
-	 * passato è WHITEWIN, BALCKWIN o DRAW restituisce la lista di azioni vuota.
+	 * passato ï¿½ WHITEWIN, BALCKWIN o DRAW restituisce la lista di azioni vuota.
 	 * 
 	 * Codice by A.Fuschino (alcune modifiche by L.Piazza)
 	 */
@@ -190,10 +190,10 @@ public class MyGame extends GameAshtonTablut implements Game<State, Action, Turn
 			break;
 		default:
 			return actions; // Nel caso in cui il turno sia BLACKWIN, WHITEWIN o DRAW restituisco la lista
-							// di azioni vuote (la partita non può proseguire dallo stato corrente)
+							// di azioni vuote (la partita non puï¿½ proseguire dallo stato corrente)
 		}
 
-		// Arrivati qui è impossibile che l'Iterator it sia ancora null
+		// Arrivati qui ï¿½ impossibile che l'Iterator it sia ancora null
 		int colonna = 0;
 		int riga = 0;
 
@@ -354,7 +354,7 @@ public class MyGame extends GameAshtonTablut implements Game<State, Action, Turn
 		return false;
 	}
 
-	// TODO: è la funzione euristica
+	// TODO: ï¿½ la funzione euristica
 	@Override
 	public double getUtility(State state, Turn turn) {
 		/*
@@ -403,7 +403,7 @@ public class MyGame extends GameAshtonTablut implements Game<State, Action, Turn
 		
 
 		/*
-		 * Se è il turno del bianco ritorno la valutazione della strategia del nostro
+		 * Se ï¿½ il turno del bianco ritorno la valutazione della strategia del nostro
 		 * White player(Euristica generale+Euristica specifica) a cui sottraggo solo
 		 * l'euristica generale di un Black Player per evitare che si focalizzi troppo
 		 * su un tipo di avversario
@@ -431,10 +431,10 @@ public class MyGame extends GameAshtonTablut implements Game<State, Action, Turn
 		//Conteggio delle pedine bianche. Range [0,1]
 		double conteggioPedine = white.size() / 9.0;
 
-		//Guardo se il Re è in una casella favorevole (le 4 caselle sulla scacchiera con più sbocchi verso la vittoria). Range [0,1]
+		//Guardo se il Re ï¿½ in una casella favorevole (le 4 caselle sulla scacchiera con piï¿½ sbocchi verso la vittoria). Range [0,1]
 		double posKing = whiteStrategy.posKing(king);
 
-		//Controlli per far scappare il Re. Attenzione che il range è negativo! Range: [-1,0]
+		//Controlli per far scappare il Re. Attenzione che il range ï¿½ negativo! Range: [-1,0]
 		double scappaRe = whiteStrategy.scappaRe(state, white, black, king);
 
 		//Guardo se ho delle pedine bianche negli angoli. Range [0,1]
@@ -446,7 +446,7 @@ public class MyGame extends GameAshtonTablut implements Game<State, Action, Turn
 		//Guardo l'assetto Fusco. Range: da NORMALIZZARE tra 0 e 1!! **
 		//double assettoFusco = whiteStrategy.valutazioneAssettoFusco(state, white, king);
 		
-		/*Guardo l'assetto torre (Per torre si intende che nella scacchiera ho 4 pedine, di cui una è il re,
+		/*Guardo l'assetto torre (Per torre si intende che nella scacchiera ho 4 pedine, di cui una ï¿½ il re,
 		 in posizione tale che non si fanno mangiare. Le pedine saranno disposte in due righe una sopra l'altra. 
 		Range [0,1]
 		*/
@@ -495,10 +495,10 @@ public class MyGame extends GameAshtonTablut implements Game<State, Action, Turn
 		//Conteggio delle pedine bianche. Range [0,1]
 		double conteggioPedine = white.size() / 9.0;
 
-		//Guardo se il Re è in una casella favorevole (le 4 caselle sulla scacchiera con più sbocchi verso la vittoria). Range [0,1]
+		//Guardo se il Re ï¿½ in una casella favorevole (le 4 caselle sulla scacchiera con piï¿½ sbocchi verso la vittoria). Range [0,1]
 		double posKing = whiteStrategy.posKing(king);
 
-		//Controlli per far scappare il Re. Attenzione che il range è negativo! Range: [-1,0]
+		//Controlli per far scappare il Re. Attenzione che il range ï¿½ negativo! Range: [-1,0]
 		double scappaRe = whiteStrategy.scappaRe(state, white, black, king);
 
 		//Guardo se ho delle pedine bianche negli angoli. Range [0,1]
@@ -510,7 +510,7 @@ public class MyGame extends GameAshtonTablut implements Game<State, Action, Turn
 		//Guardo l'assetto Fusco. Range: da NORMALIZZARE tra 0 e 1!! **
 		//double assettoFusco = whiteStrategy.valutazioneAssettoFusco(state, white, king);
 		
-		/*Guardo l'assetto torre (Per torre si intende che nella scacchiera ho 4 pedine, di cui una è il re,
+		/*Guardo l'assetto torre (Per torre si intende che nella scacchiera ho 4 pedine, di cui una ï¿½ il re,
 		 in posizione tale che non si fanno mangiare. Le pedine saranno disposte in due righe una sopra l'altra. 
 		Range [0,1]
 		*/
@@ -612,7 +612,7 @@ public class MyGame extends GameAshtonTablut implements Game<State, Action, Turn
 	 * Controllo che il re sia circondato da pedine nere int
 	 * latiCopertiDalTronoDelRe=0; int neriVicinoAlRe=0;
 	 * 
-	 * //controllo se il re è vicino al trono if((king[0]== 3 &&
+	 * //controllo se il re ï¿½ vicino al trono if((king[0]== 3 &&
 	 * king[1]==4)||(king[0]== 5 && king[1]==4) ||(king[0]== 4 &&
 	 * king[1]==3)||(king[0]== 4 && king[1]==5)) latiCopertiDalTronoDelRe++; //se
 	 * sono sul trono o sono vicino al trono il re deve essere circondato
@@ -626,7 +626,7 @@ public class MyGame extends GameAshtonTablut implements Game<State, Action, Turn
 	 * if(controlloPedine[0]==(king[0]-1) &&controlloPedine[1]==(king[1]))
 	 * neriVicinoAlRe++; //controllo a sotto del re
 	 * if(controlloPedine[0]==(king[0]+1) &&controlloPedine[1]==(king[1]))
-	 * neriVicinoAlRe++; } latiCopertiDalTronoDelRe+=neriVicinoAlRe; //Se ho più di
+	 * neriVicinoAlRe++; } latiCopertiDalTronoDelRe+=neriVicinoAlRe; //Se ho piï¿½ di
 	 * tre lati occupati devo scappare con il re. if(latiCopertiDalTronoDelRe>=3)
 	 * scappaRe=-10; } else {non sono sul trono e neanche accanto ad esso, quindi
 	 * puo' essere mangiato normalmente. //controllo le intersezioni doppie

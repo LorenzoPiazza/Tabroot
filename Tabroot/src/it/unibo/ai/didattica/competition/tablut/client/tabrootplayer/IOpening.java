@@ -1,7 +1,7 @@
 /**
  * 
  */
-package it.unibo.ai.didattica.competition.tablut.client.lori;
+package it.unibo.ai.didattica.competition.tablut.client.tabrootplayer;
 
 import it.unibo.ai.didattica.competition.tablut.domain.Action;
 import it.unibo.ai.didattica.competition.tablut.domain.State;

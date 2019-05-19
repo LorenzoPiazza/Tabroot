@@ -1,7 +1,7 @@
 /**
  * 
  */
-package it.unibo.ai.didattica.competition.tablut.client.lori;
+package it.unibo.ai.didattica.competition.tablut.client.tabrootplayer;
 
 import java.io.IOException;
 
@@ -18,12 +18,12 @@ public class BlackOpening implements IOpening {
 
 	@Override
 	public Action openingMove(State currentState) {
-		/*Se in apertura ho possibilità di mangiare ai bordi lo faccio*/
+		/*Se in apertura ho possibilitï¿½ di mangiare ai bordi lo faccio*/
 		Action a=controllaMangiata(currentState);
 		if(a!=null)
 			return a;
 
-		/*Altrimenti guardo prima se il bianco ha aperto muovendo le pedine interne più vicine al Re*/
+		/*Altrimenti guardo prima se il bianco ha aperto muovendo le pedine interne piï¿½ vicine al Re*/
 		if(currentState.getPawn(3,4).equalsPawn("O") )
 			try {
 				return new Action("e2", "g2", Turn.BLACK);
@@ -49,7 +49,7 @@ public class BlackOpening implements IOpening {
 				e.printStackTrace();
 			}
 		
-		/*Guardo ora se invece il bianco ha aperto muovendo una delle pedine più esterne*/
+		/*Guardo ora se invece il bianco ha aperto muovendo una delle pedine piï¿½ esterne*/
 		else if(currentState.getPawn(2,4).equalsPawn("O")) {
 			/*if(!whiteInBorderUpLeft(currentState)){
 				try {

@@ -1,4 +1,4 @@
-package it.unibo.ai.didattica.competition.tablut.client.lori;
+package it.unibo.ai.didattica.competition.tablut.client.tabrootplayer;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -78,7 +78,7 @@ public class WhiteStrategy {
 		int neriVicinoAlRe=0;
 		int[] controlloPedine= {0,0};
 		
-		//controllo se il re è vicino al trono
+		//controllo se il re ï¿½ vicino al trono
 				if((king[0]== 3 && king[1]==4)||(king[0]== 5 && king[1]==4)
 						||(king[0]== 4 && king[1]==3)||(king[0]== 4 && king[1]==5))
 					latiCopertiDalTronoDelRe++;
@@ -102,7 +102,7 @@ public class WhiteStrategy {
 							neriVicinoAlRe++;
 					}
 					latiCopertiDalTronoDelRe+=neriVicinoAlRe;
-					//Se ho più di tre lati occupati devo scappare con il re.
+					//Se ho piï¿½ di tre lati occupati devo scappare con il re.
 					if(latiCopertiDalTronoDelRe>=3)
 						scappaRe=-1.0;
 				}
@@ -279,7 +279,7 @@ public class WhiteStrategy {
 
 		double valutazioneMosseIntelligenti=0;
 
-		//se la casella in alto degli accampamenti è vuota mi muovo verso il bordo angolo evitando di essere mangiato
+		//se la casella in alto degli accampamenti ï¿½ vuota mi muovo verso il bordo angolo evitando di essere mangiato
 
 
 		//quadrante dx in basso: sinistra  

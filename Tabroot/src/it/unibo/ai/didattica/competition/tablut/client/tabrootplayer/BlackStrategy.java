@@ -1,4 +1,4 @@
-package it.unibo.ai.didattica.competition.tablut.client.lori;
+package it.unibo.ai.didattica.competition.tablut.client.tabrootplayer;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,8 +14,8 @@ public class BlackStrategy {
 	public BlackStrategy() {
 	}
 
-	//modifica per guardare le gabbie adiacenti al quadrante del rè dato un valore minore (Alan)
-		//inoltre guarda anche se si è messo nella croce in che parte di essa e da un valore un pò buono alla gabbia in quei due lati della croce
+	//modifica per guardare le gabbie adiacenti al quadrante del rï¿½ dato un valore minore (Alan)
+		//inoltre guarda anche se si ï¿½ messo nella croce in che parte di essa e da un valore un pï¿½ buono alla gabbia in quei due lati della croce
 		
 		public double valutaAssettoGabbiaLight(State state, int[] king) {
 			switch(quadranteKing(king)) { 
@@ -390,7 +390,7 @@ public class BlackStrategy {
 	
 	/**
 	 * @param state Lo stato attuale
-	 * @return result Una stringa che contiene il quadrante della scacchiera in cui si trova il re o "Cross" se è sul trono o nelle caselle centrali
+	 * @return result Una stringa che contiene il quadrante della scacchiera in cui si trova il re o "Cross" se ï¿½ sul trono o nelle caselle centrali
 	 * 
 	 * (Code by L.Piazza A.Dalmonte)
 	 */
