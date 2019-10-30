@@ -1,6 +1,7 @@
 # Tabroot Project
 #### Hi! We're Team Tabroot and this is an AI software capable of playing to the Tablut board game.
-#### This Player will join the "2018/19 Board Game Students Challenge" proposed by the AI course of the Master's degree in Computer Engineering at UNIBO.
+#### This player joined the "2018/19 Board Game Students Challenge" proposed by the AI course of the Master's degree in Computer Engineering at UNIBO.
+
 (Following this link you can find more information about the competition and the game's rule: http://lia.disi.unibo.it/Courses/AI/fundamentalsAI2018-19/challenge/Challenge2019.pdf)
 
 (Here instead you can see the Challenge Results: 
