@@ -5,6 +5,7 @@
 
 (Here instead you can see the Challenge Results: 
 http://ai.unibo.it/games/boardgamecompetition/1819)
+#### Our player ranked 4th out of 22 Teams!! 
 
 
 
@@ -57,11 +58,6 @@ java -jar TabrootClient.jar white|black [-t <timeToMove>] [-n <nameOfTheTeam>]
 - The parameter white or black is case insensitive and let you to choose which side you want to play.
 - -t parameter let you to specified the time in seconds allowed to calculate the next move. (Default is 59 second).
 - -n parameter let you to specified the name of the player. (Default is Tabroot)
-
-
-
-
-
 
 
 
