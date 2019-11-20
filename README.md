@@ -5,7 +5,7 @@
 (Following this link you can find more information about the competition and the game's rule: http://lia.disi.unibo.it/Courses/AI/fundamentalsAI2018-19/challenge/Challenge2019.pdf)
 
 (Here instead you can see the Challenge Results: 
-http://ai.unibo.it/games/boardgamecompetition/1819)
+http://ai.unibo.it/games/boardgamecompetition/tablut/1819INF)
 #### Our player ranked 4th out of 22 Teams!! 
 
 
